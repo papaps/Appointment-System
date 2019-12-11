@@ -1895,6 +1895,8 @@ function switchPage() {
         $("#reset-password-modal").modal("show");
     } else if(page == "Reset Secretary") {
         $("#reset-secretary-modal").modal("show");
+    } else if(page == "Free-up Memory") {
+        $("#old-modal").modal("show");
     } else if(page == "Logout") {        
         window.location.href="/logout";
     }
