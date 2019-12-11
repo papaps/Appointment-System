@@ -1832,6 +1832,21 @@ $("#confirmation-modal").modal({
     }
 })
 
+$("#delete-old").click(() => {
+    $.ajax({
+        type: "post",
+        url: "secretary/deleteXYearsApp",
+        success: (value) => {
+            $("#old-modal").modal("hide");
+            $('body').toast({
+                class: "success",
+                position: "top center",
+                message: "Old appointments successfully deleted"
+            })
+        }
+    })
+})
+
 // Initialization
 function setup() {
     // load the list of dentist
