@@ -7,18 +7,10 @@ const urlencoder = bodyparser.urlencoded({
     extended: false
 });
 
-const {
-    Account
-} = require("../model/account");
-const {
-    Appointment
-} = require("../model/appointment");
-const {
-    Doctor
-} = require("../model/doctor");
-const {
-    Process
-} = require("../model/process");
+const {Account} = require("../model/account");
+const {Appointment} = require("../model/appointment");
+const {Doctor} = require("../model/doctor");
+const {Process} = require("../model/process");
 
 router.get("/", async function (req, res) {
     let dentist = await Account.getAccountByUsername(req.session.doctorUsername);
@@ -73,23 +65,26 @@ router.post("/weekly_view", urlencoder, async function (request, result) {
         let appntmts = [];
         for (var i = 0; i < timeSlotsArray.length; i++) {
             let timeSlot = timeSlotsArray[i];
+            // get all appointments in this date and time slot
+            let appointment = await Appointment.getOneAppByDoctorandDateandTime(dentist.doctorID, moment(day).format("MMM D YYYY"), timeSlot);
+            if(appointment != null){
+                //populate necessary info
+                appointment = await appointment.populateDoctorAndProcess();
+                appntmts.push(appointment);
+            }
+         }
 
-            //get the doctor appointment with time and date
-            let temp = await Appointment.getOneAppByDoctorandDateandTime(dentist.doctorID, moment(day).format("MMM D YYYY"), timeSlot);
-            appntmts.push(temp);
-        }
-
-        let appointments = [];
-        for (var k = 0; k < appntmts.length; k++) {
-            let appointment = appntmts[k];
-            //populate necessary info
-            appointment = await appointment.populateDoctorAndProcess();
-            appointments.push(appointment);
-        }
+        // let appointments = [];
+        // for (var k = 0; k < appntmts.length; k++) {
+        //     let appointment = appntmts[k];
+        //     //populate necessary info
+        //     appointment = await appointment.populateDoctorAndProcess();
+        //     appointments.push(appointment);
+        // }
         dates.push(new Object({
             dayCaps: moment(day).format("dddd").toUpperCase(),
             dateShort: moment(day).format("D MMM").toUpperCase(),
-            appointment: appointments
+            appointment: appntmts
         }));
         day = day.clone().add(1, 'd');
     }
