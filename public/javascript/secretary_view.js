@@ -1495,7 +1495,7 @@ function isPast(date) {
         
     }
     focusDate = focusedDate.add(1, 'd')
-
+    //fix
     var now = moment()
     if (focusedDate <= now) return true;
     return false;
