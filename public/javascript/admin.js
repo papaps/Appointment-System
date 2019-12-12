@@ -1679,6 +1679,19 @@ $("#reset-password-modal").modal({
 
 $("#adding-schedule-modal").modal({
     onShow: () => {
+        if(modalReset) {
+            $("input[type='text']").val("");
+            $(".ui .checkbox").checkbox('uncheck');
+            $("#mon").removeClass("active");
+            $("#tue").removeClass("active");
+            $("#wed").removeClass("active");
+            $("#thu").removeClass("active");
+            $("#fri").removeClass("active");
+            $("#sat").removeClass("active");
+            $(".accordion .content").css({
+                display: 'none'
+            })
+        }
         accor_show = false;
         days = [];
         var minDate = new Date();
@@ -1715,19 +1728,6 @@ $("#adding-schedule-modal").modal({
             minDate,
             maxDate
         })
-        if(modalReset) {
-            $("input[type='text']").val("");
-            $(".ui .checkbox").checkbox('uncheck');
-            $("#mon").removeClass("active");
-            $("#tue").removeClass("active");
-            $("#wed").removeClass("active");
-            $("#thu").removeClass("active");
-            $("#fri").removeClass("active");
-            $("#sat").removeClass("active");
-            $(".accordion .content").css({
-                display: 'none'
-            })
-        }
     },
     onHidden: () => {
         $("input[type='text']").val("");
