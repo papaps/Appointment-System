@@ -4,15 +4,23 @@ const moment = require('moment');
 const fs = require('fs');
 const bodyparser = require("body-parser");
 const urlencoder = bodyparser.urlencoded({
-    extended : false
+    extended: false
 });
 
-const {Account} = require("../model/account");
-const {Appointment} = require("../model/appointment");
-const {Doctor} = require("../model/doctor");
-const {Process} = require("../model/process");
+const {
+    Account
+} = require("../model/account");
+const {
+    Appointment
+} = require("../model/appointment");
+const {
+    Doctor
+} = require("../model/doctor");
+const {
+    Process
+} = require("../model/process");
 
-router.get("/", async function(req, res) {
+router.get("/", async function (req, res) {
     let dentist = await Account.getAccountByUsername(req.session.doctorUsername);
     if (req.session.doctorUsername != null) {
         res.render("page_templates/dentist_view.hbs", {
@@ -23,7 +31,7 @@ router.get("/", async function(req, res) {
     }
 })
 
-router.post("/getAppointment", async function(req, res) {
+router.post("/getAppointment", async function (req, res) {
     let appointment = await Appointment.getAppointmentsByID(req.body.appID);
     res.send(await appointment.populateDoctorAndProcess());
 })
@@ -47,8 +55,30 @@ router.post("/weekly_view", urlencoder, async function (request, result) {
     var endOfWeek = moment(date).endOf('week');
 
     var day = startOfWeek;
-    while (day <= endOfWeek) {        
-        let appntmts = await Appointment.getAppByDoctorandDate(dentist.doctorID, moment(day).format("MMM D YYYY"));
+    while (day <= endOfWeek) {
+        // let appntmts = await Appointment.getAppByDoctorandDate(dentist.doctorID, moment(day).format("MMM D YYYY"));
+        let timeSlotsArray = ["8:00 AM", "8:30 AM",
+            "9:00 AM", "9:30 AM",
+            "10:00 AM", "10:30 AM",
+            "11:00 AM", "11:30 AM",
+            "12:00 PM", "12:30 PM",
+            "1:00 PM", "1:30 PM",
+            "2:00 PM", "2:30 PM",
+            "3:00 PM", "3:30 PM",
+            "4:00 PM", "4:30 PM",
+            "5:00 PM", "5:30 PM",
+            "6:00 PM"
+        ];
+
+        let appntmts = [];
+        for (var i = 0; i < timeSlotsArray.length; i++) {
+            let timeSlot = timeSlotsArray[i];
+
+            //get the doctor appointment with time and date
+            let temp = await Appointment.getOneAppByDoctorandDateandTime(dentist.doctorID, moment(day).format("MMM D YYYY"), timeSlot);
+            appntmts.push(temp);
+        }
+
         let appointments = [];
         for (var k = 0; k < appntmts.length; k++) {
             let appointment = appntmts[k];
@@ -72,7 +102,7 @@ router.post("/weekly_view", urlencoder, async function (request, result) {
         htmlData: all_day,
         data: final
     })
-    
+
 });
 
 module.exports = router;
