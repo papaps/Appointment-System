@@ -1,3 +1,4 @@
+var showToast;
 
 $(document).ready(function () {
 
@@ -1439,7 +1440,9 @@ function initializeShortcutsMain() {
                 $('#today').trigger('click')
                 break;
             case ENTER:
-                $("#add-button").trigger('click');
+                if(!$("#confirm-admin-modal")[0].className.includes("active")) {
+                    $("#add-button").trigger('click');
+                }
                 break;
             case C:
                 $("#standard_calendar").calendar('popup', 'toggle')
@@ -1501,20 +1504,93 @@ function isPast(date) {
     return false;
 }
 
-function setup() {
+$("#reset-button-admin").click(() => {
+    var done = true;
+    if($("#admin-input").val() == "") {
+        $("#admin-input-field").addClass("error");
+        if(!showToast) {
+            showToast = true;
+            $('body').toast({
+                class: "error",
+                position: "top center",
+                message: "Please input admin password",
+                onHidden: () => {
+                    showToast = false;
+                }
+            });
+            done = false;
+        }
+    } else {
+        $.ajax({
+            type: "post",
+            url: "admin/checkCurrentAdminPassword",
+            data: {
+                newPassword: $("#admin-input").val().trim()
+            },
+            success: (value) => {
+                if(!value) {
+                    if(!showToast) {
+                        showToast = true;
+                        $("#admin-input-field").addClass("error");
+                        $('body').toast({
+                            class: "error",
+                            position: "top center",
+                            message: "Incorrect admin password",
+                            onHidden: () => {
+                                showToast = false;
+                            }
+                        });   
+                        done = false;
+                    }
+                } else {
+                    if(done) {
+                        deleteOld();
+                    }
+                }
+            }
+        })
+    }
+})
+
+$(document).keypress((event) => {
+    if(event.keyCode == 13) {
+        if($("#confirm-admin-modal")[0].className.includes("active")) {
+            $("#reset-button-admin").click();
+        }
+    }
+})
+
+$("#delete-old").click(() => {
+    $("#confirm-admin-modal").modal("show");
+})
+
+function deleteOld() {
     $.ajax({
-        type: "get",
+        type: "post",
+        url: "secretary/deleteXYearsApp",
+        success: (value) => {
+            $("#old-modal").modal("hide");
+            $("#confirm-admin-modal").modal("hide");
+            $('body').toast({
+                class: "success",
+                position: "top center",
+                message: "Old appointments successfully deleted"
+            })
+        }
+    })
+}
+
+function setup() {
+    showToast = false;
+    $.ajax({
+        type: "post",
         url: "secretary/isXYearsApp",
+        data: {
+            monthToday: moment().toDate()
+        },
         success: (value) => {
             if(value) {
-                $('body').toast({
-                    class: 'inverted yellow',
-                    showIcon: false,
-                    position: 'bottom right',
-                    displayTime: 0,
-                    closeIcon: true,
-                    message: 'This program was designed to handle 512MB to maintain the free service. We will warn every 5 years to delete 5 years worth of appointments. We strongly recommend to continue this action. Please consult with admin on this.'
-                });
+                $("#old-modal").modal("show");
             }
         }
     })

@@ -19,6 +19,7 @@ const { Process } = require("../model/process");
 const { Schedule } = require("../model/schedule");
 const { BreakTime } = require("../model/breaktime");
 const { UnavailableDate } = require("../model/unavailableDate");
+const { CheckDate } = require("../model/checkdate");
 
 /* 
     Ty Added :)
@@ -1330,27 +1331,47 @@ router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
         
         if(year <= temp.year()){
             // console.log(apps[i]);
+            // update the checkdate
+            CheckDate.updateOne({
+                type: "date" 
+            }, {
+                checkdate: (moment(check).year() + 1) + "12-01",
+                checked: false
+            })
             await Appointment.delete(apps[i]._id);
+            break;
         }
     }
     res.send(true);
 })
 
-router.get("/isXYearsApp", urlencoder, async (req, res) => {
-    let temp = moment().subtract(5,'years');
+router.post("/isXYearsApp", urlencoder, async (req, res) => {
+    // adjust date
+    var date = await CheckDate.findOne({type: "date"});
+    var today = Date.parse(req.body.monthToday);
+    var check = moment(date.checkdate, "YYYY-MM-DD");
+    // check if it is december
+    if(moment(today).isSame(moment("2019-12-31", "month"))) {
+        if(moment(today).year() == moment(check).year()) {
+            let temp = moment().subtract(5,'years');
     
-    let apps =  await Appointment.getAll();
+            let apps =  await Appointment.getAll();
 
-     for (var i = 0; i < apps.length; i++) {
-         let tempdate = new Date(apps[i].date);
-         let year = moment(tempdate).format("YYYY");
-        
-        if(year <= temp.year()){
-            res.send(true);
-            break;
+            for (var i = 0; i < apps.length; i++) {
+                let tempdate = new Date(apps[i].date);
+                let year = moment(tempdate).format("YYYY");
+                
+                if(year <= temp.year()){
+                    res.send(true);
+                    break;
+                }
+            }
+        } else {
+            res.send(false);
         }
+    } else {
+        res.send(false);
     }
-    
 })
 
 function isPast(date) {

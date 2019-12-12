@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const moment = require('moment');
 const fs = require('fs');
 const { Account } = require("../model/account");
 const { Doctor } = require("../model/doctor");
+const { CheckDate } = require("../model/checkdate");
 const initial = require("../model/file");
 
 router.use("/secretary", require("./secretaryController"));
@@ -49,7 +51,23 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/login", async (req, res) => {
-    // req.session.username = "admin";
+    var date = await CheckDate.findOne({ type: "date"});
+    if(date == null) {
+        var today = moment().toDate();
+        var year;
+        // check if today is december
+        if(moment(today).isSame(moment('2000-12-31', 'month'))) {
+            year = moment(today).year() + 1;
+        } else {
+            year = moment(today).year();
+        }
+
+        CheckDate.create({
+            type: "date",
+            checkdate: "" + year + "-12-01"
+        })
+    }
+
     if (req.session.username != null) {
         if (req.session.username == "secretary") {
             res.redirect("/secretary");
