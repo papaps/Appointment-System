@@ -1488,7 +1488,6 @@ $("#logoutButton").hover(function () {
 
 function isPast(date) {
     var focusedDate
-    console.log(date)
     if (date === undefined) {
         focusedDate = moment($("#standard_calendar").calendar('get date'))
     }else{
@@ -1498,6 +1497,6 @@ function isPast(date) {
     focusDate = focusedDate.add(1, 'd')
 
     var now = moment()
-    if (focusedDate < now) return true;
+    if (focusedDate <= now) return true;
     return false;
 }

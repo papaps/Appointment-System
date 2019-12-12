@@ -1208,12 +1208,6 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
             availability2 = "unavailable"
         }
 
-        if(isPast(date)){
-            availability1 = "past"
-            availability2 = "past"
-
-        }
-
         row.push({
             timeSlot1: slots1[i],
             timeSlot2: slots2[i],
@@ -1303,6 +1297,7 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
                 available = "sunday"
             }
 
+
             if(isPast(formattedWeekData[j])){
                 available = "past"
             }
@@ -1320,20 +1315,7 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
 
 })
 
-function isPast(date) {
-    var focusedDate
-    if (date === undefined) {
-        focusedDate = moment($("#standard_calendar").calendar('get date'))
-    } else {
-        focusedDate = moment(date)
 
-    }
-    focusDate = focusedDate.add(1, 'd')
-
-    var now = moment()
-    if (focusedDate < now) return true;
-    return false;
-}
 
 router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
     let temp = moment().subtract(5,'years');
@@ -1370,5 +1352,15 @@ router.post("/isXYearsApp", urlencoder, async (req, res) => {
     }
     
 })
+
+function isPast(date) {
+    var focusedDate
+    focusedDate = moment(date)
+    focusDate = focusedDate.add(1, 'd')
+
+    var now = moment()
+    if (focusedDate < now) return true;
+    return false;
+}
 
 module.exports = router;
