@@ -72,15 +72,8 @@ router.post("/weekly_view", urlencoder, async function (request, result) {
                 appointment = await appointment.populateDoctorAndProcess();
                 appntmts.push(appointment);
             }
-         }
-
-        // let appointments = [];
-        // for (var k = 0; k < appntmts.length; k++) {
-        //     let appointment = appntmts[k];
-        //     //populate necessary info
-        //     appointment = await appointment.populateDoctorAndProcess();
-        //     appointments.push(appointment);
-        // }
+        }
+         
         dates.push(new Object({
             dayCaps: moment(day).format("dddd").toUpperCase(),
             dateShort: moment(day).format("D MMM").toUpperCase(),
