@@ -333,18 +333,11 @@ router.post("/addSchedule", urlencoder, async (req, res) => {
         saturday: saturdayBreak
     })
 
-    BreakTime.addBreakTime(breaktime, function (val) {
-        Doctor.updateDoctorBreakTime(doctorID, val._id);
-    }, (error) => {
-        res.send(error);
-    })
+    BreakTime.updateBreakTime(doctor.breakTime, breaktime);
 
-    Schedule.addschedule(defaultschedule, function (value) {
-        Doctor.updateDoctorSchedule(doctorID, value._id);
-        res.send(true);
-    }, (error) => {
-        res.send(error);
-    })
+    Schedule.updateSchedule(doctor.schedule, schedule);
+
+    res.send(true);
 })
 
 router.post("/editSchedule", urlencoder, async (req, res) => {

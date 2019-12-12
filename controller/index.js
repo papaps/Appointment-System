@@ -92,7 +92,7 @@ router.post("/validateLogin", async (req, res) => {
             req.session.username = account.accountType;
             if(account.accountType == "dentist") {
                 req.session.doctorUsername = req.body.username;
-                Doctor.updateLogin(account.doctorID, req.body.date);
+                Doctor.updateLogin(account.doctorID, moment(Date.parse(req.body.date)).format("MMM DD, YYYY  hh:mm:ss"));
             }
             res.send({ message: 1 });
         } else {

@@ -37,7 +37,7 @@ $(document).ready(() => {
             data: {
                 username: $("#username").val().trim(),
                 password: $("#password").val(),
-                date: getDate()
+                date: moment().toDate()
             },
             success: function(value) {
                 if(value.message == 0) {
@@ -275,11 +275,6 @@ function resetPassword() {
             }
         }
     })
-}
-
-function getDate() {
-    var date = new Date();
-    return date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 }
 
 function setup() {
