@@ -103,15 +103,29 @@ router.post("/deleteAccount", async (req, res) => {
             let unAvID = unavailableDate[i]._id;
             await UnavailableDate.delete(unAvID);
         }
-        let doctor = Doctor.getDoctorByID(account.doctorID);
+        let doctor = await Doctor.getDoctorByID(account.doctorID);
         await BreakTime.delete(doctor.breaktime);
         await Schedule.delete(doctor.schedule);
-        await Doctor.delete(account.doctorID);
+        await Doctor.delete(account.doctorID); 
         let appointments = await Appointment.getDoctorAppointment(account.doctorID);
         for (var i = 0; i < appointments.length; i++) {
             let appID = appointments[i]._id;
-            if(appointments[i].doctor == "" || appointments[i].doctor.length == 0) {
+            var ary = appointments[i].doctor;
+            ary.pull(account.doctorID)
+            if(ary.length == 0){
                 await Appointment.delete(appID);
+            }else{
+                let temp = new Appointment({
+                    firstname: appointments[i].firstname,
+                    lastname: appointments[i].lastname,
+                    patientcontact: appointments[i].patientcontact,
+                    process: appointments[i].process,
+                    notes: appointments[i].notes,
+                    time: appointments[i].time,
+                    date: appointments[i].date,
+                    doctor: ary
+                });
+                await Appointment.updateAppointment(appointments, temp);
             }
         }
     }
@@ -729,5 +743,6 @@ router.get("/exportData", async (req, res) => {
     }
     res.send(csv);
 })
+
 
 module.exports = router;
