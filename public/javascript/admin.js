@@ -60,7 +60,7 @@ $(document).ready(() => {
         $(".popup.calendar").addClass("hidden");
     })
 
-    $(".add-unavailable").focusin(() => {
+    $(".add-unavailable").focusin((event) => {
         var today = new Date();
         $($(event.target)[0].parentElement.parentElement).calendar({
             type: "date",
