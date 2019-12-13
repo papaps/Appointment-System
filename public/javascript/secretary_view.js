@@ -237,7 +237,7 @@ $(document).ready(function () {
 
 });
 
-function updateTableRows(date) {
+async function updateTableRows(date) {
     let choice = $('#filter-dropdown').dropdown('get value');
     let viewType = $('#view-chooser').dropdown('get value');
     console.log(choice)
@@ -267,12 +267,12 @@ function updateTableRows(date) {
         }
         $('#the-body').html("");
         $('.active.dimmer').toggle();
-        $.post("/secretary/availabilityAll", weekData, function (data) {
+        await $.post("/secretary/availabilityAll", weekData, function (data) {
             let template = Handlebars.compile(data.htmlData);
             $('#the-body').html(template(data.data));
+            $('.active.dimmer').toggle();
 
         });
-        $('.active.dimmer').toggle();
     } else if (viewType == "week-view") {
         if (choice == 'all' || choice == 'all1') {
             let weekData = {
@@ -1179,8 +1179,9 @@ async function checkAvailableTime(date, doctorID) {
         let template = Handlebars.compile(data.htmlData);
         $('#modalAvailabilityTime').html(template(data.data));
 
-        $('.active.dimmer').toggle();
+        
         $("#modalAvailabilityTime").modal("show")
+        $('.active.dimmer').toggle();
     })
 
 }
