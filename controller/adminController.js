@@ -302,7 +302,7 @@ router.get("/adminProcedure", urlencoder, async (req, res) => {
 router.post("/addSchedule", urlencoder, async (req, res) => {
 
     let doctorID = req.body.doctorID;
-
+    let doctor = await Doctor.getDoctorByID(doctorID);
     let defaultschedule;
     let mondayBreak = [];
     let tuesdayBreak = [];
