@@ -1331,16 +1331,19 @@ router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
         
         if(year <= temp.year()){
             // console.log(apps[i]);
-            // update the checkdate
-            CheckDate.updateOne({
-                type: "date" 
-            }, {
-                checkdate: (moment(check).year() + 1) + "12-01",
-                checked: false
-            })
             await Appointment.delete(apps[i]._id);
             break;
         }
+    }
+    // update the checkdate
+    var date = await CheckDate.findOne({type: "date"});
+    var today = moment().toDate();
+    if(moment(Date.parse(date.checkdate)).year() == moment(today).year()) {
+        await CheckDate.updateOne({
+            _id: date.id 
+        },{
+            checkdate: (moment(today).year() + 1) + "-12-01"
+        })
     }
     res.send(true);
 })

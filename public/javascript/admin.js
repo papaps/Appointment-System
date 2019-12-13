@@ -1665,14 +1665,6 @@ $("#edit-procedure-modal").modal({
 
 $("#reset-password-modal").modal({
     onShow: function() {
-        $("#current-password").val("");
-        $("#new-password").val("");
-        $("#confirm-new-password").val("")
-    }
-})
-
-$("#reset-password-modal").modal({
-    onShow: function() {
         passwordChecker = true;   
     }
 })
