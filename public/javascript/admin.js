@@ -26,25 +26,6 @@ $(document).ready(() => {
             minTimeGap: 30,
             ampm: false,
             minDate,
-            maxDate    
-        })
-    })
-    $(".add-schedule").focusout(() => {
-        $(".popup.calendar").addClass("hidden");
-    })
-
-    $(".add-schedule").focusin((event) => {
-        var minDate = new Date();
-        var maxDate = new Date();
-        minDate.setHours(8);
-        minDate.setMinutes(0);
-        maxDate.setHours(18);
-        maxDate.setMinutes(0);
-        $($(event.target)[0].parentElement.parentElement).calendar({
-            type: "time",
-            minTimeGap: 30,
-            ampm: false,
-            minDate,
             maxDate,
             onHide: () => {
                 return false;
