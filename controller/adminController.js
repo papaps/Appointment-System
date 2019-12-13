@@ -336,20 +336,22 @@ router.post("/addSchedule", urlencoder, async (req, res) => {
             friday,
             saturday
         })
+        
+        let breaktime = new BreakTime({
+            monday: mondayBreak,
+            tuesday: tuesdayBreak,
+            wednesday: wednesdayBreak,
+            thursday: thursdayBreak,
+            friday: fridayBreak,
+            saturday: saturdayBreak
+        })
+
+        BreakTime.updateBreakTime(doctor.breakTime, breaktime);
+
+        Schedule.updateSchedule(doctor.schedule, schedule);
+
     }
 
-    let breaktime = new BreakTime({
-        monday: mondayBreak,
-        tuesday: tuesdayBreak,
-        wednesday: wednesdayBreak,
-        thursday: thursdayBreak,
-        friday: fridayBreak,
-        saturday: saturdayBreak
-    })
-
-    BreakTime.updateBreakTime(doctor.breakTime, breaktime);
-
-    Schedule.updateSchedule(doctor.schedule, schedule);
 
     res.send(true);
 })
