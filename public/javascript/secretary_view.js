@@ -914,8 +914,8 @@ $('#edit-appointment-date-modal').modal({
 })
 
 $('#edit-appointment-modal').modal({
-    closable:false,
-    onHidden: function(){
+    closable: false,
+    onHidden: function () {
         initializeShortcutsMain()
     },
     onApprove: function () {
@@ -937,18 +937,18 @@ $('#edit-appointment-modal').modal({
 
 
 
-async function openDetailsModal(appointmentID, date) {
-    if (!isPast(date)) {
+async function openDetailsModal(appointmentID, dateModal) {
+    if (!isPast(dateModal)) {
         //open second modal on first modal buttons
         $('#deleteConfirmation').modal({
             transition: "fly down",
-            onDeny: function(){
+            onDeny: function () {
                 initializeShortcutsMain()
             }
         }).modal('attach events', '#edit-appointment-modal #edit-delete-button');
         $('#edit-appointment-date-modal').modal('toggle');
 
-        $("#edit-modal-close-icon").on('click', function(){
+        $("#edit-modal-close-icon").on('click', function () {
             initializeShortcutsMain()
         })
 
@@ -1007,11 +1007,19 @@ async function openDetailsModal(appointmentID, date) {
                     fn: "secretary_edit_doctor_field.hbs"
                 }
 
+                let newTime = Date.parse(time);
+                let schemaFormattedTime = moment(newTime).format("h:mm A")
+
+                let newDate = Date.parse(date);
+                let schemaFormattedDate = moment(newDate).format("MMM D YYYY")
+
                 await $.post("/secretary/getAvailableDoctors", datetime, function (data) {
                     let template = Handlebars.compile(data.htmlData);
                     $('#edit-fieldDoctors').html(template(data.data));
-                    for (var i = 0; i < appointment.doctor.length; i++) {
-                        $('#edit-multiDoctor').append('<option value="' + appointment.doctor[i]._id + '">Dr. ' + appointment.doctor[i].lastname + '</option>')
+                    if (schemaFormattedDate === appointment.date && schemaFormattedTime === appointment.time) {
+                        for (var i = 0; i < appointment.doctor.length; i++) {
+                            $('#edit-multiDoctor').append('<option value="' + appointment.doctor[i]._id + '">Dr. ' + appointment.doctor[i].lastname + '</option>')
+                        }
                     }
                     $('#edit-multiDoctor').dropdown();
                     for (var i = 0; i < appointment.doctor.length; i++) {
