@@ -257,7 +257,7 @@ function resetPassword() {
         success: (value) => {
             if(value.message) {
                 $("#confirm-admin-modal").modal("hide");
-                $(".form").form("reset");
+                $("#admin-input").val("");
                 $('body').toast({
                     class: "success",
                     position: "top center",

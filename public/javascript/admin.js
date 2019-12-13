@@ -1,5 +1,5 @@
 var accountID, procedureID, accountUsername, showToast;
-var defaultButton, currTab, userType, days = [], passwordChecker, nameChecker, accor_show, inputChecker, deleteSchedule;
+var defaultButton, currTab, userType, days = [], passwordChecker, nameChecker, accor_show, inputChecker, deleteSchedule, unavailableDates;
 var editSchedule, editBreaktime, editDay, normal, breaktime, modalReset;
 
 var invalidChar = [".","}","{","&","\"",":","]","[","?",";"];
@@ -13,6 +13,70 @@ $(document).ready(() => {
     $("input[type='text']").focusin(() => {
         inputChecker = false;
     })
+    
+    $(".add-schedule").focusin((event) => {
+        var minDate = new Date();
+        var maxDate = new Date();
+        minDate.setHours(8);
+        minDate.setMinutes(0);
+        maxDate.setHours(18);
+        maxDate.setMinutes(0);
+        $($(event.target)[0].parentElement.parentElement).calendar({
+            type: "time",
+            minTimeGap: 30,
+            ampm: false,
+            minDate,
+            maxDate,
+            onHide: () => {
+                return false;
+            }   
+        })
+    })
+    $(".add-schedule").focusout(() => {
+        $(".popup.calendar").removeClass("visible");
+        $(".popup.calendar").addClass("hidden");
+    })
+
+    $(".edit-schedule").focusin((event) => {
+        var minDate = new Date();
+        var maxDate = new Date();
+        minDate.setHours(8);
+        minDate.setMinutes(0);
+        maxDate.setHours(18);
+        maxDate.setMinutes(0);
+        $($(event.target)[0].parentElement.parentElement).calendar({
+            type: "time",
+            minTimeGap: 30,
+            ampm: false,
+            minDate,
+            maxDate,
+            onHide: () => {
+                return false;
+            }   
+        })
+    })
+    $(".edit-schedule").focusout(() => {
+        $(".popup.calendar").removeClass("visible");
+        $(".popup.calendar").addClass("hidden");
+    })
+
+    $(".add-unavailable").focusin((event) => {
+        var today = new Date();
+        $($(event.target)[0].parentElement.parentElement).calendar({
+            type: "date",
+            minDate: today,
+            today: true,
+            disabledDates: unavailableDates,
+            onHide: () => {
+                return false;
+            }
+        });
+    })
+    $(".add-unavailable").focusout(() => {
+        $(".popup.calendar").removeClass("visible");
+        $(".popup.calendar").addClass("hidden");
+    })
+    
 
     $("#add-username-dentist").focusout(() => {
         var check = /^[0-9a-zA-Z]+$/;
@@ -1564,15 +1628,17 @@ $("#add-schedule").click(() => {
             data: {
                 doctorID: $("#schedule-modal").data("id")
             }, success: (value) => {
-                var today = new Date();
                 $("#start-date").calendar('set date', moment().toDate(), true, false);
                 $("#end-date").calendar('set date', moment().toDate(), true, false);
+                /*
                 $(".add-unavailable").calendar({
                     type: "date",
                     minDate: today,
                     today: true,
                     disabledDates: value
                 });
+                */
+                unavailableDates = value;
                 $("#add-unavailable-modal").data("id", $("#schedule-modal").data("id"));
                 $("#add-unavailable-modal").data("firstname", $("#schedule-modal").data("firstname"));
                 $("#add-unavailable-modal").data("lastname", $("#schedule-modal").data("lastname"));
@@ -1636,6 +1702,7 @@ $("#adding-schedule-modal").modal({
     onShow: () => {
         accor_show = false;
         days = [];
+        /*
         var minDate = new Date();
         var maxDate = new Date();
         minDate.setHours(8);
@@ -1649,6 +1716,7 @@ $("#adding-schedule-modal").modal({
             minDate,
             maxDate    
         })
+        */
         if(modalReset) {
             $("input[type='text']").val("");
             $(".ui .checkbox").checkbox('uncheck');
@@ -1686,6 +1754,7 @@ $("#adding-schedule-modal").modal({
 $("#editing-schedule-modal").modal({
     onShow: () => {
         deleteSchedule = false;
+        /*
         var minDate = new Date();
         var maxDate = new Date();
         minDate.setHours(8);
@@ -1699,6 +1768,7 @@ $("#editing-schedule-modal").modal({
             minDate,
             maxDate
         })
+        */
     },
     onHidden: () => {
         $(".ui .checkbox").checkbox('uncheck');
