@@ -107,7 +107,6 @@ router.post("/week_all", urlencoder, async function (request, result) {
             weekAppointments.push(dayInWeek);
         }
 
-
         let data = {
             slot: timeSlot,
             max: maxInWeek,
@@ -120,6 +119,7 @@ router.post("/week_all", urlencoder, async function (request, result) {
     let final = {
         data: dataArray
     }
+   
 
 
     result.send({
