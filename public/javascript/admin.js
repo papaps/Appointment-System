@@ -13,6 +13,25 @@ $(document).ready(() => {
     $("input[type='text']").focusin(() => {
         inputChecker = false;
     })
+    
+    $(".add-schedule").focusin((event) => {
+        var minDate = new Date();
+        var maxDate = new Date();
+        minDate.setHours(8);
+        minDate.setMinutes(0);
+        maxDate.setHours(18);
+        maxDate.setMinutes(0);
+        $($(event.target)[0].parentElement.parentElement).calendar({
+            type: "time",
+            minTimeGap: 30,
+            ampm: false,
+            minDate,
+            maxDate    
+        })
+    })
+    $(".add-schedule").focusout(() => {
+        $(".popup.calendar").addClass("hidden");
+    })
 
     $("#add-username-dentist").focusout(() => {
         var check = /^[0-9a-zA-Z]+$/;
@@ -1636,6 +1655,7 @@ $("#adding-schedule-modal").modal({
     onShow: () => {
         accor_show = false;
         days = [];
+        /*
         var minDate = new Date();
         var maxDate = new Date();
         minDate.setHours(8);
@@ -1649,6 +1669,7 @@ $("#adding-schedule-modal").modal({
             minDate,
             maxDate    
         })
+        */
         if(modalReset) {
             $("input[type='text']").val("");
             $(".ui .checkbox").checkbox('uncheck');
