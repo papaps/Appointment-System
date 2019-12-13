@@ -348,7 +348,7 @@ router.post("/addSchedule", urlencoder, async (req, res) => {
 
         BreakTime.updateBreakTime(doctor.breakTime, breaktime);
 
-        Schedule.updateSchedule(doctor.schedule, schedule);
+        Schedule.updateSchedule(doctor.schedule, defaultSchedule);
 
     }
 
