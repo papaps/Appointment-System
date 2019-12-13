@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 router.post("/checkCurrentAdminPassword", async (req, res) => {
     let admin = await Account.getAccountByUsername("admin");
     var temp = await Account.authenticate(admin.username, req.body.newPassword, admin.salt);
-    if(temp != undefined) {
+    if(temp != null) {
         res.send(true);
     } else {
         res.send(false);
@@ -41,7 +41,7 @@ router.post("/checkCurrentAdminPassword", async (req, res) => {
 router.post("/checkCurrentSecretaryPassword", async (req, res) => {
     let user = await Account.getAccountByUsername("secretary");
     var temp = await Account.authenticate(user.username, req.body.newPassword, user.salt);
-    if(temp != undefined) {
+    if(temp != null) {
         res.send(true);
     } else {
         res.send(false);

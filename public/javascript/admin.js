@@ -313,7 +313,7 @@ $(document).ready(() => {
 })
 
 // RESETING ADMIN PASSWORD
-$("#save-password").click(() => {
+$("#save-password").click(async () => {
     var done = true;
 
     // ERROR CHECKING
@@ -332,13 +332,13 @@ $("#save-password").click(() => {
             done = false;
         }
     } else {
-        $.ajax({
+        await $.ajax({
             type: "post",
             url: "admin/checkCurrentAdminPassword",
             data: {
                 newPassword: $("#current-password").val().trim()
             },
-            success: (value) => {
+            success: (value) => {                
                 if(!value) {
                     $("#current-password-field").addClass("error");
                     $('body').toast({
@@ -427,7 +427,7 @@ $("#save-password").click(() => {
 })
 
 // RESETING SECRETARY PASSWORD
-$("#sec-save-password").click(() => {
+$("#sec-save-password").click(async () => {
     var done = true;
 
     // ERROR CHECKING
@@ -446,7 +446,7 @@ $("#sec-save-password").click(() => {
             done = false;
         }
     } else {
-        $.ajax({
+        await $.ajax({
             type: "post",
             url: "admin/checkCurrentSecretaryPassword",
             data: {
@@ -1814,6 +1814,18 @@ $("#remove-schedule-modal").modal({
 
 $("#delete-user-modal").modal({
     closable: false
+})
+
+$("#reset-password-modal").modal({
+    onHidden: () => {
+        $(".form").form("clear");
+    }
+})
+
+$("#reset-secretary-modal").modal({
+    onHidden: () => {
+        $(".form").form("clear");
+    }
 })
 
 $("#add-unavailable-modal").modal({
