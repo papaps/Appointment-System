@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Access Dental Clinic | Admin</title>
-    <link rel="stylesheet" type="text/css"
-      href="semantic/dist/semantic.min.css">
+    <link rel="stylesheet" href="semantic/dist/semantic.min.css">
     <style>
       .ui.modal > .header {
         background-color: #cc1445 !important;
@@ -117,7 +116,7 @@
         <div class="ui center aligned basic segment">
           <i class="big exclamation triangle icon"></i>
         </div>
-        <p style="text-align: center; font-weight: bold">This program was designed to handle 512MB to maintain the free service. We will warn every 5 years to delete 5 years worth of appointments. We strongly recommend to continue this action.</p>
+        <p style="text-align: center; font-weight: bold">This program was designed to handle 512MB to maintain the free service. We will warn every year to delete past appointments made 5 years ago and beyond. We strongly recommend to continue this action.</p>
       </div>
       <div class="actions">
         <div class="ui right floated labeled icon red button" id="delete-old" style="margin-bottom: 15px;">
@@ -363,14 +362,14 @@
           <h3>Working Hours</h3>
           <span style="font-weight: bold; color: white" id="first-schedule">First Session</span>
           <div class="ui two column center aligned grid" style="padding-top: 20px;">
-            <div class="ui calendar" id="start-field">
+            <div class="ui calendar add-schedule" id="start-field">
               <div class="ui input left icon">
                 <i class="time icon"></i>
                 <input type="text" placeholder="Start Time" id="start" autocomplete="false">
               </div>
             </div>
             <div class="ui center basic segment" style="margin-top: -4px; font-weight: bold">to</div>
-            <div class="ui calendar" id="end-field">
+            <div class="ui calendar add-schedule" id="end-field">
               <div class="ui input left icon">
                 <i class="time icon"></i>
                 <input type="text" placeholder="End Time" id="end" autocomplete="false">
@@ -382,14 +381,14 @@
             <div class="content" id="custom-schedule">
               <span style="font-weight: bold;" id="second-schedule">Second Session</span>
               <div class="ui two column center aligned grid" style="padding-top: 20px; padding-bottom: 10px">
-                <div class="ui calendar" id="start-add-field">
+                <div class="ui calendar add-schedule" id="start-add-field">
                   <div class="ui input left icon">
                     <i class="time icon"></i>
                     <input type="text" placeholder="Start Time" id="start-add" autocomplete="false">
                   </div>
                 </div>
                 <div class="ui center basic segment" style="margin-top: -4px; font-weight: bold">to</div>
-                <div class="ui calendar" id="end-add-field">
+                <div class="ui calendar add-schedule" id="end-add-field">
                   <div class="ui input left icon">
                     <i class="time icon"></i>
                     <input type="text" placeholder="End Time" id="end-add" autocomplete="false">
@@ -508,14 +507,14 @@
           </div><br>
           <span style="font-weight: bold; color: white" id="edit-first-schedule">First Session</span>
           <div class="ui two column center aligned grid" style="padding-top: 25px;">
-            <div class="ui calendar" id="edit-start-field" style="padding: 0px">
+            <div class="ui calendar edit-schedule" id="edit-start-field" style="padding: 0px">
               <div class="ui input left icon">
                 <i class="time icon"></i>
                 <input type="text" placeholder="Start Time" id="edit-start" autocomplete="false">
               </div>
             </div>
             <div class="ui center basic segment" style="margin-top: -4px; font-weight: bold">to</div>
-            <div class="ui calendar" id="edit-end-field" style="padding: 0px">
+            <div class="ui calendar edit-schedule" id="edit-end-field" style="padding: 0px">
               <div class="ui input left icon">
                 <i class="time icon"></i>
                 <input type="text" placeholder="End Time" id="edit-end" autocomplete="false">
@@ -527,14 +526,14 @@
             <div class="content" id="edit-custom-schedule">
               <span style="font-weight: bold;" id="edit-second-schedule">Second Session</span>
               <div class="ui two column center aligned grid" style="padding-top: 20px; padding-bottom: 10px">
-                <div class="ui calendar" id="edit-start-add-field" style="padding: 0px">
+                <div class="ui calendar edit-schedule" id="edit-start-add-field" style="padding: 0px">
                   <div class="ui input left icon">
                     <i class="time icon"></i>
                     <input type="text" placeholder="Start Time" id="edit-start-add" autocomplete="false">
                   </div>
                 </div>
                 <div class="ui center basic segment" style="margin-top: -4px; font-weight: bold">to</div>
-                <div class="ui calendar" id="edit-end-add-field" style="padding: 0px">
+                <div class="ui calendar edit-schedule" id="edit-end-add-field" style="padding: 0px">
                   <div class="ui input left icon">
                     <i class="time icon"></i>
                     <input type="text" placeholder="End Time" id="edit-end-add" autocomplete="false">
@@ -565,14 +564,14 @@
       <div class="content">
         <div class="ui center aligned basic segment">
           <div class="ui two column center aligned grid">
-            <div class="ui calendar" id="start-date" style="padding: 0px;">
+            <div class="ui calendar add-unavailable" id="start-date" style="padding: 0px;">
               <div class="ui input left icon">
                 <i class="calendar icon"></i>
                 <input type="text" placeholder="Start Date" id="start-date-input" autocomplete="false">
               </div>
             </div>
             <span style="font-weight: bold; margin-top: 10px;">to</span>
-            <div class="ui calendar" id="end-date" style="padding: 0px;">
+            <div class="ui calendar add-unavailable" id="end-date" style="padding: 0px;">
               <div class="ui input left icon">
                 <i class="calendar icon"></i>
                 <input type="text" placeholder="End Date" id="end-date-input" autocomplete="false">

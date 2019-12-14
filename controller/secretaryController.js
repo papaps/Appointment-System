@@ -19,6 +19,7 @@ const { Process } = require("../model/process");
 const { Schedule } = require("../model/schedule");
 const { BreakTime } = require("../model/breaktime");
 const { UnavailableDate } = require("../model/unavailableDate");
+const { CheckDate } = require("../model/checkdate");
 
 /* 
     Ty Added :)
@@ -106,7 +107,6 @@ router.post("/week_all", urlencoder, async function (request, result) {
             weekAppointments.push(dayInWeek);
         }
 
-
         let data = {
             slot: timeSlot,
             max: maxInWeek,
@@ -119,6 +119,7 @@ router.post("/week_all", urlencoder, async function (request, result) {
     let final = {
         data: dataArray
     }
+   
 
 
     result.send({
@@ -1207,14 +1208,14 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
             && !moment.utc(slots2Military[i], "HH:mm").isBetween(moment.utc(breakTime[dayOfWeek][0], "HH:mm"), moment.utc(breakTime[dayOfWeek][1], "HH:mm"), null, "[]"))) {
             availability2 = "unavailable"
         }
-
+        if(slots1[i] === undefined) availability1 = "undef"
+        if(slots2[i] === undefined) availability2 = "undef"
         row.push({
             timeSlot1: slots1[i],
             timeSlot2: slots2[i],
             available1: availability1,
             available2: availability2
         })
-
     }
 
     var displayDate = moment(date).format("MMMM DD YYYY")
@@ -1225,6 +1226,8 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
         displayDate: displayDate,
         date: date
     }
+
+    
 
     res.send({
         htmlData: availability_modalhbs,
@@ -1331,26 +1334,49 @@ router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
         if(year <= temp.year()){
             // console.log(apps[i]);
             await Appointment.delete(apps[i]._id);
+            break;
         }
+    }
+    // update the checkdate
+    var date = await CheckDate.findOne({type: "date"});
+    var today = moment().toDate();
+    if(moment(Date.parse(date.checkdate)).year() == moment(today).year()) {
+        await CheckDate.updateOne({
+            _id: date.id 
+        },{
+            checkdate: (moment(today).year() + 1) + "-12-01"
+        })
     }
     res.send(true);
 })
 
-router.get("/isXYearsApp", urlencoder, async (req, res) => {
-    let temp = moment().subtract(5,'years');
+router.post("/isXYearsApp", urlencoder, async (req, res) => {
+    // adjust date
+    var date = await CheckDate.findOne({type: "date"});
+    var today = Date.parse(req.body.monthToday);
+    var check = moment(date.checkdate, "YYYY-MM-DD");
+    // check if it is december
+    if(moment(today).isSame(moment("2019-12-31", "month"))) {
+        if(moment(today).year() == moment(check).year()) {
+            let temp = moment().subtract(5,'years');
     
-    let apps =  await Appointment.getAll();
+            let apps =  await Appointment.getAll();
 
-     for (var i = 0; i < apps.length; i++) {
-         let tempdate = new Date(apps[i].date);
-         let year = moment(tempdate).format("YYYY");
-        
-        if(year <= temp.year()){
-            res.send(true);
-            break;
+            for (var i = 0; i < apps.length; i++) {
+                let tempdate = new Date(apps[i].date);
+                let year = moment(tempdate).format("YYYY");
+                
+                if(year <= temp.year()){
+                    res.send(true);
+                    break;
+                }
+            }
+        } else {
+            res.send(false);
         }
+    } else {
+        res.send(false);
     }
-    
 })
 
 function isPast(date) {
