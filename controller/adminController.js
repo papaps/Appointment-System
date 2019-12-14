@@ -253,7 +253,7 @@ router.post("/deleteProcess", async (req, res) => {
                     date: apps[i].date,
                     doctor: apps[i].doctor
                 });
-                await Appointment.updateAppointment(appointments, temp);
+                await Appointment.updateAppointment(apps, temp);
             }
         }
     Process.delete(processID);
