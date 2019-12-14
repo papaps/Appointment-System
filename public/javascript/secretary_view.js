@@ -1082,7 +1082,7 @@ async function openDetailsModal(appointmentID) {
         $('#edit-save-button').unbind('click')
         $('#edit-save-button').on('click', function () {
             if (editAppointment(appointmentID, doctors)) {
-                initializeShortcutsMain()
+                // initializeShortcutsMain()
             }
         });
 
@@ -1422,6 +1422,7 @@ var unbindShorcuts = function () {
 }
 
 function initializeShortcutsMain() {
+    console.log("BIND INITIALIZE SHORCUTS MAIN")
     $(document).on('keydown', function (e) {
         var LEFT = 37,
             RIGHT = 39,
