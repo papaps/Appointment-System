@@ -234,7 +234,29 @@ router.post("/editProcess", async (req, res) => {
 })
 
 router.post("/deleteProcess", (req, res) => {
-    Process.delete(req.body.processID);
+    let processID = req.body.processID;
+    let appointments = await Appointment.getAll();
+        for (var i = 0; i < appointments.length; i++) {
+            let appID = appointments[i]._id;
+            var ary = appointments[i].process;
+            ary.pull(processID)
+            if(ary.length == 0){
+                await Appointment.delete(appID);
+            }else{
+                let temp = new Appointment({
+                    firstname: appointments[i].firstname,
+                    lastname: appointments[i].lastname,
+                    patientcontact: appointments[i].patientcontact,
+                    process: ary,
+                    notes: appointments[i].notes,
+                    time: appointments[i].time,
+                    date: appointments[i].date,
+                    doctor: appointments[i].doctor
+                });
+                await Appointment.updateAppointment(appointments, temp);
+            }
+        }
+    Process.delete(processID);
     res.send({ message: true });
 })
 
