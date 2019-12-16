@@ -750,9 +750,11 @@ router.get("/exportData", async (req, res) => {
         csv += row.notes + ",";
         csv += row.date + ",";
         csv += row.time + ",";
-        for(var j = 0; j < row.doctor.length; j++) {
-            var doc = await Doctor.findOne({_id: row.doctor[j]._id});
-            csv += doc.firstname + " " + doc.lastname + " - ";
+        if(row.doctor.length > 0) {
+            for(var k = 0; k < row.doctor.length; k++) {
+                var doc = await Doctor.findOne({_id: row.doctor[k]._id});
+                csv += doc.firstname + " " + doc.lastname + " - ";
+            }
         }
         csv = csv.substring(0, csv.length - 3);
         csv += ",";
