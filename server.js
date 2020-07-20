@@ -10,12 +10,10 @@ const path = require("path");
 var app = new express();
 
 mongoose.Promise = global.Promise
-const MONGOLAB_URI = process.env.MONGOLAB_URI || "mongodb://localhost:27017/appointmentsys"
-
-mongoose.connect(MONGOLAB_URI, {
+mongoose.connect("mongodb://localhost:27017/dental", {
     useNewUrlParser: true,
     useUnifiedTopology: true
-  }).catch(err => console.log(err))
+})
 
 app.use(urlencoder);
 app.use(session({
