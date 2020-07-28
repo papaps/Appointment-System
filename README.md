@@ -40,7 +40,7 @@ Step 1:
 Step 2:
 - 
 - Once the project is cloned, open the command prompt and change the directory to the project directory
-- Within the cmd type:
+- Within the command prompt, type
 ```bash
 npm install
 ```
@@ -64,3 +64,7 @@ Step 5:
 ```bash
 npm test
 ```
+
+
+
+Thank you for reading :)
