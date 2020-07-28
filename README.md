@@ -17,7 +17,7 @@ The specific objectives of the software are as follows:
 
 
 
-## Team Test Tech
+# Team Test Tech
 
 Jeff Capistrano
 
@@ -32,5 +32,35 @@ Jade Tan
 Martin Tierro
 
 
-## How to Run
+# How to Run
+Step 1:
+- 
+- Clone/Fork the repository into your desktop
 
+Step 2:
+- 
+- Once the project is cloned, open the command prompt and change the directory to the project directory
+- Within the cmd type:
+```bash
+npm install
+```
+- Wait until all node modules have been downloaded
+
+Step 3:
+- 
+- Install the primary database server [MongoDB](https://www.mongodb.com/try/download/compass)
+- Create a new connection. Make sure to connect using the "Fill in connection fields individually" field.
+
+Step 4:
+- 
+- Run the server in the command prompt
+```bash
+node server.js
+```
+
+Step 5:
+-
+- To run the unit test scripts enter this command in the command prompt
+```bash
+npm test
+```
