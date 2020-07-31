@@ -265,7 +265,9 @@ $(document).ready(() => {
                     $("#schedule-modal").data("lastname", $(temp).data("lastname"));
                     $("#doctor-name-schedule").text("Dr. " + $("#schedule-modal").data("firstname") + " " + $("#schedule-modal").data("lastname"));
                     setDataTable("weekly");
-                } else if($(temp).text() == "Active") {
+                } 
+                //Sets doctor as inactive
+                else if($(temp).text() == "Active") {
                     $(temp).removeClass("active");
                     $(temp).text("Inactive");
                     $.ajax({
@@ -276,7 +278,9 @@ $(document).ready(() => {
                             status: "Inactive"
                         }
                     })
-                } else if($(temp).text() == "Inactive") {
+                } 
+                //Sets doctor as active
+                else if($(temp).text() == "Inactive") {
                     $(temp).addClass("active");
                     $(temp).text("Active");
                     $.ajax({
@@ -287,13 +291,17 @@ $(document).ready(() => {
                             status: "Active"
                         }
                     })
-                } else if($(temp).data("name") == "delete") {
+                }
+                //delete doctor
+                else if($(temp).data("name") == "delete") {
                     $("#warning").css({'visibility':'visible'});
                     $("#delete-user-modal").modal("show");
                     $("#modal-text-delete-user").text($(temp).data("lastname") + ", " + $(temp).data("firstname"));
                     // setting temporary value
                     doctorID = $(temp).data("id");
-                } else if($(temp).data("name") == "edit") {
+                }
+                //edit doctor
+                else if($(temp).data("name") == "edit") {
                     // setting temporary value
                     doctorID = $(temp).data("id");
                     // getting the user object to be edited
@@ -383,26 +391,6 @@ $("#save-password").click(async () => {
         })
         done = false;
     }
-    //display error if new password has less than 10 characters
-    else if($("#new-password").val().length < 10) {
-        $("#new-password-field").addClass("error");
-        $("body").toast({
-            class: "error",
-            position: "top center",
-            message: "Password is too short"
-        })
-        done = false;
-    }
-    //display error if new password has more than 32 characters
-    else if($("#new-password").val().length > 32) {
-        $("#new-password-field").addClass("error");
-        $("body").toast({
-            class: "error",
-            position: "top center",
-            message: "Password is too long"
-        })
-        done = false;
-    }
     //display error if new password fields are empty
     else if($("#new-password").val() == "" || $("#confirm-new-password").val() == "") {
         if($("#new-password").val() == "") {
@@ -431,6 +419,27 @@ $("#save-password").click(async () => {
         });
         done = false;
     }
+    //display error if new password has less than 10 characters
+    else if($("#new-password").val().length < 10) {
+        $("#new-password-field").addClass("error");
+        $("body").toast({
+            class: "error",
+            position: "top center",
+            message: "Password is too short"
+        })
+        done = false;
+    }
+    //display error if new password has more than 32 characters
+    else if($("#new-password").val().length > 32) {
+        $("#new-password-field").addClass("error");
+        $("body").toast({
+            class: "error",
+            position: "top center",
+            message: "Password is too long"
+        })
+        done = false;
+    }
+    
     //update password if checks are passed
     if(done) {
         $.ajax({
@@ -458,6 +467,7 @@ $("#sec-save-password").click(async () => {
     var done = true;
 
     // ERROR CHECKING
+    // if current password is empty, display error message 
     if($("#sec-current-password").val() == "") {
         $("#sec-current-password-field").addClass("error");
         if(!showToast) {
@@ -473,6 +483,7 @@ $("#sec-save-password").click(async () => {
             done = false;
         }
     } else {
+        //display error if current password is incorrect
         await $.ajax({
             type: "post",
             url: "admin/checkCurrentSecretaryPassword",
@@ -492,6 +503,7 @@ $("#sec-save-password").click(async () => {
             }
         })
     }
+    //display error if new password has incorrect format
     if(!$("#sec-new-password").val().match(checkPassword) || !validateSpecialChar($("#sec-new-password").val().trim())) {
         $("#sec-new-password-field").addClass("error");
         $("body").toast({
@@ -501,25 +513,8 @@ $("#sec-save-password").click(async () => {
         })
         done = false;
     }
-    if($("#sec-new-password").val().length < 10) {
-        $("#sec-new-password-field").addClass("error");
-        $("body").toast({
-            class: "error",
-            position: "top center",
-            message: "Password is too short"
-        })
-        done = false;
-    }
-    if($("#sec-new-password").val().length > 32) {
-        $("#sec-new-password-field").addClass("error");
-        $("body").toast({
-            class: "error",
-            position: "top center",
-            message: "Password is too long"
-        })
-        done = false;
-    }
-    if($("#sec-new-password").val() == "" || $("#sec-confirm-new-password").val() == "") {
+    //display error message if current password is empty 
+    else if($("#sec-new-password").val() == "" || $("#sec-confirm-new-password").val() == "") {
         if($("#sec-new-password").val() == "") {
             $("#sec-new-password-field").addClass("error");
         }
@@ -532,20 +527,41 @@ $("#sec-save-password").click(async () => {
             message: "Please input your new password"
         });
         done = false;
-    } else {
-        if($("#sec-new-password").val() != $("#sec-confirm-new-password").val()) {
-            $("#sec-new-password-field").addClass("error");
-            $("#sec-confirm-new-password-field").addClass("error");
-            $("#sec-new-password").val("");
-            $("#sec-confirm-new-password").val("");
-            $('body').toast({
-                class: "error",
-                position: "top center",
-                message: "Password do not match"
-            });
-            done = false;
-        }
+    } 
+    //display error if new passwords do not match 
+    else if($("#sec-new-password").val() != $("#sec-confirm-new-password").val()) {
+        $("#sec-new-password-field").addClass("error");
+        $("#sec-confirm-new-password-field").addClass("error");
+        $("#sec-new-password").val("");
+        $("#sec-confirm-new-password").val("");
+        $('body').toast({
+            class: "error",
+            position: "top center",
+            message: "Password do not match"
+        });
+        done = false;
     }
+    //display error is password is less than 10 characters
+    else if($("#sec-new-password").val().length < 10) {
+        $("#sec-new-password-field").addClass("error");
+        $("body").toast({
+            class: "error",
+            position: "top center",
+            message: "Password is too short"
+        })
+        done = false;
+    }
+    //display error if password is greater than 32 characters
+    else if($("#sec-new-password").val().length > 32) {
+        $("#sec-new-password-field").addClass("error");
+        $("body").toast({
+            class: "error",
+            position: "top center",
+            message: "Password is too long"
+        })
+        done = false;
+    }
+    
     if(done) {
         $.ajax({
             type: "post",
