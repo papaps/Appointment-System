@@ -14,12 +14,13 @@ $(document).ready(() => {
         inputChecker = false;
     })    
     
-    //This code displays error messages when the user is inputting while adding a dentist
+    // This code displays error messages 
+    // while user is inputting to the create dentist form
     $("#add-username-dentist").focusout(() => {
-        var check = /^[0-9a-zA-Z]+$/;
-        //Check valid username
+        var check = /^[0-9a-zA-Z]+$/; //regex to to 
+        //Check valid username input
         if(inputChecker) {
-            //invalid characters in username
+            //Display error if username contains invalid characters
             if(!$("#add-username-dentist").val().match(check)) {
                 $("#username-field-dentist").addClass("error");
                 $("body").toast({
@@ -29,8 +30,8 @@ $(document).ready(() => {
                 })
                 inputChecker = false;
                 nameChecker = false;
-            //username is too short
-            } else if($("#add-username-dentist").val().length < 6) {
+            } //Display error if username is less than 6 characters
+            else if($("#add-username-dentist").val().length < 6) {
                 $("#username-field-dentist").addClass("error");
                 $("body").toast({
                     class: "error",
@@ -39,8 +40,8 @@ $(document).ready(() => {
                 })
                 inputChecker = false;
                 nameChecker = false;
-            //username is too long
-            } else if($("#add-username-dentist").val().length > 32) {
+            } //Display error if username is more than 32 characters
+             else if($("#add-username-dentist").val().length > 32) {
                 $("#username-field-dentist").addClass("error");
                 $("body").toast({
                     class: "error",
@@ -53,7 +54,8 @@ $(document).ready(() => {
                 nameChecker = true;
             }
         }
-        //username is already taken
+        
+        //username is already taken, show error
         if(nameChecker) {
             $.ajax({
                 type: "post",
@@ -76,12 +78,13 @@ $(document).ready(() => {
         }
     })
 
-    // Switch between weekly and unavailable
+    //Display weekly schedule for doctor
     $("#weekly").click(() => {
         $("#add-schedule").text("Reset");
         $("#weekly").addClass("green");
         $("#unavailable").removeClass("green");
         $('#table-dimmer').addClass("active");
+        //Grab schedule from server
         $.ajax({
             type: 'post',
             url: 'admin/getSchedule',
@@ -104,6 +107,8 @@ $(document).ready(() => {
             }
         })
     })
+
+    //Display unavailable slots for doctor
     $("#unavailable").click(() => {
         $("#add-schedule").text("Add");
         $("#weekly").removeClass("green");
@@ -132,7 +137,7 @@ $(document).ready(() => {
         })
     })
 
-    // EDITING DENTIST SCHEDULE
+    //Editing the doctor's schedules
     $("#table-schedule").on("click", (event) => {
         var temp = event.target;
         if(temp.id == "delete-unavailable-button") {
@@ -196,7 +201,9 @@ $(document).ready(() => {
     // slide down accordion in add schedule
     $(".ui .checkbox").on('change', (event) => {
         var id = $(event.target)[0].id;
+        //when daily schedule is selected
         if(id == "daily") {
+            //if repeat is checked
             if($(event.target)[0].checked && !$("#repeat")[0].checked) {
                 $("#repeat-field").addClass("disabled");
                 $("#repeat").attr("disabled", "disabled");
@@ -204,7 +211,10 @@ $(document).ready(() => {
                 $("#repeat-field").removeClass("disabled");
                 $("#repeat").removeAttr("disabled");
             }
-        } else {
+        } 
+        //when it is not a daily schedule
+        else {
+            //when a custom schedule is selected
             if(id == "custom") {
                 accor_show = !accor_show;
                 if(accor_show) {
@@ -215,7 +225,9 @@ $(document).ready(() => {
                         $("#first-schedule").css({'color': 'white'});
                     }
                 });
-            } else if(id == "repeat") {
+            } 
+            //when a repeating schedule is selected
+            else if(id == "repeat") {
                 $("body").find("#" + id + "-content").slideToggle(500);
                 if($(event.target)[0].checked && !$("#daily")[0].checked) {
                     $("#daily-field").addClass("disabled");
@@ -226,6 +238,7 @@ $(document).ready(() => {
                 }
             }
         }
+        //if the first editing schedule modal is active, it adds a new custom schedule underneath
         if($("#editing-schedule-modal")[0].className.includes("active")) {
             accor_show = !accor_show;
             if(accor_show) {
@@ -318,11 +331,12 @@ $(document).ready(() => {
     })
 })
 
-// RESETING ADMIN PASSWORD
+// Function to reset the admin password
 $("#save-password").click(async () => {
     var done = true;
 
     // ERROR CHECKING
+    // if current password is empty, display error message
     if($("#current-password").val() == "") {
         $("#current-password-field").addClass("error");
         if(!showToast) {
@@ -337,7 +351,9 @@ $("#save-password").click(async () => {
             });
             done = false;
         }
-    } else {
+    } 
+    //check if current password is valid
+    else {
         await $.ajax({
             type: "post",
             url: "admin/checkCurrentAdminPassword",
@@ -357,6 +373,7 @@ $("#save-password").click(async () => {
             }
         })
     }
+    //display error if new password has incorrect format
     if(!$("#new-password").val().match(checkPassword) || !validateSpecialChar($("#new-password").val().trim())) {
         $("#new-password-field").addClass("error");
         $("body").toast({
@@ -366,7 +383,8 @@ $("#save-password").click(async () => {
         })
         done = false;
     }
-    if($("#new-password").val().length < 10) {
+    //display error if new password has less than 10 characters
+    else if($("#new-password").val().length < 10) {
         $("#new-password-field").addClass("error");
         $("body").toast({
             class: "error",
@@ -375,7 +393,8 @@ $("#save-password").click(async () => {
         })
         done = false;
     }
-    if($("#new-password").val().length > 32) {
+    //display error if new password has more than 32 characters
+    else if($("#new-password").val().length > 32) {
         $("#new-password-field").addClass("error");
         $("body").toast({
             class: "error",
@@ -384,7 +403,8 @@ $("#save-password").click(async () => {
         })
         done = false;
     }
-    if($("#new-password").val() == "" || $("#confirm-new-password").val() == "") {
+    //display error if new password fields are empty
+    else if($("#new-password").val() == "" || $("#confirm-new-password").val() == "") {
         if($("#new-password").val() == "") {
             $("#new-password-field").addClass("error");
         }
@@ -397,20 +417,21 @@ $("#save-password").click(async () => {
             message: "Please input your new password"
         });
         done = false;
-    } else {
-        if($("#new-password").val() != $("#confirm-new-password").val()) {
-            $("#new-password-field").addClass("error");
-            $("#confirm-new-password-field").addClass("error");
-            $("#new-password").val("");
-            $("#confirm-new-password").val("");
-            $('body').toast({
-                class: "error",
-                position: "top center",
-                message: "Password do not match"
-            });
-            done = false;
-        }
+    } 
+    //display error if new passwords do not match
+    else if($("#new-password").val() != $("#confirm-new-password").val()) {
+        $("#new-password-field").addClass("error");
+        $("#confirm-new-password-field").addClass("error");
+        $("#new-password").val("");
+        $("#confirm-new-password").val("");
+        $('body').toast({
+            class: "error",
+            position: "top center",
+            message: "Password do not match"
+        });
+        done = false;
     }
+    //update password if checks are passed
     if(done) {
         $.ajax({
             type: "post",
