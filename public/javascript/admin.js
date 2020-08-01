@@ -18,20 +18,11 @@ Functionality includes:
 
 */
 
+  /* The code contains a lot of error checking for each of the forms
 
-
-$(document).ready(() => {
-    // switch page between users, dentist, and procedure
-    $(".ui .item").on("click", switchPage);
-    $("input[type='text']").focusin(() => {
-        inputChecker = false;
-    })    
-    
-    /* The code contains a lot of error checking for each of the forms
-
-    They usually have the format of:
-    Check if string has any invalid characters
+    They have the format of:
     Check if string is empty
+    Check if string has any invalid characters
     Check if string meets minimum characters
     Check if string does not exceed maximum characters
 
@@ -40,7 +31,15 @@ $(document).ready(() => {
     2 < Firstname 
     2 < Lastname
 
-    Password and confirm password fields are also checked if they matched each other*/
+    Password and confirm password fields are also checked if they match each other*/
+
+$(document).ready(() => {
+    // switch page between users, dentist, and procedure
+    $(".ui .item").on("click", switchPage);
+    $("input[type='text']").focusin(() => {
+        inputChecker = false;
+    })    
+    
     
     //while user is inputting to the create dentist form
     $("#add-username-dentist").focusout(() => {
