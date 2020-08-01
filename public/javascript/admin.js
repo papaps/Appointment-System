@@ -14,8 +14,20 @@ $(document).ready(() => {
         inputChecker = false;
     })    
     
-    // This code displays error messages 
-    // while user is inputting to the create dentist form
+    /* The code contains a lot of error checking for each of the forms
+
+    They usually have the format of:
+    Check if string has correct format
+    Check if username is empty
+    Check if string meets minimum characters
+    Check if string does not exceed maximum characters
+
+    6 < Username < 32 characters
+    10 < Password < 32 characters
+    2 < Firstname 
+    2 < Lastname
+    
+    while user is inputting to the create dentist form*/
     $("#add-username-dentist").focusout(() => {
         var check = /^[0-9a-zA-Z]+$/; //regex to to 
         //Check valid username input
