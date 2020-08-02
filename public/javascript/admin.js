@@ -1334,6 +1334,7 @@ $("#add-schedule-button").click(() => {
             }
         }
     }
+    //if start and end times are empty and custom is checked and the form is not invalid yet??
     if($("#custom")[0].checked && ($("#start-add").val() == "" || $("#end-add").val() == "") && done) {
         if($("#start-add").val() == "") {
             $("#start-add-field").addClass("error");
@@ -1348,6 +1349,7 @@ $("#add-schedule-button").click(() => {
         })
         done = false;
     }
+    //if repeating schedule is chosen and a recurring date is not chosen
     if($("#repeat")[0].checked && (days.length == 0 || days == [undefined] || days == "")) {
         $("body").toast({
             class: "error",
@@ -1356,7 +1358,7 @@ $("#add-schedule-button").click(() => {
         })
         done = false;
     }
-
+    //if date input is valid, update schedule
     if(done) {
         // checking if a doctor has a schedule or not
         $.ajax({
