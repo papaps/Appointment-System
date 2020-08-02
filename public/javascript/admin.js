@@ -14,7 +14,8 @@ Functionality includes:
     Creating. editing, and deleting procedures
     Updating the administrator's password
     Updating the secretary's password
-    Updating dentists' schedules
+    Creating, editing, and deleting dentists' schedules
+    Loading dentists onto table
 
 */
 
@@ -1049,6 +1050,8 @@ $("#edit-procedure-button").click(() => {
     var check = /^[a-z A-Z]+$/;
 
     // ERROR CHECKING
+
+    //check if procedure name is valid or empty
     if($("#edit-procedure-name").val().trim() == "" || $("#procedure-name").val().trim().match(check)) {
         $("#edit-procedure-field").addClass("error");
         $('body').toast({
@@ -1059,6 +1062,7 @@ $("#edit-procedure-button").click(() => {
         done = false;
     }
 
+    //update procedure if input is valid
     if(done) {
         $.ajax({
             type: "post",
@@ -1093,7 +1097,7 @@ $("#edit-procedure-button").click(() => {
     }
 })
 
-// DELETING USER
+// Deletes a user from the system
 $("#delete-user-button").click(() => {
     $.ajax({
         type: "post",
@@ -1116,7 +1120,7 @@ $("#delete-user-button").click(() => {
     })
 })
 
-// DELETING PROCEDURE
+// Deletes a prodcedure from the system
 $("#delete-procedure-button").click(() => {
     $.ajax({
         type: "post",
@@ -1139,13 +1143,15 @@ $("#delete-procedure-button").click(() => {
     })
 })
 
-// ADDING UNAVAILABLE DATE
+// Add dates where the dentist is unavailable
 $("#add-unavailable-button").click(() => {
     var start = $("#start-date-input").val();
     var end = $("#end-date-input").val();
     var done = true;
     
     // ERROR CHECKING
+
+    //if both start and end dates are empty
     if(start == "" || end == "")  {
         if(start == "") {
             $("#start-date").addClass("error");
@@ -1159,7 +1165,9 @@ $("#add-unavailable-button").click(() => {
             message: "Please input a valid date"
         })
         done = false;
-    } else {
+    } 
+    //check if dentist has appointments on days chosen
+    else {
         $.ajax({
             type: "post",
             url: "admin/doctorHasAppointment",
@@ -1183,6 +1191,7 @@ $("#add-unavailable-button").click(() => {
         })
     }
 
+    //update dentist's available days if valid
     if(done) {
         $.ajax({
             type: "post",
@@ -1204,7 +1213,7 @@ $("#add-unavailable-button").click(() => {
     }
 })
 
-// DELETING UNAVAILABLE DATES
+// Delete days where dentist is unavailable
 $("#remove-unavailable-button").click(() => {
     $.ajax({
         type: "post",
@@ -1225,11 +1234,12 @@ $("#remove-unavailable-button").click(() => {
     })
 })
 
-// ADDING DENTIST SCHEDULE
+// Adds a schedule for a dentist
 $("#add-schedule-button").click(() => {
     
     // ERROR CHECKING
     var done = true;
+    //show error if a type of schedule isn't chosen
     if(!$("#daily")[0].checked && !$("#repeat")[0].checked) {
         $("#daily-field").addClass("error");
         $("#report-field").addClass("error");
@@ -1240,6 +1250,7 @@ $("#add-schedule-button").click(() => {
         });
         done = false;
     } 
+    //check if start or end dates are empty
     if($("#start").val() == "" || $("#end").val() == "") {
         if($("#start").val() == "") {
             $("#start-field").addClass("error");
@@ -1259,12 +1270,16 @@ $("#add-schedule-button").click(() => {
         var sn_start = moment($("#start-add").val(), "HH:mm");
         var sn_end = moment($("#end-add").val(), "HH:mm");
 
+        //code for custom schedule
         if($("#custom")[0].checked) {
+            //displays error if start and end times are the same
             if($("#start").val() == $("#end").val() || $("#start-add").val() == $("#end-add").val()) {
+                //check for first time interval
                 if($("#start").val() == $("#end").val()) {
                     $("#start-field").addClass("error");
                     $("#end-field").addClass("error");
                 }
+                //check for second time interval
                 if($("#start-add").val() == $("#end-add").val()) {
                     $("#start-add-field").addClass("error");
                     $("#end-add-field").addClass("error");
@@ -1276,7 +1291,7 @@ $("#add-schedule-button").click(() => {
                 })
                 done = false;
             } else {
-                
+                //display error if end time is before start, or if time intervals overlap
                 if(!(start.isBefore(end) && sn_start.isBefore(sn_end) && end.isBefore(sn_start))) {
                     $("#start-field").addClass("error");
                     $("#end-field").addClass("error");
@@ -1291,6 +1306,7 @@ $("#add-schedule-button").click(() => {
                 }
             }
         } else {
+            //check if start and end time are the same again(?)
             if($("#start").val() == $("#end").val()) {
                 if($("#start").val() == $("#end").val()) {
                     $("#start-field").addClass("error");
@@ -1302,7 +1318,9 @@ $("#add-schedule-button").click(() => {
                     message: "Time interval is too short"
                 })
                 done = false;
-            } else {
+            } 
+            //check if end time is before start time 
+            else {
                 if(!(start.isBefore(end))) {
                     $("#start-field").addClass("error");
                     $("#end-field").addClass("error");
