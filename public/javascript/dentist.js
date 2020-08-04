@@ -2,6 +2,7 @@
 var current;
 
 // resize window
+// updates calendar view when the window is resized
 var oldWidth, newWidth;
 var startOfWeek, endOfWeek;
 window.onresize = () => {
