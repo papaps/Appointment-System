@@ -7,7 +7,7 @@ var checkPassword = /^[0-9a-zA-Z]+$/;
 
 window.onresize = resizePage;
 
-/* This file contains javascript functions for the administrator page
+/* This file contains all front-end functions for the administrator page
 
 Functionality includes:
     Creating, editing, and deleting dentists
