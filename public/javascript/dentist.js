@@ -1,6 +1,14 @@
 // current dentist
 var current;
 
+/*
+
+This file contains all front-end functions for the dentist's page
+
+It controls the calendar and switching between the daily and weekly view. 
+*/
+
+
 // resize window
 // updates calendar view when the window is resized
 var oldWidth, newWidth;
@@ -21,6 +29,7 @@ window.onload = async () => {
 }
 
 $(document).ready(() => {
+    
     $(window).scroll(function(){ 
         if ($(this).scrollTop() > 100) { 
             $('#up-button').fadeIn(); 
