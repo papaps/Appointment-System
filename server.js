@@ -33,9 +33,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(require("./controller"));
 
-// var server = app.listen(process.env.PORT || 3000, function(){
-//     console.log("Server is running at port 3000...");
-// })
+ var server = app.listen(process.env.PORT || 3000, function(){
+     console.log("Server is running at port 3000...");
+ })
 app.get('/test', async (req, res) => {
     res.json({message: 'pass!'})
 })
