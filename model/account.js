@@ -11,24 +11,24 @@ var accountSchema = new Schema({
     doctorID: String,
     salt: String
 })
-
+// allows to add an account into the database
 accountSchema.statics.addAccount = function(account, callback){
     var passwordData = saltHashPassword(account.password);
     account.password = passwordData.hashedPassword;
     account.salt = passwordData.salt;
     account.save().then(callback);
 };
-
+// allows to get all accounts
 accountSchema.statics.getAllAccounts = async function(){
     return await this.find();
 }
-
+// gets a single user
 accountSchema.statics.getAccountByUsername = async function(username){
     return await this.findOne({
         username: username
     });
 }
-
+// checks if correct info corresponds to the right person
 accountSchema.statics.authenticate = async function(username, password, salt){
     var hashed = sha512(password, salt).hashedPassword
     return await this.findOne({
@@ -36,19 +36,19 @@ accountSchema.statics.authenticate = async function(username, password, salt){
         password: hashed
     });
 }
-
+// excludes admin from the search
 accountSchema.statics.getAccountWithoutAdmin = async function(){
     return await this.find({
         username: {$ne: "admin"}
     });
 }
-
+// deletes a user
 accountSchema.statics.delete = async function(accountID){
     return await this.deleteOne({
         _id : accountID
     });
 }
-
+//updates information of a user
 accountSchema.statics.updateAccount = async function(accountID, password){
     var hashed = saltHashPassword(password)
     return await this.updateOne({
@@ -60,7 +60,7 @@ accountSchema.statics.updateAccount = async function(accountID, password){
         new: true
     }); 
 };
-
+//updates the password of a user
 accountSchema.statics.updatePassword = async function(accountID, password) {
     var hashed = saltHashPassword(password)
     return await this.updateOne({

@@ -24,7 +24,7 @@ const { CheckDate } = require("../model/checkdate");
 /* 
     Ty Added :)
 */
-
+//if there is a session currently active, goes immediately that session's page, if not go to login
 router.get("/", async function (req, res) {
     if (req.session.username != null) {
         let doctor = await Doctor.getAllDoctors();
@@ -127,7 +127,7 @@ router.post("/week_all", urlencoder, async function (request, result) {
         data: final
     });
 });
-
+//returns a table/view of one week including the current date
 router.post("/week_one", urlencoder, async function (request, result) {
     let weekData = request.body["dates[]"];
     let doctorID = request.body.doctor;
@@ -217,7 +217,7 @@ router.post("/week_one", urlencoder, async function (request, result) {
 });
 
 
-
+//returns all unvailable timeslots+doctors of a week
 router.post("/week_unavailable", async function (request, result) {
     let weekData = request.body["dates[]"];
 
@@ -305,7 +305,7 @@ router.post("/week_unavailable", async function (request, result) {
         data: final
     });
 });
-
+// shows all available doctors/timeslots of a week
 router.post("/week_available", async function (request, result) {
 
     let weekData = request.body["dates[]"];
@@ -398,11 +398,13 @@ router.post("/week_available", async function (request, result) {
 
 });
 
+
 router.get("/table_header", function (request, result) {
     let table_header = fs.readFileSync('./views/module_templates/secretary_weekdates.hbs', 'utf-8');
     result.send(table_header);
 });
 
+//checks every appointment within a day
 router.post("/day_all", urlencoder, async function (request, result) {
 
     // Get the date from sent data
@@ -454,7 +456,7 @@ router.post("/day_all", urlencoder, async function (request, result) {
         data: final
     });
 });
-
+// *** to be checked ***
 router.post("/day_one", urlencoder, async function (request, result) {
     // Get the date from sent data
     let date = request.body.date;
@@ -508,7 +510,7 @@ router.post("/day_one", urlencoder, async function (request, result) {
         data: final
     });
 });
-
+// Checks if the appointment still exists
 router.post("/check_valid_appointment", urlencoder, async function (request, result) {
     // Get the date from sent data
     let date = request.body.date;
@@ -523,7 +525,7 @@ router.post("/check_valid_appointment", urlencoder, async function (request, res
 /*
     End of Templates
 */
-
+//gets an existing appointment
 router.post("/getAppointment", urlencoder, async (req, res) => {
     let appID = req.body.appointmentID;
 
@@ -562,7 +564,7 @@ router.get("/addproc", (req, res) => {
 /*
     End of Temp
 */
-
+// ***to be checked***
 router.get("/appointmentlist", (req, res) => {
     Appointment.find({}, (err, docs) => {
         if (err) {
@@ -618,7 +620,7 @@ router.post("/create", urlencoder, (req, res) => {
         res.send(error);
     })
 })
-
+//Allows editing of appointment
 router.post("/edit", urlencoder, async (req, res) => {
     let appointmentID = req.body.appointmentID;
     let firstname = req.body.firstName;
@@ -653,7 +655,7 @@ router.post("/edit", urlencoder, async (req, res) => {
     res.send("Success");
 })
 
-
+//Checker if the appointment exists in the database
 router.post("/check_app_exists", urlencoder, async (req, res) => {
     let time = req.body.timeInput;
     let date = req.body.dateInput;
@@ -872,7 +874,7 @@ router.get("/getUnavailable", async (req, res) => {
     });
     var breakstart = "19:00:00";
     var breakend = "19:00:00";
-
+    //REFACTOR THIS. IT KEEPS REPEATING
     // gets the 'breaktime' of the doctor
     if (moment(formattedDate).isoWeekday() == 1 && breaktime.monday != "") {
         var breakstart = breaktime.monday[0];
@@ -1128,7 +1130,7 @@ router.post("/info4", urlencoder, async function (request, result) {
         htmlData: info4
     })
 })
-
+//checks all available time
 router.post("/availabilityTime", urlencoder, async (req, res) => {
     let date = req.body.date
     let doctorID = req.body.doctorID
@@ -1238,7 +1240,7 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
 })
 
 
-
+//checks all availability time per doctor
 router.post("/availabilityAll", urlencoder, async (req, res) => {
     let weekData = req.body["dates[]"];
 
@@ -1319,7 +1321,7 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
 })
 
 
-
+// empties everything 5 years ago
 router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
     let temp = moment().subtract(5,'years');
     // console.log(temp.year());
@@ -1350,6 +1352,7 @@ router.post("/deleteXYearsApp", urlencoder, async (req, res) => {
     res.send(true);
 })
 
+//checks if how many years the app has been active
 router.post("/isXYearsApp", urlencoder, async (req, res) => {
     // adjust date
     var date = await CheckDate.findOne({type: "date"});

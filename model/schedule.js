@@ -11,24 +11,24 @@ var scheduleSchema = new Schema({
     friday: Array,
     saturday: Array
 })
-
+// gets a singular schedule
 scheduleSchema.statics.getScheduleByID = async function(scheduleID){
     return await this.findOne({
         _id: scheduleID
     }); 
 };
-
+// adds a schedule to the db
 scheduleSchema.statics.addschedule = function(schedule, callback){
     schedule.save().then(callback);
 };
 
-
+// deletes a currently existing schedule
 scheduleSchema.statics.delete = async function(scheduleID){
     return await this.deleteOne({
         _id : scheduleID
     });
 }
-
+// updates a schedule
 scheduleSchema.statics.updateSchedule = async function(scheduleID, schedule){
     return await this.updateOne({
         _id: scheduleID
