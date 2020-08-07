@@ -12,24 +12,24 @@ var breakTimeSchema = new Schema({
     saturday: Array
 })
 
-
+// gets existing breaktimes
 breakTimeSchema.statics.getBreakTimeByID = async function(breakTimeID){
     return await this.findOne({
         _id: breakTimeID
     }); 
 };
-
+// adds rbreaktime
 breakTimeSchema.statics.addBreakTime = function(breakTime, callback){
     breakTime.save().then(callback);
 };
 
-
+// detes an existing breaktime
 breakTimeSchema.statics.delete = async function(breakTimeID){
     return await this.deleteOne({
         _id : breakTimeID
     });
 }
-
+// changes/updates an existing breaktime
 breakTimeSchema.statics.updateBreakTime = async function(breakTimeID, breakTime){
     return await this.updateOne({
         _id: breakTimeID

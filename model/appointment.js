@@ -19,28 +19,28 @@ var appointmentSchema = new Schema({
         ref: "Doctor"
     }]
 })
-
+// adds appointment to appointment table
 appointmentSchema.statics.addAppointment = function(appointment, callback){
     appointment.save().then(callback);
 };
-
+//gets all existing appointments
 appointmentSchema.statics.getAll = async function(){
     return await this.find();
 }
-
+//gets appointment from by ID
 appointmentSchema.statics.getAppointmentsByID = async function(appointmentID){
     return await this.findOne({
         _id: appointmentID
     });
 };
-
+// gets appointment using date and time as parameters
 appointmentSchema.statics.getAppointmentsByDateandTime = async function(date, time){
     return await this.find({
         time, time,
         date: date,
     });
 };
-
+// gets appointment by doctor/date/time
 appointmentSchema.statics.getAppByDoctorandDateandTime = async function(doctorID, date, time){
     return await this.find({
         time, time,
@@ -50,7 +50,7 @@ appointmentSchema.statics.getAppByDoctorandDateandTime = async function(doctorID
         }
     });
 };
-
+// gets all appointments by doctor and date
 appointmentSchema.statics.getAppByDoctorandDate = async function(doctorID, date){
     return await this.find({
         date: date,
@@ -59,7 +59,7 @@ appointmentSchema.statics.getAppByDoctorandDate = async function(doctorID, date)
         }
     });
 };
-
+// gets a single appointment by doctor/date/time
 appointmentSchema.statics.getOneAppByDoctorandDateandTime = async function(doctorID, date, time){
     return await this.findOne({
         time, time,
@@ -69,7 +69,7 @@ appointmentSchema.statics.getOneAppByDoctorandDateandTime = async function(docto
         }
     });
 };
-
+// gets all appointments of a doctor
 appointmentSchema.statics.getDoctorAppointment = async function(doctorID){
     return await this.find({
         doctor:{
@@ -77,13 +77,13 @@ appointmentSchema.statics.getDoctorAppointment = async function(doctorID){
         }        
     });
 };
-
+// deletes an appointmnet
 appointmentSchema.statics.delete = async function(appointmentID){
     return await this.deleteOne({
         _id : appointmentID
     });
 }
-
+// updates an appointmnet
 appointmentSchema.statics.updateAppointment = async function(appointmentID, updated){
     return await this.updateOne({
         _id: appointmentID
@@ -100,7 +100,7 @@ appointmentSchema.statics.updateAppointment = async function(appointmentID, upda
         new: true
     }); 
 };
-
+// populates the data
 appointmentSchema.methods.populateDoctorAndProcess = async function(){
     return await Appointment.findOne({
         _id: this._id

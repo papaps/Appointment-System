@@ -11,9 +11,12 @@ router.use("/secretary", require("./secretaryController"));
 router.use("/admin", require("./adminController"));
 router.use("/dentist", require("./dentistController"));
 
+//gets the first page (Basically for initial setup)
 router.get("/", async (req, res) => {
     //username is subject to change
+
     let account = await Account.getAccountByUsername("admin");
+    //if accounts are empty, meaning database is empty, automatically generate admin and secretary account
     if (account == undefined) {
         Account.addAccount(new Account({
             username: "admin",
@@ -35,9 +38,11 @@ router.get("/", async (req, res) => {
             res.send(err);
         })
     } else {
+        //if the database is not empty and there is no existing session; redirect to the login page
         if (req.session.username == null) {
             res.redirect("/login");
         } else {
+            //redirects to different pages if there is a session(There are currently only 3 types of users: Doctors, sect, admin)
             let account = await Account.getAccountByUsername(req.session.username);
             if (account.accountType == "secretary") {
                 res.redirect("/secretary");
@@ -50,7 +55,9 @@ router.get("/", async (req, res) => {
     }
 })
 
+//calls for the login page
 router.get("/login", async (req, res) => {
+    //Reminds the user to remove data although it's not really written here.
     var date = await CheckDate.findOne({ type: "date"});
     if(date == null) {
         var today = moment().toDate();
@@ -67,7 +74,7 @@ router.get("/login", async (req, res) => {
             checkdate: "" + year + "-12-01"
         })
     }
-
+    //if a session exists, login immediately
     if (req.session.username != null) {
         if (req.session.username == "secretary") {
             res.redirect("/secretary");
@@ -76,6 +83,7 @@ router.get("/login", async (req, res) => {
         } else if (req.session.username == "admin") {
             res.redirect("/admin");
         }
+    //if a session does not exist, go to login page
     } else {
         let acc = await Account.getAllAccounts();
         res.render("page_templates/login_view.hbs", {
@@ -84,6 +92,7 @@ router.get("/login", async (req, res) => {
     }
 })
 
+//Checks if the login is valid; If there exists such an account;
 router.post("/validateLogin", async (req, res) => {
     var account = await Account.getAccountByUsername(req.body.username);
     if (account != undefined) {
@@ -102,7 +111,7 @@ router.post("/validateLogin", async (req, res) => {
         res.send({ message: 0 });
     }
 })
-
+//simple logout
 router.get("/logout", (req, res) => {
     req.session.username = null;
     req.session.doctorUsername = null;
