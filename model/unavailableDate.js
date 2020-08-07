@@ -11,23 +11,23 @@ var unavailableDateSchema = new Schema({
         ref: "Doctor"
     }
 });
-
+// gets a singular unavailable date
 unavailableDateSchema.statics.getUnavailableDateByID = async function(unavailableDateID){
     return await this.findOne({
         _id: unavailableDateID
     }); 
 };
-
+// adds an unvailable date
 unavailableDateSchema.statics.addUnavailableDate = function(unavailableDate, callback){
     unavailableDate.save().then(callback);
 };
-
+// deletes an unavailable date
 unavailableDateSchema.statics.delete = async function(unavailableDateID){
     return await this.deleteOne({
         _id : unavailableDateID
     });
 }
-
+// updates an unavailable date
 unavailableDateSchema.statics.updateUnavailableDate = async function(unavailableDateID, updated){
     return await this.updateOne({
         _id: unavailableDateID
@@ -40,7 +40,7 @@ unavailableDateSchema.statics.updateUnavailableDate = async function(unavailable
         new: true
     }); 
 };
-
+// gets all unavailable dates of a doctor
 unavailableDateSchema.statics.getDoctorUnavailableDates = async function(doctorID){
     return await this.find({
         doctor:{
@@ -48,7 +48,7 @@ unavailableDateSchema.statics.getDoctorUnavailableDates = async function(doctorI
         }        
     }).sort({'stringDate1': 1});
 };
-
+//populates a table with all the doctors unavailable in a singular date
 unavailableDateSchema.methods.populateDoctor = async function(){
     return await Appointment.findOne({
         _id: this._id

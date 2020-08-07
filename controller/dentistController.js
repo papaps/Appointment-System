@@ -23,16 +23,20 @@ router.get("/", async function (req, res) {
     }
 })
 
+// Gets all the appointments of the current user/doctor
 router.post("/getAppointment", async function (req, res) {
     let appointment = await Appointment.getAppointmentsByID(req.body.appID);
     res.send(await appointment.populateDoctorAndProcess());
 })
 
+//calls the hbs dable header
 router.get("/table_header", function (request, result) {
     let table_header = fs.readFileSync('./views/module_templates/dentist-table-header.hbs', 'utf-8');
     result.send(table_header);
 });
 
+
+//shows a weekly view of the appointments (also empty dates)
 router.post("/weekly_view", urlencoder, async function (request, result) {
     let dentist = await Account.getAccountByUsername(request.session.doctorUsername);
 
@@ -93,6 +97,7 @@ router.post("/weekly_view", urlencoder, async function (request, result) {
 
 });
 
+//simply gets the current account of the dentist (*** to be checked ***)
 router.get("/getCurrentDentist", async (req, res) => {
     var account = await Account.findOne({username: req.session.doctorUsername});
     var doctor = await Doctor.findOne({_id: account.doctorID});
