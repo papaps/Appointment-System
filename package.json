@@ -16,6 +16,12 @@
   "bugs": {
     "url": "https://github.com/stanls/Appointment-System/issues"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
   "homepage": "https://github.com/stanls/Appointment-System#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -29,6 +35,7 @@
     "moment-business-time": "^0.7.1",
     "mongoose": "^5.7.11",
     "nodemon": "^1.19.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "supertest": "^4.0.2"
   }
 }

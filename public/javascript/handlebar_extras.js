@@ -1,5 +1,7 @@
 /*
     Handlebars Hellpers
+
+    Contains extra functions for the handlebars
 */
 
 Handlebars.registerHelper('colorcells', function(index) {

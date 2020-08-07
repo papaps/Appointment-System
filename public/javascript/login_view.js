@@ -3,7 +3,7 @@ var invalidChar = [".","}","{","&","\"",":","]","[","?",";"];
 var checkPassword = /^[0-9a-zA-Z]+$/;
 
 $(document).ready(() => {
-    // validate username
+    // Checks database to be able to reset a username, displays error if username doesn't exist
     $("#reset-username").focusout(() => {
         if(inputChecker) {
             $.ajax({
@@ -30,6 +30,7 @@ $(document).ready(() => {
         inputChecker = false;
     })
 
+    //Submits form and redirects page when the user logs in, displays error if username is invalid or if password is invalid
     $("#submit").click(() => { 
         $.ajax({
             type: "post",
@@ -77,13 +78,15 @@ $(document).ready(() => {
     })
 })
 
+//Remove error on box when user attempts to input again
 $(document).on("keydown", () => {
     $("#username-input").removeClass("error");
     $("#password-input").removeClass("error");
 })
 
+//submit proper form when enter key is pressed
 $(document).on("keypress", (event) => {
-    if(event.keyCode == 13) {
+    if(event.keyCode == 13) { //ENTER key is pressed
         if($("#forgot-modal")[0].className.includes("active")) {
             $("#reset-button").click();
         } else if($("#confirm-admin-modal")[0].className.includes("active")) {
@@ -102,10 +105,12 @@ $(document).on("keyup", () => {
     inputChecker = true;
 })
 
+//display forgot password form 
 $("#forgot").click(() => {
     $("#forgot-modal").modal("show");
 })
 
+//initialize forgot password form 
 $("#forgot-modal").modal({
     onShow: function() {
         $('#forgot-modal').form("clear");
@@ -113,6 +118,7 @@ $("#forgot-modal").modal({
     }
 })
 
+//Error checking and submit when resetting the username and password
 $("#reset-button").click(() => {
     var done = true;
     if($("#reset-username").val().trim() == "" || $("#reset-username").val().trim() == "admin") {
@@ -198,6 +204,7 @@ $("#reset-button").click(() => {
     } 
 })
 
+//error checking and submit for resetting admin 
 $("#reset-button-admin").click(() => {
     var done = true;
     if($("#admin-input").val() == "") {
@@ -246,6 +253,7 @@ $("#reset-button-admin").click(() => {
     }
 })
 
+//function to reset Password for an account 
 function resetPassword() {
     $.ajax({
         type: "post",
@@ -277,6 +285,7 @@ function resetPassword() {
     })
 }
 
+//initialize form 
 function setup() {
     $("#form").form("clear");
     showToast = false;
