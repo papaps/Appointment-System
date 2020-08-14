@@ -37,63 +37,62 @@ router.get("/", async (req, res) => {
 //     }
 // };
 
-// Check if admin password is correct
+//VALIDATION
 router.post("/checkCurrentAdminPassword", async (req, res) => {
     let admin = await Account.getAccountByUsername("admin");
-    res.send(check_password(admin.username, req.body.newPassword, admin.salt));
-});
-
-// Check if secretary password is correct
-router.post("/checkCurrentSecretaryPassword", async (req, res) => {
-    let user = await Account.getAccountByUsername("secretary");
-    res.send(check_password(user.username, req.body.newPassword, user.salt));
-});
+    var temp = await Account.authenticate(admin.username, req.body.newPassword, admin.salt);
+    if(temp != null) {
+        res.send(true);
+    } else {
+        res.send(false);
+    }
+})
 
 // CHECKS IF THE CURRENT PASSWORD IS CORRECT
-var check_password = function (username, password, salt) {
-    var temp = Account.authenticate(username, password, salt);
-    if (temp != null) {
-        return true;
+// TAKEN FROM THE MODEL ACCOUNT
+router.post("/checkCurrentSecretaryPassword", async (req, res) => {
+    let user = await Account.getAccountByUsername("secretary");
+    var temp = await Account.authenticate(user.username, req.body.newPassword, user.salt);
+    if(temp != null) {
+        res.send(true);
     } else {
-        return false;
+        res.send(false);
     }
-};
+})
 
 // CHECKS IF THE USERNAME INPUT IS IN THE DATABASE
 router.post("/validateUsername", async (req, res) => {
-    let account = await Account.getAccountByUsername(req.body.username);
-    if (account == undefined) {
-        res.send({ message: false });
-    } else {
-        res.send({ message: true });
-    }
+    res.send({message: check_username(req.body.username)})
 });
+
+var check_username = async function (username) {
+    let account = await Account.getAccountByUsername(username);
+    if (account == undefined) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 // ALL ACCOUNT SETTING
 
 // ALLOWS CHANGING OF THE CURRENTLY LOGGED USER'S PASSWORD
 router.post("/updateAccountPassword", async (req, res) => {
-    let account = await Account.getAccountByUsername(req.body.username);
     res.send({
         message: update_password(
             req.body.username,
-            account,
             req.body.newPassword
         ),
     });
 });
 
-var update_password = function (username, account, newPassword) {
-    if (username == "admin" || username == "secretary") {
+var update_password = async function (username, newPassword) {
+    let account = await Account.getAccountByUsername(username);
+    if(account==undefined){
+        return false;
+    } else{
         Account.updateAccount(account.id, newPassword);
         return true;
-    } else {
-        if (account == undefined) {
-            return false;
-        } else {
-            Account.updateAccount(account.id, req.body.newPassword);
-            return true;
-        }
     }
 };
 
