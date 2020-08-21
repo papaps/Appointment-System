@@ -27,7 +27,7 @@
     "reporters": [
       "default",
       "jest-junit"
-    ],
+    ]
   },
   "jest-junit": {
     "output": "output/coverage/junit/junit.xml",
