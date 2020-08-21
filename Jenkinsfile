@@ -8,6 +8,7 @@ pipeline {
     environment {
         CI = 'true' 
     }
+    tools {nodejs "npm"}
     stages {
         stage('Build') {
             steps {
