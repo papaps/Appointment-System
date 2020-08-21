@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                nodejs(npm){
+                nodejs('npm'){
                     sh 'npm install'
                 }
             }
         }
         stage('Test') { 
             steps {
-                nodejs(npm){
+                nodejs('npm'){
                     sh 'npm test'
                 } 
             }
