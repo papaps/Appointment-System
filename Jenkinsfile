@@ -1,26 +1,23 @@
 pipeline {
-  agent {
+    agent {
         docker {
-            image 'node'
-            args '-u root'
+            image 'node:12-alpine'
+            args '-p 3000:3000'
         }
+    }
+    environment {
+        CI = 'true' 
+    }
+    tools {nodejs "npm"}
 
     stages {
         stage('Build') {
             steps {
-                echo 'Installing Dependencies...'
                 sh 'npm install'
             }
         }
-        stage('Run') {
+        stage('Test') { 
             steps {
-                echo 'Starting application...'
-                sh 'npm start'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
                 sh 'npm test'
             }
         }
