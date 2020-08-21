@@ -10,11 +10,7 @@ pipeline {
 
     stage('Test') {
       steps{
-        try {
-            sh "npm test"
-        } catch (err) {
-
-        }
+         sh "npm test"
       }
     }
 
