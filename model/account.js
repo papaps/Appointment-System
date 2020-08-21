@@ -98,6 +98,10 @@ function saltHashPassword(userpassword) {
     }
 }
 
+function sum(a, b) {
+    return a + b;
+  }
+
 module.exports = {
     Account
 }

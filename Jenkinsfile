@@ -9,9 +9,11 @@ pipeline {
     }
 
     stage('Test') {
-      steps {
-        echo 'Testing'
-      }
+      try {
+            sh "npm test"
+        } catch (err) {
+
+        }
     }
 
     stage('Deploy') {

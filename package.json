@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest --color",
+    "test": "jest --coverage --coverageDirectory=output/coverage/jest",
     "start": "node server.js"
   },
   "repository": {
@@ -20,7 +20,18 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+	"coverageReporters": [
+      "text"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+  },
+  "jest-junit": {
+    "output": "output/coverage/junit/junit.xml",
+    "usePathForSuiteName": "true"
   },
   "homepage": "https://github.com/stanls/Appointment-System#readme",
   "dependencies": {
@@ -30,6 +41,7 @@
     "express-session": "^1.17.0",
     "hbs": "^4.0.6",
     "jest": "^26.1.0",
+    "jest-junit": "^11.1.0",
     "jquery-address": "^1.6.0",
     "moment": "^2.24.0",
     "moment-business-time": "^0.7.1",
