@@ -4,7 +4,6 @@ pipeline {
             image 'node'
             args '-u root'
         }
-    }
 
     stages {
         stage('Build') {
