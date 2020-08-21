@@ -8,20 +8,17 @@ pipeline {
     environment {
         CI = 'true' 
     }
+    tools {nodejs "nodejs"}
 
     stages {
         stage('Build') {
             steps {
-                nodejs('npm'){
-                    sh 'npm install'
-                }
+                sh 'npm install'
             }
         }
         stage('Test') { 
             steps {
-                nodejs('npm'){
-                    sh 'npm test'
-                } 
+                sh 'npm test'
             }
         }
     }
