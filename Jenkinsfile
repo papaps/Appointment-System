@@ -22,4 +22,11 @@ pipeline {
             }
         }
     }
+    post{
+    failure{
+       mail to: 'earl_capistrano@dlsu.edu.ph',
+             subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+             body: "Something is wrong with ${env.BUILD_URL}"
+    }
+  }
 }
