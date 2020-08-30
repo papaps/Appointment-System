@@ -21,7 +21,7 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-	"coverageReporters": [
+    "coverageReporters": [
       "text"
     ],
     "reporters": [
