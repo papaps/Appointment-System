@@ -62,7 +62,12 @@ router.post("/checkCurrentSecretaryPassword", async (req, res) => {
 
 // CHECKS IF THE USERNAME INPUT IS IN THE DATABASE
 router.post("/validateUsername", async (req, res) => {
-    res.send({message: check_username(req.body.username)})
+    let account = await Account.getAccountByUsername(req.body.username);
+    if (account == undefined) {
+        res.send({message: false})
+    } else {
+        res.send({message: true})
+    }
 });
 
 var check_username = async function (username) {
