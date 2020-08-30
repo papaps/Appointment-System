@@ -301,7 +301,7 @@ $(document).ready(() => {
                         type: "post",
                         url: "admin/updateDentistStatus",
                         data: {
-                            doctorID: $(temp)[0].id,
+                            doctorID: $(temp).data("id"),
                             status: "Inactive"
                         }
                     })
@@ -314,7 +314,7 @@ $(document).ready(() => {
                         type: "post",
                         url: "admin/updateDentistStatus",
                         data: {
-                            doctorID: $(temp)[0].id,
+                            doctorID: $(temp).data("id"),
                             status: "Active"
                         }
                     })
