@@ -34,39 +34,39 @@ Invalid Current Password Empty
     Input Text    new-password            ${NEW_PASS}
     Input Text    confirm-new-password    ${NEW_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Please input your current password
+    Page Should Contain     Please input your current password
 
 Invalid Current Password
     Input Text    current-password        ${NEW_PASS}
     Input Text    new-password            ${NEW_PASS}
     Input Text    confirm-new-password    ${NEW_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Incorrect current password
+    Page Should Contain     Incorrect current password
 
 Invalid Matching Passwords
     Input Text    current-password        ${CUR_PASS}
     Input Text    new-password            ${NEW_PASS}
     Input Text    confirm-new-password    ${CUR_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Passwords do not match
+    Page Should Contain     Passwords do not match
 
 Invalid New Password Format
     Input Text    current-password        ${CUR_PASS}
     Input Text    new-password            ${INVALID_PASS}
     Input Text    confirm-new-password    ${INVALID_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Incorrect password format
+    Page Should Contain     Incorrect password format
 
 Invalid New Password Too Short
     Input Text    current-password        ${CUR_PASS}
     Input Text    new-password            ${SHORT_PASS}
     Input Text    confirm-new-password    ${SHORT_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Password is too short
+    Page Should Contain     Password is too short
 
 Invalid New Password Too Long
     Input Text    current-password        ${CUR_PASS}
     Input Text    new-password            ${LONG_PASS}
     Input Text    confirm-new-password    ${LONG_PASS}
     Click Element   save-password
-    Element Should Be Visible   class=error     message=Password is too long
+    Page Should Contain     Password is too long

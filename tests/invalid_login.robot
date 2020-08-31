@@ -50,7 +50,9 @@ Login With Invalid Password Should Fail
     Invalid Password
 
 Invalid Username
-    Element Should Be Visible   class:error   message=Invalid Username
+#    Element Text Should Be   class:error   Invalid username
+    Page Should Contain     Invalid username
 
 Invalid Password
-    Element Should Be Visible   class:error   message=Invalid Password
+#    Element Text Should Be   class:error   Invalid password
+    Page Should Contain     Invalid password
