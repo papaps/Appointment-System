@@ -29,6 +29,7 @@
     "output": "output/coverage/junit/junit.xml",
     "usePathForSuiteName": "true"
   },
+  
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
