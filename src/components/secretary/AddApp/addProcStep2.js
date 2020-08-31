@@ -29,7 +29,7 @@ class addProcStep2 extends Component {
 
     
     componentDidMount(){
-        axios.get('http://localhost:8080/secretary/getProcess')
+        axios.get('http://localhost:3000/secretary/getProcess')
             .then(response => {
                 if(response.data.length > 0){
                     this.setState({
@@ -49,7 +49,7 @@ class addProcStep2 extends Component {
                 }
             })
 
-        axios.get('http://localhost:8080/secretary/getDoctors')
+        axios.get('http://localhost:3000/secretary/getDoctors')
             .then(response => {
                 if(response.data.length > 0){
                     this.setState({   
