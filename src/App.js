@@ -21,7 +21,6 @@ function App() {
       {/* <Navbar /> */}
       {/* <Example/> */}
       {/* <addProcMainForm/> */}
-      <br></br>
       <Route path="/week_all" component={week_all} />
       <Route path="/week_avail" component={week_avail} />
       <Route path="/day_all" component={day_all} />
