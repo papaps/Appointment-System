@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const moment = require('moment');
-const momentbusinesstime = require('moment-business-time');
 const fs = require('fs');
 const bodyparser = require("body-parser");
 const urlencoder = bodyparser.urlencoded({
@@ -24,18 +23,36 @@ const { CheckDate } = require("../model/checkdate");
 /* 
     Ty Added :)
 */
+router.get('/getProcess', (req, res)=>{
+    console.log("Returns Processes")
+    Process.find().then(process => res.json(process)).catch(err => res.status(400).json('Error'+err))
+
+    
+
+})
+router.get('/getDoctors', (req, res)=>{
+    console.log("Returns Doctors")
+    Doctor.find().then(doctor => res.json(doctor)).catch(err => res.status(400).json('Error'+err))
+
+    
+
+})
+
 //if there is a session currently active, goes immediately that session's page, if not go to login
-router.get("/", async function (req, res) {
-    if (req.session.username != null) {
-        let doctor = await Doctor.getAllDoctors();
-        let process = await Process.getAllProcesses();
-        res.render('page_templates/secretary_view.hbs', {
-            doctor: doctor,
-            process: process
-        });
-    } else {
-        res.redirect("/login");
-    }
+router.get("/", function (req, res) {
+    // if (req.session.username != null) {
+        // let doctor = await Doctor.getAllDoctors();
+        // let process = await Process.getAllProcesses();
+      //  Process.getAllProcesses();
+        //Process.find().then(process => res.json(process)).catch(err => res.status(400).json('Error'+err))
+        Doctor.find().then(doctor => res.json(doctor)).catch(err => res.status(400).json('Error'+err))
+        // res.render('page_templates/secretary_view.hbs', {
+        //     doctor: doctor,
+        //     process: process
+        // });
+    // } else {
+    //     res.redirect("/login");
+    // }
 });
 
 /*
@@ -581,30 +598,31 @@ router.get("/appointmentlist", (req, res) => {
 //wala siyang appointment on the time slot, it will mean available
 router.post("/create", urlencoder, (req, res) => {
 
-    let firstname = req.body.firstName;
-    let lastname = req.body.lastName;
-    let patientcontact = req.body.contact;
-    let process = req.body["procedures[]"];
-    let notes = req.body.notes;
-    let time = req.body.timeInput;
-    let date = req.body.dateInput;
-    let doctor = req.body["doctors[]"];
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const patientcontact = req.body.patientcontact;
+    const process = req.body.procedures;
+    const notes = req.body.notes;
+    const time = req.body.time;
+    const date = req.body.date;
+    const doctor = req.body.doctors;
 
     
-    let newTime = Date.parse(time);
-    let formattedTime = moment(newTime).format("h:mm A");
+    // let newTime = Date.parse(time);
+    // let formattedTime = moment(newTime).format("h:mm A");
 
+    
     let newDate = Date.parse(date);
     let formattedDate = moment(newDate).format("MMM D YYYY");
 
-
+    //changed from formattedTime to normal time since already a string
     let appointment = new Appointment({
         firstname,
         lastname,
         patientcontact,
         process,
         notes,
-        time: formattedTime,
+        time,
         date: formattedDate,
         doctor
     });
@@ -612,6 +630,7 @@ router.post("/create", urlencoder, (req, res) => {
     Appointment.addAppointment(appointment, function (appointment) {
         if (appointment) {
             res.redirect("/secretary");
+            console.log("ANONA")
         } else {
             res.redirect("/");
         }
@@ -619,6 +638,9 @@ router.post("/create", urlencoder, (req, res) => {
     }, (error) => {
         res.send(error);
     })
+    // appointment.save()
+    //     .then(() => res.json('Exercise Added'))
+    //     .catch(err => res.status(400).json('Error'+err))
 })
 //Allows editing of appointment
 router.post("/edit", urlencoder, async (req, res) => {
