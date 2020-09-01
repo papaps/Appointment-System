@@ -12,7 +12,6 @@ Valid Admin Login
     Input Password    1234567890
     Submit Credentials
     Admin Page Should Be Open
-    Logout Page
     [Teardown]    Close Browser
 
 Valid Secretary Login
@@ -21,7 +20,6 @@ Valid Secretary Login
     Input Password    1234567890
     Submit Credentials
     Secretary Page Should Be Open
-    Logout Page
     [Teardown]    Close Browser
 
 Valid Dentist Login
@@ -30,5 +28,4 @@ Valid Dentist Login
     Input Password    1234567890
     Submit Credentials
     Dentist Page Should Be Open
-    Logout Page
     [Teardown]    Close Browser

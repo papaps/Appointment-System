@@ -27,6 +27,7 @@ Invalid Reset Admin Password Inputs
 
 *** Keywords ***
 Reset Admin
+    Sleep   0.5
     Click Element   resetAdmin
 
 Invalid Current Password Empty
