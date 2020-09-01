@@ -16,13 +16,13 @@ Resource          login_resource.robot
 Invalid Username / Both Invalid Credentials Login
     [Template]  Login With Invalid Username / Both Invalid Credentials Should Fail
     [Tags]                                      USER NAME            PASSWORD
-    Invalid Admin Username                      invalid             ${VALID ADMIN PASSWORD}
+    Invalid Admin Username                      invalid             ${VALID PASSWORD}
     Invalid Admin Username and Password         invalid             invalid
-    Invalid Secretary Username                  invalid             ${VALID SECRETARY PASSWORD}
+    Invalid Secretary Username                  invalid             ${VALID PASSWORD}
     Invalid Secretary Username and Password     invalid             invalid
-    Invalid Dentist Username                    invalid             ${VALID DENTIST PASSWORD}
+    Invalid Dentist Username                    invalid             ${VALID PASSWORD}
     Invalid Dentist Username and Password       invalid             invalid
-    Empty Username                              ${EMPTY}            ${Valid ADMIN PASSWORD}
+    Empty Username                              ${EMPTY}            ${VALID PASSWORD}
     Empty Username and Password                 ${EMPTY}            ${EMPTY}
 
 Invalid Password Login

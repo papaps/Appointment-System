@@ -19,8 +19,8 @@ ${INVALID_PASS}     1234567890-
 
 *** Test Cases ***
 Invalid Create New Dentist
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Add Appointment Selection
     Add New Dentist
@@ -40,6 +40,7 @@ Add Appointment Selection
 #Day Speed
 #   Set Selenium Speed  0.01
     Set Selenium Speed  0.5
+    Sleep   1
     Click Element    add
 
 Add New Dentist

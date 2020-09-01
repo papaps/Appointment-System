@@ -7,11 +7,9 @@ ${BROWSER}        Chrome
 ${DELAY}         0.2
 ${ASAP}          0
 ${VALID ADMIN}     admin
-${VALID ADMIN PASSWORD}    1234567890
 ${VALID SECRETARY}     secretary
-${VALID SECRETARY PASSWORD}    1234567890
 ${VALID DENTIST}     buchanan
-${VALID DENTIST PASSWORD}    1234567890
+${VALID PASSWORD}    1234567890
 ${LOGIN URL}      http://${SERVER}/login
 ${ADMIN URL}    http://${SERVER}/admin
 ${SECRETARY URL}    http://${SERVER}/secretary

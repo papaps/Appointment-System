@@ -13,8 +13,8 @@ ${PASSWORD}     1234567890
 
 *** Test Cases ***
 Remove Dentist
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Delete Dentist
 
@@ -44,8 +44,8 @@ Deleted Dentist Cannot Login
     Page Should Contain   Invalid username
 
 Dentist Should Not Exist in Creating Appointments
-    Input Username  secretary
-    Input Password  1234567890
+    Input Username  ${VALID SECRETARY}
+    Input Password  ${VALID PASSWORD}
     Submit Credentials
     Set Selenium Speed  0.5
     Sleep   1

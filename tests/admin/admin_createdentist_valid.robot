@@ -13,8 +13,8 @@ ${PASSWORD}     1234567890
 
 *** Test Cases ***
 Valid Create New Dentist
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Add Appointment Selection
     Add New Dentist
@@ -47,7 +47,8 @@ Input New Dentist Details
     Set Selenium Speed  0.3
     Click Element   add-schedule-button
     Element Text Should Be   class:success   New dentist successfully added
-    Wait Until Element Contains     class:success    Dentist schedule successfully added
+#    Wait Until Element Contains     class:success    Dentist schedule successfully added
+    Page Should Contain     Dentist schedule successfully added
     Click Element   close-schedule-modal
 #Single Press ESC works in manual testing, but requires 4 presses in automation
 #    Press Keys    None    ESC
@@ -69,8 +70,8 @@ Login New Dentist
     Logout Page
 
 Dentist Should Be Available in Creating Appointments
-    Input Username  secretary
-    Input Password  1234567890
+    Input Username  ${VALID SECRETARY}
+    Input Password  ${VALID PASSWORD}
     Submit Credentials
     Click Element   add-button
     Click Element   date-done

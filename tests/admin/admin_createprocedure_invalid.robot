@@ -11,8 +11,8 @@ ${INVALID_PROC}     123
 
 *** Test Cases ***
 Invalid Create Duplicate Procedure
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Add Appointment Selection
     Add New Procedure
@@ -40,8 +40,10 @@ Invalid Procedure Name
     Input Text  procedure-name  ${procedure}
     Click Element   create-procedure-button
     Page Should Contain   Please input a valid procedure name
+    Page Should Contain   Please input a valid procedure name
 
 Duplicate Procedure
+    Set Selenium Speed  0.01
     Input Text  procedure-name  ${PROCEDURE}
     Click Element   create-procedure-button
     Page Should Contain   Procedure already exists

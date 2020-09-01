@@ -8,8 +8,8 @@ Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Test Cases ***
 Export Appointment Data
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Export Data
 

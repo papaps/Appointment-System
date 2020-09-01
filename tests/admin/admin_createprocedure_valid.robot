@@ -10,8 +10,8 @@ ${PROCEDURE}    Veneers
 
 *** Test Cases ***
 Valid Create New Procedure
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Add Appointment Selection
     Add New Procedure
@@ -43,8 +43,8 @@ Procedure Should Exist in Table
     Table Should Contain    table   ${PROCEDURE}
 
 Procedure Should Be Available in Creating Appointments
-    Input Username  secretary
-    Input Password  1234567890
+    Input Username  ${VALID SECRETARY}
+    Input Password  ${VALID PASSWORD}
     Submit Credentials
     Click Element   add-button
     Click Element   date-done

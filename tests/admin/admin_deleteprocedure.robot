@@ -10,8 +10,8 @@ ${PROCEDURE}    Veneers
 
 *** Test Cases ***
 Remove Procedure
-    Input Username    admin
-    Input Password    1234567890
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Delete Procedure
 
@@ -23,6 +23,7 @@ Procedure Should Not Exist
 *** Keywords ***
 Delete Procedure
     Set Selenium Speed  0.5
+    Sleep   0.5
     Click Element   procedureButton
     Sleep   1
     Click Element   Veneers-delete
@@ -34,8 +35,8 @@ Procedure Should Not Exist in Table
     Element Should Not Contain    table   ${PROCEDURE}    None    False
 
 Procedure Should Not Exist in Creating Appointments
-    Input Username  secretary
-    Input Password  1234567890
+    Input Username  ${VALID SECRETARY}
+    Input Password  ${VALID PASSWORD}
     Submit Credentials
     Sleep   1
     Click Element   add-button
