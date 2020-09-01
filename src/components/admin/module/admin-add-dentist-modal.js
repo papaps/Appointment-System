@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {Modal, Icon, Popup, Button,  Form, Input} from 'semantic-ui-react'
+import {toast} from 'react-semantic-toasts'
 
 
 class AdminAddDentistModal extends React.Component{
@@ -34,6 +35,15 @@ class AdminAddDentistModal extends React.Component{
             console.log(res)
             console.log(res.data)
         })
+        this.handleClose()
+        setTimeout(() =>{
+            toast({
+                type: "success",
+                title: 'Success',
+                description: <p>"New dentist successfully added"</p>,
+                icon: "check"
+            })
+        }, 1000)
     }
 
     render(){
