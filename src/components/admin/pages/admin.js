@@ -9,6 +9,7 @@ import AdminResetPasswordModal from "../module/admin-reset-password-modal"
 import AdminFreeMemoryModal from "../module/admin-free-memory-modal"
 import "../../../css/admin.css"
 import {Grid} from 'semantic-ui-react'
+import {SemanticToastContainer} from 'react-semantic-toasts'
 class Admin extends React.Component{
     
     constructor(props){
@@ -43,6 +44,7 @@ class Admin extends React.Component{
                     <AdminSidebar handleItem={this.handleItem} handleModal={this.handleModal} activeItem={this.state.activeItem} />
                     <AdminTable />
                 </Grid>
+                <SemanticToastContainer />
                 <AdminCreateModal handleModal={this.handleModal} activeModal={this.state.activeModal}></AdminCreateModal>
                 <AdminAddDentistModal handleModal={this.handleModal} activeModal={this.state.activeModal}></AdminAddDentistModal>
                 <AdminAddProcedureModal handleModal={this.handleModal} activeModal={this.state.activeModal}></AdminAddProcedureModal>
