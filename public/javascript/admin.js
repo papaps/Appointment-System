@@ -1052,7 +1052,7 @@ $("#edit-procedure-button").click(() => {
     // ERROR CHECKING
 
     //check if procedure name is valid or empty
-    if($("#edit-procedure-name").val().trim() == "" || $("#procedure-name").val().trim().match(check)) {
+    if($("#edit-procedure-name").val().trim() == "" || !$("#edit-procedure-name").val().trim().match(check)) {
         $("#edit-procedure-field").addClass("error");
         $('body').toast({
             class: "error",
