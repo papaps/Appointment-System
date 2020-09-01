@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+Library  SeleniumLibrary    run_on_failure=NOTHING
 
 *** Variables ***
 ${SERVER}         localhost:3000

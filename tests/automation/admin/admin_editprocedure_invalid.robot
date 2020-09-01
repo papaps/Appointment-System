@@ -13,8 +13,7 @@ Invalid Create Duplicate Procedure
     Input Username    ${VALID ADMIN}
     Input Password    ${VALID PASSWORD}
     Submit Credentials
-    Add Appointment Selection
-    Add New Procedure
+    Edit Procedure
     Duplicate Procedure
 
 Invalid Create Procedure Name
@@ -24,25 +23,22 @@ Invalid Create Procedure Name
     Invalid Procedure   ${INVALID_PROC}
 
 *** Keywords ***
-Add Appointment Selection
-#Day Speed
-#   Set Selenium Speed  0.01
-    Set Selenium Speed  0.5
+Edit Procedure
+    Set Selenium Speed      0.5
     Sleep   1
-    Click Element    add
-
-Add New Procedure
-    Click Element    add-procedure-button
+    Click Element   procedureButton
+    Click Element   Checkup-edit
 
 Invalid Procedure Name
+    Set Selenium Speed  0.5
     [Arguments]   ${tag}    ${procedure}
-    Input Text  procedure-name  ${procedure}
-    Click Element   create-procedure-button
+    Input Text  edit-procedure-name  ${procedure}
+    Click Element   edit-procedure-button
     Page Should Contain   Please input a valid procedure name
     Page Should Contain   Please input a valid procedure name
 
 Duplicate Procedure
     Set Selenium Speed  0.01
-    Input Text  procedure-name  ${PROCEDURE}
-    Click Element   create-procedure-button
+    Input Text  edit-procedure-name  ${PROCEDURE}
+    Click Element   edit-procedure-button
     Page Should Contain   Procedure already exists

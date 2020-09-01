@@ -1,6 +1,5 @@
 *** Settings ***
 Documentation     A test suite containing tests related to logout.
-Library  SeleniumLibrary
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Resource    login_resource.robot

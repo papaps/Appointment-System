@@ -1,6 +1,5 @@
 *** Settings ***
 Documentation    Suite description
-Library  SeleniumLibrary
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Resource    ${CURDIR}${/}..\\login_resource.robot

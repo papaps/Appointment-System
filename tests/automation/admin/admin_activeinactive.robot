@@ -53,8 +53,8 @@ Set Dentist Inactive
 
 Revert Dentist
     Sleep   1
-    ${status}=  Element Text Should Be      Daisy-Buchanan-active   Inactive
-    Run Keyword If  ${status}==None    Set Dentist Active
+    ${status}=  Run Keyword and Return Status   Element Text Should Be      Daisy-Buchanan-active   Inactive
+    Run Keyword If  ${status}==True    Set Dentist Active
 
 Dentist Should Be Able to Login
     Input Username    ${VALID DENTIST}
