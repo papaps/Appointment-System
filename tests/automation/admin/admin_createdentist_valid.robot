@@ -25,6 +25,8 @@ New Dentist Should Exist
     Logout Page
     Login New Dentist
     Dentist Should Be Available in Creating Appointments
+    Dentist Should Appear in Availability Page
+    Dentist Should Appear in Doctor Dropdown
 
 *** Keywords ***
 Add Appointment Selection
@@ -80,3 +82,13 @@ Dentist Should Be Available in Creating Appointments
     Press Keys    None    TAB
     Press Keys    None    TAB
     Page Should Contain    Dr. Jack Skellington
+
+Dentist Should Appear in Availability Page
+    Click Element   filter-dropdown
+    Press Keys    None    ARROW_DOWN
+    Page Should Contain    Dr. Jack Skellington
+
+Dentist Should Appear in Doctor Dropdown
+    Press Keys    None    ARROW_DOWN
+    Press Keys    None    ENTER
+    Page Should Contain    Dr. Skellington

@@ -23,6 +23,8 @@ Dentist Should Not Exist
     Logout Page
     Deleted Dentist Cannot Login
     Dentist Should Not Exist in Creating Appointments
+    Dentist Should Not Appear in Availability Page
+    Dentist Should Not Appear in Doctor Dropdown
 
 *** Keywords ***
 Delete Dentist
@@ -56,3 +58,13 @@ Dentist Should Not Exist in Creating Appointments
     Press Keys    None    TAB
     Press Keys    None    TAB
     Page Should Not Contain    Dr. Jack Skellington
+
+Dentist Should Not Appear in Availability Page
+    Click Element   filter-dropdown
+    Press Keys    None    ARROW_DOWN
+    Page Should Not Contain    Dr. Jack Skellington
+
+Dentist Should Not Appear in Doctor Dropdown
+    Press Keys    None    ARROW_DOWN
+    Press Keys    None    ENTER
+    Page Should Not Contain    Dr. Skellington
