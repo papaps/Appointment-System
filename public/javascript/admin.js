@@ -301,7 +301,7 @@ $(document).ready(() => {
                         type: "post",
                         url: "admin/updateDentistStatus",
                         data: {
-                            doctorID: $(temp)[0].id,
+                            doctorID: $(temp).data("id"),
                             status: "Inactive"
                         }
                     })
@@ -314,7 +314,7 @@ $(document).ready(() => {
                         type: "post",
                         url: "admin/updateDentistStatus",
                         data: {
-                            doctorID: $(temp)[0].id,
+                            doctorID: $(temp).data("id"),
                             status: "Active"
                         }
                     })
@@ -442,7 +442,7 @@ $("#save-password").click(async () => {
         $('body').toast({
             class: "error",
             position: "top center",
-            message: "Password do not match"
+            message: "Passwords do not match"
         });
         done = false;
     }
@@ -564,7 +564,7 @@ $("#sec-save-password").click(async () => {
         $('body').toast({
             class: "error",
             position: "top center",
-            message: "Password do not match"
+            message: "Passwords do not match"
         });
         done = false;
     }
@@ -700,7 +700,7 @@ $("#create-dentist-button").click(() => {
         $('body').toast({ 
             class: "error",
             position: "top center",
-            message: "Password do not match"
+            message: "Passwords do not match"
         });
         done = false;
     }
@@ -1011,7 +1011,7 @@ $("#edit-dentist-button").click(() => {
         $('body').toast({ 
             class: "error",
             position: "top center",
-            message: "Password do not match"
+            message: "Passwords do not match"
         });
         done = false;
     }

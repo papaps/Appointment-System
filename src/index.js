@@ -4,16 +4,16 @@ import './index.css';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import Secretary from "./components/secretary/views/week_all.component";
+import Admin from "./components/admin/pages/admin"
 import * as serviceWorker from './serviceWorker';
 import 'semantic-ui-css/semantic.min.css';
 
-
 const routing = (
   <Router>
-    <div>
+    <div className="App">      
       <Route path = "/" component={App}/>
       <Route path = "/secretary" component={Secretary}/>
-
+      <Route path = "/admin" component={Admin}/>
     </div>
   </Router>
 )
