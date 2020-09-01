@@ -164,7 +164,7 @@ router.post("/deleteAccount", async (req, res) => {
                     date: appointments[i].date,
                     doctor: ary,
                 });
-                await Appointment.updateAppointment(appointments, temp);
+                await Appointment.updateAppointment(appID, temp);
             }
         }
     }
@@ -326,7 +326,7 @@ router.post("/deleteProcess", async (req, res) => {
                 date: apps[i].date,
                 doctor: apps[i].doctor,
             });
-            await Appointment.updateAppointment(apps, temp);
+            await Appointment.updateAppointment(appID, temp);
         }
     }
     Process.delete(processID);
