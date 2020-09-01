@@ -32,6 +32,14 @@ Active Dentist Should Be Accessible
     Dentist Should Appear in Availability Page
     Dentist Should Appear in Doctor Dropdown
 
+Revert Dentist To Active
+    Sleep   1
+    Logout Page
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
+    Submit Credentials
+    Revert Dentist
+
 *** Keywords ***
 Set Dentist Active
     Sleep   1
@@ -42,6 +50,11 @@ Set Dentist Inactive
     Sleep   1
     Click Element       Daisy-Buchanan-active
     Element Text Should Be      Daisy-Buchanan-active   Inactive
+
+Revert Dentist
+    Sleep   1
+    ${status}=  Element Text Should Be      Daisy-Buchanan-active   Inactive
+    Run Keyword If  ${status}==None    Set Dentist Active
 
 Dentist Should Be Able to Login
     Input Username    ${VALID DENTIST}
