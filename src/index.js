@@ -7,11 +7,13 @@ import Secretary from "./components/secretary/views/week_all.component";
 import Admin from "./components/admin/pages/admin"
 import * as serviceWorker from './serviceWorker';
 import 'semantic-ui-css/semantic.min.css';
+import {SemanticToastContainer} from 'react-semantic-toasts'
 
 
 const routing = (
   <Router>
     <div className="App">
+      <SemanticToastContainer />
       <Route path = "/" component={App}/>
       <Route path = "/secretary" component={Secretary}/>
       <Route path = "/admin" component={Admin}/>

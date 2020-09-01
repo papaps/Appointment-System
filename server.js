@@ -42,7 +42,10 @@ app.use(function(req, res, next) {
 const secretaryRoute = require("./controller/secretaryController")
 app.use('/secretary', secretaryRoute)
 
-// app.use(require("./controller"));
+const adminRoute = require("./controller/adminController")
+app.use('/admin', adminRoute)
+
+app.use(require("./controller"));
 
  var server = app.listen(process.env.PORT || 8080, function(){
      console.log("Server is running at port 8080...");

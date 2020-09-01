@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {Modal, Icon,  Button,  Form, Input} from 'semantic-ui-react'
+import { toast } from "react-semantic-toasts";
 
 
 class AdminAddProcedureModal extends React.Component{
@@ -23,6 +24,15 @@ class AdminAddProcedureModal extends React.Component{
                 console.log(res)
                 console.log(res.data)
             })
+        this.handleClose()
+        setTimeout(() =>{
+            toast({
+                type: "success",
+                title: 'Success',
+                description: <p>"New procedure successfully added"</p>,
+                icon: "check"
+            })
+        }, 1000)
     }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
