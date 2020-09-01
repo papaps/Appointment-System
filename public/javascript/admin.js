@@ -913,7 +913,7 @@ $("#edit-dentist-button").click(() => {
         done = false;
     } else {
         nameChecker = true
-        var checkfirst = /^[a-zA-Z]+$/; // regex for valid first name
+        var checkfirst = /^[a-z A-Z]+$/; // regex for valid first name
         //check if first name is less than 2 characters
         if($("#edit-firstname-dentist").val().length < 2) {
             $("#edit-firstname-dentist-field").addClass("error");
@@ -934,7 +934,7 @@ $("#edit-dentist-button").click(() => {
             })
             nameChecker = false;
         } 
-        var checklast = /^[a-zA-Z.\-_]+$/; //regex for valid last name
+        var checklast = /^[a-z A-Z.\-_]+$/; //regex for valid last name
         //check if last name has less than 2 characters
         if($("#edit-lastname-dentist").val().length < 2) {
             $("#edit-lastname-dentist-field").addClass("error");
