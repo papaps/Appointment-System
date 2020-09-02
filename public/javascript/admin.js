@@ -616,6 +616,8 @@ $("#create-dentist-button").click(() => {
     nameChecker = true                  //will be set to true if name input is valid
     var checkfirst = /^[a-z A-Z]+$/;    //regex for valid firstname
     var checklast = /^[a-z A-Z.\-_]+$/; //regex for valid lastname
+    var checkusername = /^[0-9a-zA-Z]+$/; //regex to check for valid username
+
     
     // ERROR CHECKING
     
@@ -764,7 +766,15 @@ $("#create-dentist-button").click(() => {
             message: "Username is too long"
         })
         done = false;
-    }
+    } else if(!$("#add-username-dentist").val().match(checkusername)) {
+        $("#username-field-dentist").addClass("error");
+        $('body').toast({
+            class: "error",
+            position: "top center",
+            message: "Incorrect username format"
+        })
+        done = false;
+    } 
     
     
     //Add dentist if name and form checks are valid
