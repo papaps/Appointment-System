@@ -11,6 +11,8 @@ ${USERNAME}     truman
 ${SHORT_NAME}  t
 ${DUPLICATE_NAME}   buchanan
 ${INVALID_NAME}   `123
+${INVALID_USERNAME}     123-123
+${SHORT_USERNAME}   123
 ${PASSWORD}     1234567890
 ${SHORT_PASS}      1
 ${LONG_PASS}    123456789012345678901234567890123
@@ -98,11 +100,19 @@ Duplicate Name
 Invalid Username
     Input Text  add-firstname-dentist   ${FIRST_NAME}
     Input Text  add-lastname-dentist    ${LAST_NAME}
-    Input Text  add-username-dentist    ${INVALID_NAME}
+    Input Text  add-username-dentist    ${INVALID_USERNAME}
     Input Text  add-password-dentist    ${PASSWORD}
     Input Text  confirm-password-dentist    ${PASSWORD}
     Click Element    create-dentist-button
     Page Should Contain   Incorrect username format
+
+Username Too Short
+    Input Text  add-firstname-dentist   ${FIRST_NAME}
+    Input Text  add-lastname-dentist    ${LAST_NAME}
+    Input Text  add-username-dentist    ${SHORT_USERNAME}}
+    Input Text  add-password-dentist    ${PASSWORD}
+    Input Text  confirm-password-dentist    ${PASSWORD}
+    Click Element    create-dentist-button
     Page Should Contain   Username should be at least 6 alphanumeric characters
 
 Invalid Matching Passwords

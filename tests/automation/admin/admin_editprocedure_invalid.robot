@@ -30,7 +30,7 @@ Edit Procedure
     Click Element   Checkup-edit
 
 Invalid Procedure Name
-    Set Selenium Speed  0.5
+    Set Selenium Speed  0.3
     [Arguments]   ${tag}    ${procedure}
     Input Text  edit-procedure-name  ${procedure}
     Click Element   edit-procedure-button

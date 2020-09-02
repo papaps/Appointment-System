@@ -7,22 +7,22 @@ Resource    login_resource.robot
 *** Test Cases ***
 Admin Logout
     Set Selenium Speed  0.05
-    Input Username    ${VALID_ADMIN}
-    Input Password    ${VALID_PASSWORD}
+    Input Username    ${VALID ADMIN}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Logout Page
     Login Page Should Be Open
 
 Secretary Logout
-    Input Username    ${VALID_SECRETARY}
-    Input Password    ${VALID_PASSWORD}
+    Input Username    ${VALID SECRETARY}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Logout Page
     Login Page Should Be Open
 
 Dentist Logout
-    Input Username    ${VALID_DENTIST}
-    Input Password    ${VALID_PASSWORD}
+    Input Username    ${VALID DENTIST}
+    Input Password    ${VALID PASSWORD}
     Submit Credentials
     Sleep   0.05
     Logout Page
