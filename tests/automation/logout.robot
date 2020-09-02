@@ -6,7 +6,7 @@ Resource    login_resource.robot
 
 *** Test Cases ***
 Admin Logout
-    Set Selenium Speed  0.05
+    Set Selenium Speed  0.1
     Input Username    ${VALID ADMIN}
     Input Password    ${VALID PASSWORD}
     Submit Credentials

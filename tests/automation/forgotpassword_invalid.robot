@@ -15,10 +15,16 @@ ${INVALID_PASS}     1234567890-
 Invalid Reset Password
     Forgot Password
     Empty Credentials
+    Invalid Username
+    Passwords Do Not Match
+    Invalid Password Format
+    Password Too Short
+    Password Too Long
+    Valid Username Invalid Admin Password
 
 *** Keywords ***
 Forgot Password
-    Set Selenium Speed  0.3
+    Set Selenium Speed  0.05
     Click Element   forgot
 
 Empty Credentials
@@ -65,6 +71,7 @@ Password Too Long
     Page Should Contain   Password is too long
 
 Valid Username Invalid Admin Password
+    Set Selenium Speed  0.3
     Input Text  reset-username  ${VALID SECRETARY}
     Input Text  reset-password  ${VALID PASSWORD}
     Input Text  reset-confirm-password  ${VALID PASSWORD}
