@@ -167,7 +167,7 @@ $(document).ready(() => {
     //Editing the doctor's schedules
     $("#table-schedule").on("click", (event) => {
         var temp = event.target;
-        if(temp.id == "delete-unavailable-button") {
+        if($(temp)[0].className.includes("delete-unavailable")) {
             $("#modal-text-delete-unavailable").text($(temp).data("time"));
             $("#confirmation-modal").data("id", $(temp).data("id"));
             $("#confirmation-modal").modal("show");
