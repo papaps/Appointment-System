@@ -12,7 +12,7 @@ ${END DATE}
 ${COUNT}    0
 
 *** Test Cases ***
-Dentist Unavailable Date
+Valid Dentist Unavailable Date
     Input Username  ${VALID ADMIN}
     Input Password  ${VALID PASSWORD}
     Submit Credentials
