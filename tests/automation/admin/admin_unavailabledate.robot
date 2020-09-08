@@ -1,5 +1,6 @@
 *** Settings ***
 Documentation    Suite description
+Library     BuiltIn
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Resource    ${CURDIR}${/}..\\login_resource.robot
@@ -23,8 +24,7 @@ Dentist Should Be Unavailable
     Input Username  ${VALID SECRETARY}
     Input Password  ${VALID PASSWORD}
     Submit Credentials
-    Unavailable For Start Date
-    Unavailable For Dates Between and End
+    Dentist Should Be Unavailable in Secretary Page
 
 *** Keywords ***
 View Dentist's Schedule
@@ -49,7 +49,12 @@ Dentist Should Be Listed Unavailable in Admin Page
     Table Should Contain    schedule-table      ${START DATE} - ${END DATE}
     Click Element   close-schedule-modal
 
-Dentist Should Be Unavailable in Creating Appointments
+Dentist Should Be Unavailable in Secretary Page
+    Unavailable For Start Date
+    Unavailable For Dates Between and End
+    Unavailable in Availability Table
+
+Unavailable in Creating Appointments
     Sleep   1
     Click Element   add-button
     Sleep   1
@@ -67,16 +72,22 @@ Unavailable For Start Date
     FOR     ${i} IN RANGE   10
         Exit For Loop If    focus-date-header == ${START DATE}
         Click Element   next-button
-    Dentist Should Be Unavailable in Creating Appointments
+    Unavailable in Creating Appointments
 
 Unavailable For Dates Between and End
     FOR     ${i} IN RANGE   10
         Exit For Loop If    focus-date-header == ${END DATE}
         Click Element   next-button
-        Dentist Should Be Unavailable in Creating Appointments
-    Dentist Should Be Unavailable in Creating Appointments
+        Unavailable in Creating Appointments
+    Unavailable in Creating Appointments
 
 Unavailable in Availability Table
     Click Element   filter-dropdown
     Press Keys    None    ARROW_DOWN
-
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   2    Unavailable     Set Variable    ${COUNT SLOT+1}
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   3    Unavailable     Set Variable    ${COUNT SLOT+1}
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   4    Unavailable     Set Variable    ${COUNT SLOT+1}
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   5    Unavailable     Set Variable    ${COUNT SLOT+1}
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   6    Unavailable     Set Variable    ${COUNT SLOT+1}
+    ${COUNT SLOT}=  Run Keword If   Table Cell Should Contain  schedule-table  2   7    Unavailable     Set Variable    ${COUNT SLOT+1}
+    Variable Should Exist   ${COUNT SLOT}   3
