@@ -1295,31 +1295,33 @@ $("#add-unavailable-button").click(() => {
                         message: "The chosen date has appointment/s",
                     });
                     done = false;
+                } else{
+                    //update dentist's available days if valid
+                    if (done) {
+                        $.ajax({
+                            type: "post",
+                            url: "admin/addUnavailableDates",
+                            data: {
+                                doctorID: $("#add-unavailable-modal").data("id"),
+                                startdate: start,
+                                enddate: end,
+                            },
+                            success: (value) => {
+                                $("body").toast({
+                                    class: "success",
+                                    position: "top center",
+                                    message: "Dentist unavailable date successfully added",
+                                });
+                                $("#add-unavailable-modal").modal("hide");
+                            },
+                        });
+                    }
                 }
             },
         });
     }
 
-    //update dentist's available days if valid
-    if (done) {
-        $.ajax({
-            type: "post",
-            url: "admin/addUnavailableDates",
-            data: {
-                doctorID: $("#add-unavailable-modal").data("id"),
-                startdate: start,
-                enddate: end,
-            },
-            success: (value) => {
-                $("body").toast({
-                    class: "success",
-                    position: "top center",
-                    message: "Dentist unavailable date successfully added",
-                });
-                $("#add-unavailable-modal").modal("hide");
-            },
-        });
-    }
+    
 });
 
 // Delete days where dentist is unavailable
