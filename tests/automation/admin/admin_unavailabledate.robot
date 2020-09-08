@@ -1,29 +1,30 @@
 *** Settings ***
 Documentation    Suite description
-Library     DateTime
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Variables ***
-${START DATE}   September 8, 2020
-${END DATE}     September 10, 2020
+${START DATE}
+${END DATE}
+${COUNT SLOT}
 
 *** Test Cases ***
-#Dentist Unavailable Date
-#    Input Username  ${VALID ADMIN}
-#    Input Password  ${VALID PASSWORD}
-#    Submit Credentials
-#    View Dentist's Schedule
-#    Set Unavailable Date
+Dentist Unavailable Date
+    Input Username  ${VALID ADMIN}
+    Input Password  ${VALID PASSWORD}
+    Submit Credentials
+    View Dentist's Schedule
+    Set Unavailable Date
 
 Dentist Should Be Unavailable
-#    Dentist Should Be Listed Unavailable in Admin Page
-#    Logout Page
+    Dentist Should Be Listed Unavailable in Admin Page
+    Logout Page
     Input Username  ${VALID SECRETARY}
     Input Password  ${VALID PASSWORD}
     Submit Credentials
-    Check For Start Date
+    Unavailable For Start Date
+    Unavailable For Dates Between and End
 
 *** Keywords ***
 View Dentist's Schedule
@@ -33,7 +34,7 @@ View Dentist's Schedule
 Set Unavailable Date
     Click Element   unavailable
     Click Element   add-schedule
-    Page Should Contain     add-unavailable-modal
+    Wait Until Page Contains     add-unavailable-modal
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    ARROW_RIGHT
@@ -48,10 +49,8 @@ Dentist Should Be Listed Unavailable in Admin Page
     Table Should Contain    schedule-table      ${START DATE} - ${END DATE}
     Click Element   close-schedule-modal
 
-Unavailable For Start Date
-    FOR     ${i} IN RANGE   10
-        Exit For Loop If    focus-date-header == ${START DATE}
-        Click Element   next-button
+Dentist Should Be Unavailable in Creating Appointments
+    Sleep   1
     Click Element   add-button
     Sleep   1
     Click Element   date-done
@@ -64,29 +63,20 @@ Unavailable For Start Date
     Sleep   1
     Click Element   discard
 
+Unavailable For Start Date
+    FOR     ${i} IN RANGE   10
+        Exit For Loop If    focus-date-header == ${START DATE}
+        Click Element   next-button
+    Dentist Should Be Unavailable in Creating Appointments
+
 Unavailable For Dates Between and End
     FOR     ${i} IN RANGE   10
         Exit For Loop If    focus-date-header == ${END DATE}
         Click Element   next-button
-        Click Element   add-button
-        Sleep   1
-        Click Element   date-done
-        Press Keys    None    TAB
-        Press Keys    None    TAB
-        Press Keys    None    TAB
-        Press Keys    None    TAB
-        Page Should Not Contain    Dr. Daisy Buchanan
-        Click Element   cancel-appointment
-        Sleep   1
-        Click Element   discard
-    Click Element   add-button
-    Sleep   1
-    Click Element   date-done
-    Press Keys    None    TAB
-    Press Keys    None    TAB
-    Press Keys    None    TAB
-    Press Keys    None    TAB
-    Page Should Not Contain    Dr. Daisy Buchanan
-    Click Element   cancel-appointment
-    Sleep   1
-    Click Element   discard
+        Dentist Should Be Unavailable in Creating Appointments
+    Dentist Should Be Unavailable in Creating Appointments
+
+Unavailable in Availability Table
+    Click Element   filter-dropdown
+    Press Keys    None    ARROW_DOWN
+

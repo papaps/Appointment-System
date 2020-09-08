@@ -22,6 +22,7 @@ Export Data
 #    Set Selenium Speed  ${DELAY}
 #Night Speed
     Set Selenium Speed  0.5
+    Sleep   1
     Click Element      downloadFile
 
 Data Should Exist
