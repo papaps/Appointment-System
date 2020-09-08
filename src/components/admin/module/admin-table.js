@@ -1,18 +1,23 @@
 import React from "react";
+import { Grid, Table, Dimmer, Segment } from "semantic-ui-react";
 
-class AdminTable extends React.Component{
+class AdminTable extends React.Component {
+    state = {};
 
-    render(){
-        return(
-            <div className="column" style={{width: 85 + '%'}}>
-                <table className="ui striped selectable table" id="table"> 
-                    <div className="ui inverted dimmer" id="list-dimmer">
+    handleShowDimmer = () => this.setState({ active: true });
+    handleHideDimmer = () => this.setState({ active: false });
+    render() {
+        const { active } = this.state;
+        return (
+            <Grid.Column style={{ width: "85%" }}>
+                <Table singleLine selectable id="table">
+                    <Dimmer active={active} inverted id="list-dimmer">
                         <div className="ui elastic huge green loader"></div>
-                    </div>
-                </table>
-            </div>
-        )
+                    </Dimmer>
+                </Table>
+            </Grid.Column>
+        );
     }
 }
 
-export default AdminTable
+export default AdminTable;
