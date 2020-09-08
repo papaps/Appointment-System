@@ -1,69 +1,241 @@
 import React from "react";
 import axios from "axios";
-import {Modal, Icon, Popup, Button,  Form, Input} from 'semantic-ui-react'
-import {toast} from 'react-semantic-toasts'
+import { Modal, Icon, Popup, Button, Form, Input } from "semantic-ui-react";
+import { toast } from "react-semantic-toasts";
 
-
-class AdminAddDentistModal extends React.Component{
-
+class AdminAddDentistModal extends React.Component {
     state = {
-        firstname: '',
-        lastname: '',
-        username: '',
-        password: '',
-        confirmPassword: '',
-    }
+        firstname: "",
+        lastname: "",
+        username: "",
+        password: "",
+        confirmPassword: "",
+        error: {
+            firstname: false,
+            lastname: false,
+            username: false,
+            password: false,
+            confirmPassword: false,
+        },
+    };
 
     handleOpen = () => this.props.handleModal("admin-add-dentist");
 
-    handleClose = () => this.props.handleModal('none')
+    handleClose = () => this.props.handleModal("none");
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-    handleSubmit = event =>{
-        event.preventDefault()
-        const data = {
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
-            username: this.state.username,
-            password: this.state.password,
-            type: 'dentist',
-            status: 'Active'
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if (this.handleValidation()) {
+            const data = {
+                firstname: this.state.firstname.trim(),
+                lastname: this.state.lastname.trim(),
+                username: this.state.username.trim(),
+                password: this.state.password.trim(),
+                type: "dentist",
+                status: "Active",
+            };
+            axios.post("admin/addDentist", data).then((res) => {
+                console.log(res);
+                console.log(res.data);
+            });
+            this.handleClose();
+            setTimeout(() => {
+                toast({
+                    type: "success",
+                    title: "Success",
+                    description: <p>New dentist successfully added</p>,
+                    icon: "check",
+                });
+            }, 1000);
         }
-        axios.post('admin/addDentist', data)
-        .then(res=>{
-            console.log(res)
-            console.log(res.data)
-        })
-        this.handleClose()
-        setTimeout(() =>{
+    };
+
+    handleValidation() {
+        const checkfirst = /^[a-z A-Z]+$/; //regex for valid firstname
+        const checklast = /^[a-z A-Z.\-_]+$/; //regex for valid lastname
+        const checkusername = /^[0-9a-zA-Z]+$/; //regex to check for valid username
+        const checkPassword = /^[0-9a-zA-Z]+$/;
+
+        let firstname = this.state.firstname.trim();
+        let lastname = this.state.lastname.trim();
+        let username = this.state.username.trim();
+        let password = this.state.password.trim();
+        let confirmPassword = this.state.confirmPassword.trim();
+        let error = this.state.error;
+        let formIsValid = true;
+
+        if (firstname === "" || !firstname.match(checkfirst)) {
+            error["firstname"] = true;
             toast({
-                type: "success",
-                title: 'Success',
-                description: <p>"New dentist successfully added"</p>,
-                icon: "check"
-            })
-        }, 1000)
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid firstname</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (firstname.length < 2) {
+            error["firstname"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Firstname is too short</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (!firstname.match(checkfirst)) {
+            error["firstname"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Invalid firstname format</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+
+        if (lastname === "" || !firstname.match(checklast)) {
+            error["lastname"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid lastname</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (lastname.length < 2) {
+            error["lastname"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Lastname is too short</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (!lastname.match(checklast)) {
+            error["lastname"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Invalid lastname format</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+
+        if (password === "") {
+            error["password"] = true;
+            error["confirmPassword"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid password</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (password !== confirmPassword) {
+            error["password"] = true;
+            error["confirmPassword"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Passwords do not match</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (!password.match(checkPassword)) {
+            error["password"] = true;
+            error["confirmPassword"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Incorrect password format</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (password.length < 10) {
+            error["password"] = true;
+            error["confirmPassword"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Password is too short</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (password.length > 32) {
+            error["password"] = true;
+            error["confirmPassword"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Password is too long</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+
+        if (username === "") {
+            error["username"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid username</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (username.length < 6) {
+            error["username"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Username is too short</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (username.length > 32) {
+            error["username"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Username is too long</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        } else if (!username.match(checkusername)) {
+            error["username"] = true;
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Incorrect username format</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+
+        this.setState({ error: error });
+
+        return formIsValid;
     }
 
-    render(){
-        let open
+    render() {
+        let open;
 
-        if(this.props.activeModal === "admin-add-dentist"){
-            open = true
-        }else{
-            open = false
+        if (this.props.activeModal === "admin-add-dentist") {
+            open = true;
+        } else {
+            open = false;
         }
-        return(
-            <Modal 
+        return (
+            <Modal
                 closeIcon
-                size="mini" 
+                size="mini"
                 id="add-dentist-modal"
-                onClose={()=>this.handleClose()}
-                onOpen={()=>this.handleOpen()}
+                onClose={() => this.handleClose()}
+                onOpen={() => this.handleOpen()}
                 open={open}
-                >
-                
+            >
                 <Modal.Header as="h2">
                     <Icon name="user md"></Icon>
                     New Dentist
@@ -74,56 +246,111 @@ class AdminAddDentistModal extends React.Component{
                         <Form.Field required id="firstname-field-dentist">
                             <label>First Name</label>
                             <Popup
-                                trigger={  <Input name="firstname" id="add-firstname-dentist" autoComplete="false" placeholder="First Name" onChange={this.handleChange} />  }
-                                content='Name should contain at least 2 characters'
-                                position='right center'
-                                /> 
+                                trigger={
+                                    <Input
+                                        error={this.state.error.firstname}
+                                        name="firstname"
+                                        id="add-firstname-dentist"
+                                        autoComplete="false"
+                                        placeholder="First Name"
+                                        onChange={this.handleChange}
+                                    />
+                                }
+                                content="Name should contain at least 2 characters"
+                                position="right center"
+                            />
                         </Form.Field>
                         <Form.Field required id="lastname-field-dentist">
-                            <label>Last Name</label> 
+                            <label>Last Name</label>
                             <Popup
-                                trigger={<Input name="lastname" id="add-lastname-dentist" autoComplete="false" placeholder="Last Name" onChange={this.handleChange}/>}
-                                content='Name should contain at least 2 characters'
-                                position='right center'
-                                />
+                                trigger={
+                                    <Input
+                                        error={this.state.error.lastname}
+                                        name="lastname"
+                                        id="add-lastname-dentist"
+                                        autoComplete="false"
+                                        placeholder="Last Name"
+                                        onChange={this.handleChange}
+                                    />
+                                }
+                                content="Name should contain at least 2 characters"
+                                position="right center"
+                            />
                         </Form.Field>
                         <Form.Field required id="username-field-dentist">
                             <label>Username</label>
                             <Popup
-                                trigger={<Input name="username" id="add-username-dentist" autoComplete="false" placeholder="Username" onChange={this.handleChange} />}
-                                content='You will not be able to change your username once created'
-                                position='right center'
-                                />
+                                trigger={
+                                    <Input
+                                        error={this.state.error.username}
+                                        name="username"
+                                        id="add-username-dentist"
+                                        autoComplete="false"
+                                        placeholder="Username"
+                                        onChange={this.handleChange}
+                                    />
+                                }
+                                content="You will not be able to change your username once created"
+                                position="right center"
+                            />
                         </Form.Field>
-                        <Form.Field required id="password-field-dentist" >
+                        <Form.Field required id="password-field-dentist">
                             <label>Password</label>
                             <Popup
-                                trigger={<Input name="password" type="password" id="add-password-dentist" autoComplete="false" placeholder="Pasword" onChange={this.handleChange} />}
-                                content='Password should contain 10 to 32 alphanumeric characters'
-                                position='right center'
-                                />
+                                trigger={
+                                    <Input
+                                        error={this.state.error.password}
+                                        name="password"
+                                        type="password"
+                                        id="add-password-dentist"
+                                        autoComplete="false"
+                                        placeholder="Password"
+                                        onChange={this.handleChange}
+                                    />
+                                }
+                                content="Password should contain 10 to 32 alphanumeric characters"
+                                position="right center"
+                            />
                         </Form.Field>
-                        <Form.Field required id="confirm-password-field-dentist">
+                        <Form.Field
+                            required
+                            id="confirm-password-field-dentist"
+                        >
                             <label>Confirm Password</label>
                             <Popup
-                                trigger={<Input name="confirmPassword" type="password"id="confirm-password-dentist" autoComplete="false" placeholder="Pasword" onChange={this.handleChange} />}
-                                content='Password should contain 10 to 32 alphanumeric characters'
-                                position='right center'
-                                />
+                                trigger={
+                                    <Input
+                                        error={this.state.error.confirmPassword}
+                                        name="confirmPassword"
+                                        type="password"
+                                        id="confirm-password-dentist"
+                                        autoComplete="false"
+                                        placeholder="Password"
+                                        onChange={this.handleChange}
+                                    />
+                                }
+                                content="Password should contain 10 to 32 alphanumeric characters"
+                                position="right center"
+                            />
                         </Form.Field>
                     </Form>
                 </Modal.Content>
 
-
                 <Modal.Actions>
-                    <Button icon labelPosition='left' color="green" id="create-dentist-button" onClick={this.handleSubmit}>
-                        <Icon name='check' />
+                    <Button
+                        icon
+                        labelPosition="left"
+                        color="green"
+                        id="create-dentist-button"
+                        onClick={this.handleSubmit}
+                    >
+                        <Icon name="check" />
                         CREATE
                     </Button>
                 </Modal.Actions>
             </Modal>
-        )
+        );
     }
 }
 
-export default AdminAddDentistModal
+export default AdminAddDentistModal;

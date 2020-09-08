@@ -1,61 +1,81 @@
 import React from "react";
 import axios from "axios";
-import {Modal, Icon,  Button,  Form, Input} from 'semantic-ui-react'
+import { Modal, Icon, Button, Form, Input } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 
-
-class AdminAddProcedureModal extends React.Component{
-
+class AdminAddProcedureModal extends React.Component {
     state = {
-        procedure: '',
-    }
+        procedure: "",
+        error: {
+            procedure: false,
+        },
+    };
 
     handleOpen = () => this.props.handleModal("admin-add-procedure");
 
-    handleClose = () => this.props.handleModal('none')
+    handleClose = () => this.props.handleModal("none");
 
-    handleSubmit = event =>{
-        event.preventDefault()
-        const data = {
-            name: this.state.procedure  
+    handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if (this.handleValidation()) {
+            const data = {
+                name: this.state.procedure.trim(),
+            };
+            axios.post("admin/addProcess", data).then((res) => {
+                console.log(res);
+                console.log(res.data);
+            });
+            this.handleClose();
+            setTimeout(() => {
+                toast({
+                    type: "success",
+                    title: "Success",
+                    description: <p>New procedure successfully added</p>,
+                    icon: "check",
+                });
+            }, 1000);
         }
-        axios.post('admin/addProcess', data)
-            .then(res=>{
-                console.log(res)
-                console.log(res.data)
-            })
-        this.handleClose()
-        setTimeout(() =>{
+    };
+
+    handleValidation() {
+        const check = /^[a-z A-Z]+$/; // regex for invalid characters
+        let procedure = this.state.procedure.trim();
+        let error = this.state.error;
+        let formIsValid = true;
+        if (procedure === "" || !procedure.match(check)) {
+            error["procedure"] = true;
             toast({
-                type: "success",
-                title: 'Success',
-                description: <p>"New procedure successfully added"</p>,
-                icon: "check"
-            })
-        }, 1000)
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid procedure name</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+        this.setState({ error: error });
+
+        return formIsValid;
     }
+    render() {
+        let open;
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
-
-    render(){
-        let open
-
-        if(this.props.activeModal === "admin-add-procedure"){
-            open = true
-        }else{
-            open = false
+        if (this.props.activeModal === "admin-add-procedure") {
+            open = true;
+        } else {
+            open = false;
         }
 
-        return(
-            <Modal 
+        return (
+            <Modal
                 closeIcon
-                size="mini" 
+                size="mini"
                 id="add-user-modal"
-                onClose={()=>this.handleClose()}
-                onOpen={()=>this.handleOpen()}
+                onClose={() => this.handleClose()}
+                onOpen={() => this.handleOpen()}
                 open={open}
-                >
-                
+            >
                 <Modal.Header as="h2">
                     <Icon name="clipboard"></Icon>
                     New Procedure
@@ -65,21 +85,33 @@ class AdminAddProcedureModal extends React.Component{
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Field required id="procedure-field">
                             <label>Procedure Name</label>
-                            <Input name="procedure" id="procedure-name" autoComplete="false" placeholder="Procedure Name" onChange={this.handleChange} /> 
+                            <Input
+                                error={this.state.error.procedure}
+                                name="procedure"
+                                id="procedure-name"
+                                autoComplete="false"
+                                placeholder="Procedure Name"
+                                onChange={this.handleChange}
+                            />
                         </Form.Field>
                     </Form>
                 </Modal.Content>
 
-
                 <Modal.Actions>
-                    <Button icon labelPosition='left' color="green" id="create-procedure-button" onClick={this.handleSubmit}>
-                        <Icon name='check' />
+                    <Button
+                        icon
+                        labelPosition="left"
+                        color="green"
+                        id="create-procedure-button"
+                        onClick={this.handleSubmit}
+                    >
+                        <Icon name="check" />
                         CREATE
                     </Button>
                 </Modal.Actions>
             </Modal>
-        )
+        );
     }
 }
 
-export default AdminAddProcedureModal
+export default AdminAddProcedureModal;
