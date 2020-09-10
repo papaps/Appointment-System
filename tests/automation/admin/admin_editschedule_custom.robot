@@ -41,23 +41,19 @@ Edit Date Schedule
     ...     ELSE IF     '${date}'=='Fri'     Click Element   Friday-edit
     ...     ELSE IF     '${date}'=='Sat'     Click Element   Saturday-edit
     ...     ELSE IF     '${date}'=='Sun'     Click Element   Monday-edit
+    Click Element   edit-custom
 
 Input New Schedule
     Set Selenium Speed  0.3
-    Double Click Element   edit-start
-    Press Keys  None    DELETE
-    Double Click Element   edit-start
-    Press Keys  None    DELETE
-    Double Click Element   edit-start
-    Press Keys  None    DELETE
     Double Click Element   edit-end
     Press Keys  None    DELETE
     Double Click Element   edit-end
     Press Keys  None    DELETE
     Double Click Element   edit-end
     Press Keys  None    DELETE
-    Input Text  edit-start  11:00
-    Input Text  edit-end    17:30
+    Input Text  edit-end    12:00
+    Input Text  edit-start-add    13:30
+    Input Text  edit-end-add    17:30
     Set Selenium Speed  0.5
     Click Element   editing-schedule-modal
     Click Element   save-changes-schedule
@@ -76,27 +72,33 @@ New Schedule Should Be in Admin View
 
 Changed Table Monday
     Table Row Should Contain    schedule-table  1  Monday
-    Table Row Should Contain    schedule-table  1  11:00 - 17:30
+    Table Row Should Contain    schedule-table  1  11:00 - 12:00
+    Table Row Should Contain    schedule-table  1  13:30 - 17:30
 
 Changed Table Tuesday
     Table Row Should Contain    schedule-table  2  Tuesday
-    Table Row Should Contain    schedule-table  2  11:00 - 17:30
+    Table Row Should Contain    schedule-table  2  11:00 - 12:00
+    Table Row Should Contain    schedule-table  2  13:30 - 17:30
 
 Changed Table Wednesday
     Table Row Should Contain    schedule-table  3  Wednesday
-    Table Row Should Contain    schedule-table  3  11:00 - 17:30
+    Table Row Should Contain    schedule-table  3  11:00 - 12:00
+    Table Row Should Contain    schedule-table  3  13:30 - 17:30
 
 Changed Table Thursday
     Table Row Should Contain    schedule-table  4  Thursday
-    Table Row Should Contain    schedule-table  4  11:00 - 17:30
+    Table Row Should Contain    schedule-table  4  11:00 - 12:00
+    Table Row Should Contain    schedule-table  4  13:30 - 17:30
 
 Changed Table Friday
     Table Row Should Contain    schedule-table  5  Friday
-    Table Row Should Contain    schedule-table  5  11:00 - 17:30
+    Table Row Should Contain    schedule-table  5  11:00 - 12:00
+    Table Row Should Contain    schedule-table  5  13:30 - 17:30
 
 Changed Table Saturday
     Table Row Should Contain    schedule-table  6  Saturday
-    Table Row Should Contain    schedule-table  6  11:00 - 17:30
+    Table Row Should Contain    schedule-table  6  11:00 - 12:00
+    Table Row Should Contain    schedule-table  6  13:30 - 17:30
 
 New Schedule Should Be in Secretary View
     New Schedule Should Reflect In Adding Appointment
@@ -106,6 +108,8 @@ New Schedule Should Reflect In Adding Appointment
     Click Element   add-button
     ${date}=    Get Date
     Run Keyword If  '${date}'=='Sun'  Action For Add Appointment Sun
+    Press Keys    None    TAB
+    Input Text    add-timeInput  12:30 PM
     Click Element   date-done
     Press Keys    None    TAB
     Press Keys    None    TAB
