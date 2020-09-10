@@ -384,6 +384,13 @@ router.get("/adminDentist", urlencoder, async (req, res) => {
     });
 });
 
+router.get("/getAllDentists", urlencoder, async (req, res) => {
+    let doctors = await Doctor.getAllDoctors();
+    res.send({
+        dentist: doctors,
+    });
+});
+
 // LOAD TABLES FOR ALL PROCEDURES
 router.get("/adminProcedure", urlencoder, async (req, res) => {
     let processes = await Process.getAllProcesses();
@@ -399,6 +406,13 @@ router.get("/adminProcedure", urlencoder, async (req, res) => {
             table,
         },
         data: sendData,
+    });
+});
+
+router.get("/getAllProcedures", urlencoder, async (req, res) => {
+    let processes = await Process.getAllProcesses();
+    res.send({
+        procedure: processes,
     });
 });
 

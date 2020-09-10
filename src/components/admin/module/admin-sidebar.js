@@ -13,7 +13,7 @@ class AdminSidebar extends React.Component{
     }
 
     render(){
-        let activeItem = this.props.activeItem
+        let {activeItem} = this.props
         const no_padding = {padding:0}
 
         const item_styling = {
