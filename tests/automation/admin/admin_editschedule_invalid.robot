@@ -78,7 +78,7 @@ Click To Edit Schedule
     Click Element   Monday-edit
 
 Empty Schedule Regular
-    ${regular}=  Run Keyword and Return Status   Page Should Not Contain Element     edit-start-add
+    ${regular}=  Run Keyword and Return Status   Element Should Not Be Visible    edit-start-add
     Run Keyword If  ${regular} is ${FALSE}   Set To Regular
     Delete Regular Input
     Click Element   editing-schedule-modal
@@ -86,9 +86,6 @@ Empty Schedule Regular
     Page Should Contain    Please input a valid time
 
 Backward Schedule Regular
-#    ${regular}=  Run Keyword and Return Status   Page Should Not Contain Element     edit-start-add
-#    Run Keyword If  ${regular} is ${FALSE}   Set To Regular
-#    Delete Regular Input
     Input Text  edit-start  9:00
     Input Text  edit-end    8:00
     Click Element   editing-schedule-modal

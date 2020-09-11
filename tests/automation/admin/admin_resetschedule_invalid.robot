@@ -203,13 +203,13 @@ Short Regular Recurrence
     Input Text  start   8:00
     Input Text  end     8:00
     Click Element   add-header
-    Click Dates
     Click Element   add-schedule-button
     Page Should Contain    Time interval is too short
 
 Empty Custom Recurrence
     Delete Regular Input
     Click Custom Hours
+    Click Dates
     Click Element   add-schedule-button
     Page Should Contain     Please input a valid time
     Page Should Contain     Please choose a specific day of reoccurence
@@ -231,7 +231,6 @@ Duplicate Custom Recurrence
     Input Text  start-add  8:00
     Input Text  end-add   9:00
     Click Element   add-header
-    Click Dates
     Click Element   add-schedule-button
     Page Should Contain     Invalid time interval
 
@@ -242,7 +241,6 @@ Overlap Schedule Recurrence
     Input Text  start-add  8:30
     Input Text  end-add   10:00
     Click Element   add-header
-    Click Dates
     Click Element   add-schedule-button
     Page Should Contain    Invalid time interval
 
@@ -253,7 +251,6 @@ Short Custom Recurrence
     Input Text  start-add   9:00
     Input Text  end-add     10:00
     Click Element   add-header
-    Click Dates
     Click Element   add-schedule-button
     Page Should Contain    Time interval is too short
 
