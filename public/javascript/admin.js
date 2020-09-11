@@ -1295,14 +1295,16 @@ $("#add-unavailable-button").click(() => {
                         message: "The chosen date has appointment/s",
                     });
                     done = false;
-                } else{
+                } else {
                     //update dentist's available days if valid
                     if (done) {
                         $.ajax({
                             type: "post",
                             url: "admin/addUnavailableDates",
                             data: {
-                                doctorID: $("#add-unavailable-modal").data("id"),
+                                doctorID: $("#add-unavailable-modal").data(
+                                    "id"
+                                ),
                                 startdate: start,
                                 enddate: end,
                             },
@@ -1310,7 +1312,8 @@ $("#add-unavailable-button").click(() => {
                                 $("body").toast({
                                     class: "success",
                                     position: "top center",
-                                    message: "Dentist unavailable date successfully added",
+                                    message:
+                                        "Dentist unavailable date successfully added",
                                 });
                                 $("#add-unavailable-modal").modal("hide");
                             },
@@ -1320,8 +1323,6 @@ $("#add-unavailable-button").click(() => {
             },
         });
     }
-
-    
 });
 
 // Delete days where dentist is unavailable
@@ -1576,7 +1577,20 @@ $("#save-changes-schedule").click(() => {
                 }
             }
         } else {
-            if ($("#edit-start").val() == $("#edit-end").val()) {
+            if ($("#edit-start").val() == "" || $("#edit-end").val() == "") {
+                if ($("#edit-start").val() == "") {
+                    $("#edit-start-field").addClass("error");
+                }
+                if ($("#edit-end").val() == "") {
+                    $("#edit-end-field").addClass("error");
+                }
+                $("body").toast({
+                    class: "error",
+                    position: "top center",
+                    message: "Please input a valid time",
+                });
+                done = false;
+            } else if ($("#edit-start").val() == $("#edit-end").val()) {
                 if ($("#edit-start").val() == $("#edit-end").val()) {
                     $("#edit-start-field").addClass("error");
                     $("#edit-end-field").addClass("error");
