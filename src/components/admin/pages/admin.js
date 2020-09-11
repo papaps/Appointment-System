@@ -7,6 +7,7 @@ import AdminAddProcedureModal from "../module/admin-add-procedure-modal";
 import AdminResetSecretaryModal from "../module/admin-reset-secretary-modal";
 import AdminResetPasswordModal from "../module/admin-reset-password-modal";
 import AdminFreeMemoryModal from "../module/admin-free-memory-modal";
+import AdminEditProcedureModal from "../module/admin-edit-procedure-modal";
 import "../../../css/admin.css";
 import { Grid } from "semantic-ui-react";
 import "semantic-ui-css/components/reset.min.css";
@@ -35,9 +36,10 @@ class Admin extends React.Component {
         });
     }
 
-    handleModal(name) {
+    handleModal(name, data) {
         this.setState({
             activeModal: name,
+            data: data,
         });
     }
 
@@ -84,6 +86,11 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                 ></AdminFreeMemoryModal>
+                <AdminEditProcedureModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminEditProcedureModal>
             </>
         );
     }

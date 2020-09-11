@@ -22,7 +22,6 @@ class AdminTable extends React.Component {
         const { active } = this.state;
         let activeItem = this.props.activeItem;
         let table;
-        console.log(this.state.active);
         if (activeItem === "Dentist") {
             table = (
                 <AdminDentistTable

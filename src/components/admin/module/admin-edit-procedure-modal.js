@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Modal, Icon, Button, Form, Input } from "semantic-ui-react";
+import { Modal, Icon, Button, Form, Input, Message } from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 
-class AdminAddProcedureModal extends React.Component {
+class AdminEditProcedureModal extends React.Component {
     state = {
         procedure: "",
         error: {
@@ -11,19 +11,20 @@ class AdminAddProcedureModal extends React.Component {
         },
     };
 
-    handleOpen = () => this.props.handleModal("admin-add-procedure");
+    handleOpen = () => this.props.handleModal("admin-edit-procedure");
 
     handleClose = () => this.props.handleModal("none");
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-    handleSubmit = (event) => {
+    handleSubmit = (event, { datakey }) => {
         event.preventDefault();
         if (this.handleValidation()) {
             const data = {
+                procedureID: datakey,
                 name: this.state.procedure.trim(),
             };
-            axios.post("admin/addProcess", data).then((res) => {
+            axios.post("admin/editProcess", data).then((res) => {
                 console.log(res);
                 console.log(res.data);
             });
@@ -32,7 +33,7 @@ class AdminAddProcedureModal extends React.Component {
                 toast({
                     type: "success",
                     title: "Success",
-                    description: <p>New procedure successfully added</p>,
+                    description: <p>Procedure successfully edited</p>,
                     icon: "check",
                 });
             }, 1000);
@@ -58,37 +59,51 @@ class AdminAddProcedureModal extends React.Component {
 
         return formIsValid;
     }
+
     render() {
         let open;
 
-        if (this.props.activeModal === "admin-add-procedure") {
+        if (this.props.activeModal === "admin-edit-procedure") {
             open = true;
         } else {
             open = false;
         }
+        let oldprocedure;
+        let key;
+        if (this.props.data != null) {
+            oldprocedure = Object.values(this.props.data.processname);
+            key = this.props.data.key;
+        }
+        console.log(key);
 
         return (
             <Modal
                 closeIcon
                 size="mini"
-                id="procedure-modal"
+                id="edit-procedure-modal"
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
                 <Modal.Header as="h2">
-                    <Icon name="clipboard"></Icon>
-                    New Procedure
+                    <Icon name="edit"></Icon>
+                    Edit Procedure
                 </Modal.Header>
 
                 <Modal.Content>
                     <Form onSubmit={this.handleSubmit}>
-                        <Form.Field required id="procedure-field">
-                            <label>Procedure Name</label>
+                        <Form.Field id="old-procedure-field">
+                            <label>Old Procedure Name</label>
+                            <Message id="old-procedure-name">
+                                {oldprocedure}
+                            </Message>
+                        </Form.Field>
+                        <Form.Field required id="edit-procedure-field">
+                            <label>New Procedure Name</label>
                             <Input
                                 error={this.state.error.procedure}
                                 name="procedure"
-                                id="procedure-name"
+                                id="edit-procedure-name"
                                 autoComplete="false"
                                 placeholder="Procedure Name"
                                 onChange={this.handleChange}
@@ -99,10 +114,11 @@ class AdminAddProcedureModal extends React.Component {
 
                 <Modal.Actions>
                     <Button
+                        datakey={key}
                         icon
                         labelPosition="left"
                         color="green"
-                        id="create-procedure-button"
+                        id="edit-procedure-button"
                         onClick={this.handleSubmit}
                     >
                         <Icon name="check" />
@@ -114,4 +130,4 @@ class AdminAddProcedureModal extends React.Component {
     }
 }
 
-export default AdminAddProcedureModal;
+export default AdminEditProcedureModal;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Icon } from "semantic-ui-react";
+import { Table, Button } from "semantic-ui-react";
 import axios from "axios";
 
 class AdminProcedureTable extends React.Component {
@@ -13,6 +13,9 @@ class AdminProcedureTable extends React.Component {
 
     handleShowDimmer = () => this.props.handleShowDimmer();
     handleHideDimmer = () => this.props.handleHideDimmer();
+    handleModal(name, processname) {
+        this.props.handleModal(name, processname);
+    }
 
     componentDidMount() {
         axios.get("admin/getAllProcedures").then((response) => {
@@ -48,7 +51,16 @@ class AdminProcedureTable extends React.Component {
                         <Table.Row key={key}>
                             <Table.Cell>{processname}</Table.Cell>
                             <Table.Cell textAlign="right">
-                                <Button>Edit</Button>
+                                <Button
+                                    onClick={() =>
+                                        this.handleModal(
+                                            "admin-edit-procedure",
+                                            { key, processname }
+                                        )
+                                    }
+                                >
+                                    Edit
+                                </Button>
                                 <Button negative>Delete</Button>
                             </Table.Cell>
                         </Table.Row>
