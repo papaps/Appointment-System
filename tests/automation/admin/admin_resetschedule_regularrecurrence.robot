@@ -35,23 +35,26 @@ Reset Daily Schedule
     ${date}=    Get Date
     Click Element   add-schedule
     Wait Until Page Contains Element    adding-schedule-modal
-    Click Element   daily-field
+    Click Element   repeat-field
 
 Input New Schedule
     Input Text  start  11:00
     Input Text  end    17:30
     Click Element   add-header
+    Click Element   mon
+    Click Element   wed
+    Click Element   fri
     Click Element   add-schedule-button
 
 Reset Schedule Should Be in Admin View
     Element Text Should Be  class:success   Dentist schedule successfully added
     Set Selenium Speed  0.1
     Table Row Should Contain    schedule-table  1  11:00 - 17:30
-    Table Row Should Contain    schedule-table  2  11:00 - 17:30
+    Table Row Should Contain    schedule-table  2  -
     Table Row Should Contain    schedule-table  3  11:00 - 17:30
-    Table Row Should Contain    schedule-table  4  11:00 - 17:30
+    Table Row Should Contain    schedule-table  4  -
     Table Row Should Contain    schedule-table  5  11:00 - 17:30
-    Table Row Should Contain    schedule-table  6  11:00 - 17:30
+    Table Row Should Contain    schedule-table  6  -
     Set Selenium Speed  0.5
     Click Element   close-schedule-modal
 
@@ -74,197 +77,212 @@ Action For Add Appointment Sun
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Mon
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Tue
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Wed
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Thu
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Fri
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Discard Appointment
 
 Action For Add Appointment Sat
     Sleep   1
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Unavailable in Adding Appointment
     Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
-    Dentist Unavaible in Adding Appointment
+    Dentist Available in Adding Appointment
     Discard Appointment
 
-Dentist Unavaible in Adding Appointment
+Dentist Unavailable in Adding Appointment
+    Press Keys    None    TAB
+    Press Keys  None    DELETE
+    Input Text    add-timeInput  8:00 AM
     Click Element   date-done
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    TAB
     Page Should Not Contain    Dr. Daisy Buchanan
+    Click Element   add-back-button
+
+Dentist Available in Adding Appointment
+    Press Keys    None    TAB
+    Press Keys  None    DELETE
+    Input Text    add-timeInput  12:30 PM
+    Click Element   date-done
+    Press Keys    None    TAB
+    Press Keys    None    TAB
+    Press Keys    None    TAB
+    Press Keys    None    TAB
+    Page Should Contain    Dr. Daisy Buchanan
     Click Element   add-back-button
 
 Discard Appointment
@@ -284,126 +302,96 @@ Reset Schedule Should Reflect in Availablity
     ...     ELSE    Action For Availability Mon
 
 Action For Availability Mon
+    Sleep   1
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-2    Unavailable
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-4    Unavailable
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-6    Unavailable
 
 Action For Availability Tue
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Sleep   1
+    Element Text Should Be  0-2    Unavailable
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-4    Unavailable
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-6    Unavailable
     Click Element   next-button
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
 
 Action For Availability Wed
+    Sleep   1
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-4    Unavailable
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-6    Unavailable
     Click Element   next-button
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-2    Unavailable
 
 Action For Availability Thu
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Sleep   1
+    Element Text Should Be  0-4    Unavailable
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-6    Unavailable
     Click Element   next-button
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-2    Unavailable
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
 
 Action For Availability Fri
+    Sleep   1
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-6    Unavailable
     Click Element   next-button
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-2    Unavailable
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-4    Unavailable
 
 Action For Availability Sat
-    Click Element  0-6
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Sleep   1
+    Element Text Should Be  0-6    Unavailable
     Click Element   next-button
     Click Element  0-1
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-2
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-2    Unavailable
     Click Element  0-3
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
-    Click Element  0-4
-    Check Unavailable Per Date in Availability
-    Press Keys  None    ESC
+    Element Text Should Be  0-4    Unavailable
     Click Element  0-5
     Check Unavailable Per Date in Availability
     Press Keys  None    ESC
