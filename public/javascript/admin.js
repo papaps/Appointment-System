@@ -1386,7 +1386,8 @@ $("#add-schedule-button").click(() => {
             //displays error if start and end times are the same
             if (
                 $("#start").val() == $("#end").val() ||
-                $("#start-add").val() == $("#end-add").val()
+                $("#start-add").val() == $("#end-add").val() ||
+                $("#start-add").val() == $("#end").val()
             ) {
                 //check for first time interval
                 if ($("#start").val() == $("#end").val()) {
@@ -1397,6 +1398,10 @@ $("#add-schedule-button").click(() => {
                 if ($("#start-add").val() == $("#end-add").val()) {
                     $("#start-add-field").addClass("error");
                     $("#end-add-field").addClass("error");
+                }
+                if ($("#start-add").val() == $("#end").val()){
+                    $("#start-add-field").addClass("error");
+                    $("#end-field").addClass("error");
                 }
                 $("body").toast({
                     class: "error",
@@ -1540,7 +1545,8 @@ $("#save-changes-schedule").click(() => {
         if ($("#edit-custom")[0].checked) {
             if (
                 $("#edit-start").val() == $("#edit-end").val() ||
-                $("#edit-start-add").val() == $("#edit-end-add").val()
+                $("#edit-start-add").val() == $("#edit-end-add").val() ||
+                $("#edit-end").val() ==  $("#edit-start-add").val()
             ) {
                 if ($("#edit-start").val() == $("#edit-end").val()) {
                     $("#edit-start-field").addClass("error");
@@ -1549,6 +1555,10 @@ $("#save-changes-schedule").click(() => {
                 if ($("#editstart-add").val() == $("#edit-end-add").val()) {
                     $("#edit-start-add-field").addClass("error");
                     $("#edit-end-add-field").addClass("error");
+                }
+                if($("#edit-end").val() ==  $("#edit-start-add").val()){
+                    $("#edit-start-add-field").addClass("error");
+                    $("#edit-end-field").addClass("error");
                 }
                 $("body").toast({
                     class: "error",
