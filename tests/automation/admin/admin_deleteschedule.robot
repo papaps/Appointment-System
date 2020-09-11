@@ -107,10 +107,10 @@ Deleted Schedule Should Reflect in Availablity
     Press Keys  None    ARROW_DOWN
     Press Keys  None    ENTER
     ${date}=    Get Date
-    Run Keyword If  '${date}'=='Mon'     Element Text Should Be  0-1    No more slots
-    ...     ELSE IF     '${date}'=='Tue'     Element Text Should Be  0-2    No more slots
-    ...     ELSE IF     '${date}'=='Wed'     Element Text Should Be  0-3    No more slots
-    ...     ELSE IF     '${date}'=='Thu'     Element Text Should Be  0-4    No more slots
-    ...     ELSE IF     '${date}'=='Fri'     Element Text Should Be  0-5    No more slots
-    ...     ELSE IF     '${date}'=='Sat'     Element Text Should Be  0-6    No more slots
-    ...     ELSE IF     '${date}'=='Sun'     Element Text Should Be  0-1    No more slots
+    Run Keyword If  '${date}'=='Mon'     Element Text Should Be  0-1    Unavailable
+    ...     ELSE IF     '${date}'=='Tue'     Element Text Should Be  0-2    Unavailable
+    ...     ELSE IF     '${date}'=='Wed'     Element Text Should Be  0-3    Unavailable
+    ...     ELSE IF     '${date}'=='Thu'     Element Text Should Be  0-4    Unavailable
+    ...     ELSE IF     '${date}'=='Fri'     Element Text Should Be  0-5    Unavailable
+    ...     ELSE IF     '${date}'=='Sat'     Element Text Should Be  0-6    Unavailable
+    ...     ELSE IF     '${date}'=='Sun'     Element Text Should Be  0-1    Unavailable
