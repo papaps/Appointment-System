@@ -23,10 +23,12 @@ class Admin extends React.Component {
 
         this.handleItem = this.handleItem.bind(this);
         this.handleModal = this.handleModal.bind(this);
+        this.handleTable = this.handleTable.bind(this);
 
         this.state = {
             activeItem: "Dentist",
             activeModal: "none",
+            activeTable: "Dentist",
         };
     }
 
@@ -43,6 +45,12 @@ class Admin extends React.Component {
         });
     }
 
+    handleTable(name) {
+        this.setState({
+            activeTable: name,
+        });
+    }
+
     render() {
         return (
             <>
@@ -53,12 +61,13 @@ class Admin extends React.Component {
                 >
                     <AdminSidebar
                         handleItem={this.handleItem}
+                        handleTable={this.handleTable}
                         handleModal={this.handleModal}
                         activeItem={this.state.activeItem}
                     />
                     <SemanticToastContainer></SemanticToastContainer>
                     <AdminTable
-                        activeItem={this.state.activeItem}
+                        activeTable={this.state.activeTable}
                         handleModal={this.handleModal}
                     />
                 </Grid>

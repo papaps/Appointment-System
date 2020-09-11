@@ -20,9 +20,9 @@ class AdminTable extends React.Component {
     handleHideDimmer = () => this.setState({ active: false });
     render() {
         const { active } = this.state;
-        let activeItem = this.props.activeItem;
+        let activeTable = this.props.activeTable;
         let table;
-        if (activeItem === "Dentist") {
+        if (activeTable === "Dentist") {
             table = (
                 <AdminDentistTable
                     handleHideDimmer={this.handleHideDimmer}
@@ -30,7 +30,7 @@ class AdminTable extends React.Component {
                     handleModal={this.props.handleModal}
                 ></AdminDentistTable>
             );
-        } else {
+        } else if (activeTable === "Procedure") {
             table = (
                 <AdminProcedureTable
                     handleHideDimmer={this.handleHideDimmer}
