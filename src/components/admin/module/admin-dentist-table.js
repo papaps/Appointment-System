@@ -11,11 +11,14 @@ class AdminDentistTable extends React.Component {
         };
     }
 
+    handleShowDimmer = () => this.props.handleShowDimmer();
+    handleHideDimmer = () => this.props.handleHideDimmer();
+
     componentDidMount() {
         axios.get("admin/getAllDentists").then((response) => {
             this.setState({
                 dentists: [
-                    ...response.data.dentist.map((dentist) => {
+                    ...response.data.dentists.map((dentist) => {
                         return {
                             key: dentist._id,
                             firstname: dentist.firstname,
@@ -27,6 +30,11 @@ class AdminDentistTable extends React.Component {
                 ],
             });
         });
+        this.handleHideDimmer();
+    }
+
+    componentWillUnmount() {
+        this.handleShowDimmer();
     }
 
     render() {

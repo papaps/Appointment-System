@@ -55,7 +55,10 @@ class Admin extends React.Component {
                         activeItem={this.state.activeItem}
                     />
                     <SemanticToastContainer></SemanticToastContainer>
-                    <AdminTable activeItem={this.state.activeItem} />
+                    <AdminTable
+                        activeItem={this.state.activeItem}
+                        handleModal={this.handleModal}
+                    />
                 </Grid>
                 <AdminCreateModal
                     handleModal={this.handleModal}
