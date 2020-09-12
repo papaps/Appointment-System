@@ -26,7 +26,6 @@ New Schedule Should Be Set
 Get Date
     ${date}=    Get Current Date
     ${date}=    Convert Date    ${date}     result_format=%a
-    Log To Console  date ${date}
     [Return]        ${date}
 
 Edit Date Schedule
@@ -45,12 +44,19 @@ Edit Date Schedule
 
 Input New Schedule
     Set Selenium Speed  0.3
-    Double Click Element   edit-end
+    Double Click Element   edit-start
+    Press Keys  None    DELETE
+    Double Click Element   edit-start
+    Press Keys  None    DELETE
+    Double Click Element   edit-start
     Press Keys  None    DELETE
     Double Click Element   edit-end
     Press Keys  None    DELETE
     Double Click Element   edit-end
     Press Keys  None    DELETE
+    Double Click Element   edit-end
+    Press Keys  None    DELETE
+    Input Text  edit-start  11:00
     Input Text  edit-end    12:00
     Input Text  edit-start-add    13:30
     Input Text  edit-end-add    17:30
@@ -61,6 +67,7 @@ Input New Schedule
 New Schedule Should Be in Admin View
     ${date}=    Get Date
     Element Text Should Be  class:success   Dentist schedule successfully edited
+    Set Selenium Speed  0.1
     Run Keyword If  '${date}'=='Mon'     Changed Table Monday
     ...     ELSE IF     '${date}'=='Tue'     Changed Table Tuesday
     ...     ELSE IF     '${date}'=='Wed'     Changed Table Wednesday
@@ -68,6 +75,7 @@ New Schedule Should Be in Admin View
     ...     ELSE IF     '${date}'=='Fri'     Changed Table Friday
     ...     ELSE IF     '${date}'=='Sat'     Changed Table Saturday
     ...     ELSE IF     '${date}'=='Sun'     Changed Table Monday
+    Set Selenium Speed  0.5
     Click Element   close-schedule-modal
 
 Changed Table Monday
@@ -109,6 +117,7 @@ New Schedule Should Reflect In Adding Appointment
     ${date}=    Get Date
     Run Keyword If  '${date}'=='Sun'  Action For Add Appointment Sun
     Press Keys    None    TAB
+    Press Keys  None    DELETE
     Input Text    add-timeInput  12:30 PM
     Click Element   date-done
     Press Keys    None    TAB
@@ -121,6 +130,7 @@ New Schedule Should Reflect In Adding Appointment
     Click Element   discard
 
 Action For Add Appointment Sun
+    Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
 
@@ -136,3 +146,26 @@ New Schedule Should Reflect in Availablity
     ...     ELSE IF     '${date}'=='Fri'     Click Element  0-5
     ...     ELSE IF     '${date}'=='Sat'     Click Element  0-6
     ...     ELSE IF     '${date}'=='Sun'     Click Element  0-1
+    Set Selenium Speed  0.05
+    Table Cell Should Contain   availability-modal-table  2  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  3  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  4  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  5  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  6  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  7  2  Unavailable
+#    Table Cell Should Contain   availability-modal-table  8  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  9  2  ${EMPTY}
+    Table Cell Should Contain   availability-modal-table  10  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  11  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  12  2  Unavailable
+#    Table Cell Should Contain   availability-modal-table  2  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  3  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  4  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  5  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  6  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  7  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  8  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  9  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  10  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  11  4  ${EMPTY}
+    Table Cell Should Contain   availability-modal-table  11  4  Unavailable

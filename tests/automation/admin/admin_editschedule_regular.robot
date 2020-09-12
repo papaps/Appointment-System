@@ -26,7 +26,6 @@ New Schedule Should Be Set
 Get Date
     ${date}=    Get Current Date
     ${date}=    Convert Date    ${date}     result_format=%a
-    Log To Console  date ${date}
     [Return]        ${date}
 
 Edit Date Schedule
@@ -117,6 +116,7 @@ New Schedule Should Reflect In Adding Appointment
     Click Element   discard
 
 Action For Add Appointment Sun
+    Sleep   1
     Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
 
@@ -132,3 +132,26 @@ New Schedule Should Reflect in Availablity
     ...     ELSE IF     '${date}'=='Fri'     Click Element  0-5
     ...     ELSE IF     '${date}'=='Sat'     Click Element  0-6
     ...     ELSE IF     '${date}'=='Sun'     Click Element  0-1
+    Set Selenium Speed  0.05
+    Table Cell Should Contain   availability-modal-table  2  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  3  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  4  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  5  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  6  2  Unavailable
+    Table Cell Should Contain   availability-modal-table  7  2  Unavailable
+#    Table Cell Should Contain   availability-modal-table  8  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  9  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  10  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  11  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  12  2  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  2  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  3  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  4  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  5  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  6  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  7  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  8  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  9  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  10  4  ${EMPTY}
+#    Table Cell Should Contain   availability-modal-table  11  4  ${EMPTY}
+    Table Cell Should Contain   availability-modal-table  11  4  Unavailable
