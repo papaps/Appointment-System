@@ -784,6 +784,13 @@ router.post("/doctorHasAppointment", urlencoder, async (req, res) => {
     let endnewDate = Date.parse(enddate);
     let endformattedDate = moment(endnewDate).format("MMM D YYYY");
 
+    let today = new Date();
+    let todayFormatted = moment(today).format("MMM D YYYY");
+    
+    if (todayFormatted == startformattedDate || todayFormatted == endformattedDate){
+        res.send(true)
+    }
+
     let startappointments = await Appointment.getAppByDoctorandDate(
         doctorID,
         startformattedDate
