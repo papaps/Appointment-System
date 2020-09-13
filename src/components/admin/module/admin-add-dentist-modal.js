@@ -37,18 +37,25 @@ class AdminAddDentistModal extends React.Component {
                 status: "Active",
             };
             axios.post("admin/addDentist", data).then((res) => {
-                console.log(res);
-                console.log(res.data);
+                if(res.data.message == true){
+                    this.handleClose();
+                    setTimeout(() => {
+                        toast({
+                            type: "success",
+                            title: "Success",
+                            description: <p>New dentist successfully added</p>,
+                            icon: "check",
+                        });
+                    }, 1000);
+                } else{
+                    toast({
+                        type: "error",
+                        title: "Error",
+                        description: <p>Username already exists</p>,
+                        icon: "cancel",
+                    });
+                }
             });
-            this.handleClose();
-            setTimeout(() => {
-                toast({
-                    type: "success",
-                    title: "Success",
-                    description: <p>New dentist successfully added</p>,
-                    icon: "check",
-                });
-            }, 1000);
         }
     };
 

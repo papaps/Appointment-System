@@ -24,18 +24,26 @@ class AdminAddProcedureModal extends React.Component {
                 name: this.state.procedure.trim(),
             };
             axios.post("admin/addProcess", data).then((res) => {
-                console.log(res);
-                console.log(res.data);
+                if(res.data.message == true){
+                    this.handleClose();
+                    setTimeout(() => {
+                        toast({
+                            type: "success",
+                            title: "Success",
+                            description: <p>New procedure successfully added</p>,
+                            icon: "check",
+                        });
+                    }, 1000);
+                }else{
+                    toast({
+                        type: "error",
+                        title: "Error",
+                        description: <p>Procedure already exists</p>,
+                        icon: "cancel",
+                    });
+                }
             });
-            this.handleClose();
-            setTimeout(() => {
-                toast({
-                    type: "success",
-                    title: "Success",
-                    description: <p>New procedure successfully added</p>,
-                    icon: "check",
-                });
-            }, 1000);
+            
         }
     };
 

@@ -25,18 +25,26 @@ class AdminEditProcedureModal extends React.Component {
                 name: this.state.procedure.trim(),
             };
             axios.post("admin/editProcess", data).then((res) => {
-                console.log(res);
-                console.log(res.data);
+                if(res.data.message == true){
+                    this.handleClose();
+                    setTimeout(() => {
+                        toast({
+                            type: "success",
+                            title: "Success",
+                            description: <p>Procedure successfully edited</p>,
+                            icon: "check",
+                        });
+                    }, 1000);
+                }else{
+                    console.log(res)
+                    toast({
+                        type: "error",
+                        title: "Error",
+                        description: <p>Procedure already exists</p>,
+                        icon: "cancel",
+                    });
+                }
             });
-            this.handleClose();
-            setTimeout(() => {
-                toast({
-                    type: "success",
-                    title: "Success",
-                    description: <p>Procedure successfully edited</p>,
-                    icon: "check",
-                });
-            }, 1000);
         }
     };
 
@@ -122,7 +130,7 @@ class AdminEditProcedureModal extends React.Component {
                         onClick={this.handleSubmit}
                     >
                         <Icon name="check" />
-                        CREATE
+                        SAVE CHANGES
                     </Button>
                 </Modal.Actions>
             </Modal>
