@@ -6,7 +6,7 @@
       - gem install dpl
 
     stages:
-      - build
+      - builds
       - test
       - production
 
@@ -15,7 +15,7 @@
         - node_modules/
 
     install_dependencies:
-      stage: build
+      stage: builds
       script:
         - npm install
       artifacts:
