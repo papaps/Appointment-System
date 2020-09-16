@@ -16,7 +16,10 @@ import "semantic-ui-css/components/container.min.css";
 import "semantic-ui-css/components/icon.min.css";
 import "semantic-ui-css/components/message.min.css";
 import "semantic-ui-css/components/header.min.css";
-import { SemanticToastContainer } from "react-semantic-toasts";
+import { SemanticToastContainer, toast } from "react-semantic-toasts";
+import AdminDeleteProcedureModal from "../module/admin-delete-procedure-modal";
+import AdminEditDentistModal from "../module/admin-edit-dentist-modal";
+import AdminDeleteDentistModal from "../module/admin-delete-dentist-modal";
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -54,6 +57,7 @@ class Admin extends React.Component {
     render() {
         return (
             <>
+                <SemanticToastContainer></SemanticToastContainer>
                 <Grid
                     columns={2}
                     id="container"
@@ -65,7 +69,7 @@ class Admin extends React.Component {
                         handleModal={this.handleModal}
                         activeItem={this.state.activeItem}
                     />
-                    <SemanticToastContainer></SemanticToastContainer>
+
                     <AdminTable
                         activeTable={this.state.activeTable}
                         handleModal={this.handleModal}
@@ -100,6 +104,21 @@ class Admin extends React.Component {
                     activeModal={this.state.activeModal}
                     data={this.state.data}
                 ></AdminEditProcedureModal>
+                <AdminEditDentistModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminEditDentistModal>
+                <AdminDeleteProcedureModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminDeleteProcedureModal>
+                <AdminDeleteDentistModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminDeleteDentistModal>
             </>
         );
     }

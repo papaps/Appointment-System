@@ -14,6 +14,10 @@ class AdminDentistTable extends React.Component {
     handleShowDimmer = () => this.props.handleShowDimmer();
     handleHideDimmer = () => this.props.handleHideDimmer();
 
+    handleModal(name, processname) {
+        this.props.handleModal(name, processname);
+    }
+
     componentDidMount() {
         axios.get("admin/getAllDentists").then((response) => {
             this.setState({
@@ -25,6 +29,7 @@ class AdminDentistTable extends React.Component {
                             lastname: dentist.lastname,
                             status: dentist.status,
                             lastLogin: dentist.lastLogin,
+                            username: dentist.username
                         };
                     }),
                 ],
@@ -56,7 +61,7 @@ class AdminDentistTable extends React.Component {
                 </Table.Header>
                 <Table.Body>
                     {this.state.dentists.map(
-                        ({ key, firstname, lastname, status, lastLogin }) => (
+                        ({ key, firstname, lastname, status, lastLogin, username }) => (
                             <Table.Row key={key}>
                                 <Table.Cell>{firstname}</Table.Cell>
                                 <Table.Cell>{lastname}</Table.Cell>
@@ -68,8 +73,20 @@ class AdminDentistTable extends React.Component {
                                     <Button color="green">View</Button>
                                 </Table.Cell>
                                 <Table.Cell textAlign="right">
-                                    <Icon name="edit" size="large"></Icon>
-                                    <Icon name="trash" size="large"></Icon>
+                                    <Icon name="edit" size="large"
+                                    onClick={() =>
+                                        this.handleModal(
+                                            "admin-edit-dentist",
+                                            { key, firstname, lastname }
+                                        )
+                                    }></Icon>
+                                    <Icon name="trash" size="large"
+                                    onClick={() =>
+                                        this.handleModal(
+                                            "admin-delete-dentist",
+                                            { key, firstname, lastname }
+                                        )
+                                    }></Icon>
                                 </Table.Cell>
                             </Table.Row>
                         )

@@ -78,11 +78,11 @@ class AdminEditProcedureModal extends React.Component {
         }
         let oldprocedure;
         let key;
-        if (this.props.data != null) {
+        if (this.props.data != null && this.props.data.processname !=null) {
             oldprocedure = Object.values(this.props.data.processname);
+            console.log(oldprocedure)
             key = this.props.data.key;
         }
-        console.log(key);
 
         return (
             <Modal

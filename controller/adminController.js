@@ -312,7 +312,7 @@ router.post("/editProcess", async (req, res) => {
 });
 //Deletes an existing appointment
 router.post("/deleteProcess", async (req, res) => {
-    let processID = req.body.processID;
+    let processID = req.body.procedureID;
     let apps = await Appointment.getAll();
     for (var i = 0; i < apps.length; i++) {
         let appID = apps[i]._id;

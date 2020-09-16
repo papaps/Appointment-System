@@ -1233,7 +1233,7 @@ $("#delete-procedure-button").click(() => {
         type: "post",
         url: "admin/deleteProcess",
         data: {
-            processID: procedureID,
+            procedureID: procedureID,
         },
         success: (value) => {
             $("#delete-procedure-modal").modal("hide");

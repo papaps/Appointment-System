@@ -61,7 +61,17 @@ class AdminProcedureTable extends React.Component {
                                 >
                                     Edit
                                 </Button>
-                                <Button negative>Delete</Button>
+                                <Button
+                                    negative
+                                    onClick={() =>
+                                        this.handleModal(
+                                            "admin-delete-procedure",
+                                            { key, processname }
+                                        )
+                                    }
+                                >
+                                    Delete
+                                </Button>
                             </Table.Cell>
                         </Table.Row>
                     ))}
