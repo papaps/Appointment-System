@@ -7,48 +7,48 @@ Suite Teardown    Close Browser
 Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Test Cases ***
-#Secretary View
-#    Login Secretary
-#    Set Selenium Speed  0.5
-#    Sleep   1
-#
-#View Appointment Setup
-#    [Template]  Add Appointment
-#    [Tags]              FIRST_NAME      TIME
-#    Add Appointment     Aperson         8:00 AM
-#    Add Appointment     Bperson         8:30 AM
-#    Add Appointment     Cperson         9:00 AM
-#    Add Appointment     Dperson         9:30 AM
-#    Add Appointment     Eperson         10:00 AM
-#    Add Appointment     Fperson         10:30 AM
-#    Add Appointment     Gperson         11:00 AM
-#    Add Appointment     Hperson         11:30 AM
-#
-#Exit Secretary View
-#    Logout Page
+Secretary View
+    Login Secretary
+    Set Selenium Speed  0.5
+    Sleep   1
 
-#View Appointment Should Work
-#    Login Dentist
-#    Sleep   1
-#    Click Next Button
-#    Click Saturday
-#    View Saturday Schedule
-#    Logout Page
+View Appointment Setup
+    [Template]  Add Appointment
+    [Tags]              FIRST_NAME      TIME
+    Add Appointment     Aperson         8:00 AM
+    Add Appointment     Bperson         8:30 AM
+    Add Appointment     Cperson         9:00 AM
+    Add Appointment     Dperson         9:30 AM
+    Add Appointment     Eperson         10:00 AM
+    Add Appointment     Fperson         10:30 AM
+    Add Appointment     Gperson         11:00 AM
+    Add Appointment     Hperson         11:30 AM
+
+Exit Secretary View
+    Logout Page
+
+View Appointment Should Work
+    Login Dentist
+    Sleep   1
+    Click Next Button
+    Click Weekdate
+    View Weekdate Schedule
+    Logout Page
 
 View Appointment Teardown
     Login Secretary
     Set Selenium Speed  0.5
     Click Dropdown
     Click Next Button
-    Click Saturday
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
-    Delete Appointment
+    Click Weekdate
+    Delete Appointment  8:00 AM-0
+    Delete Appointment  8:30 AM-0
+    Delete Appointment  9:00 AM-0
+    Delete Appointment  9:30 AM-0
+    Delete Appointment  10:00 AM-0
+    Delete Appointment  10:30 AM-0
+    Delete Appointment  11:00 AM-0
+    Delete Appointment  11:30 AM-0
     Logout Page
 
 
@@ -67,13 +67,13 @@ Get Date
     ${date}=    Get Current Date
     ${letters}=     Convert Date    ${date}     result_format=%A
 
-    ${mon}=     Add Time To Date    ${date}  12 days
-    ${tue}=     Add Time To Date    ${date}  11 days
-    ${wed}=     Add Time To Date    ${date}  10 days
-    ${thu}=     Add Time To Date    ${date}  9 days
-    ${fri}=     Add Time To Date    ${date}  8 days
-    ${sat}=     Add Time To Date    ${date}  7 days
-    ${sun}=     Add Time To Date    ${date}  6 days
+    ${mon}=     Add Time To Date    ${date}  11 days
+    ${tue}=     Add Time To Date    ${date}  10 days
+    ${wed}=     Add Time To Date    ${date}  9 days
+    ${thu}=     Add Time To Date    ${date}  8 days
+    ${fri}=     Add Time To Date    ${date}  7 days
+    ${sat}=     Add Time To Date    ${date}  6 days
+    ${sun}=     Add Time To Date    ${date}  5 days
 
     ${date}=     Set Variable If  '${letters}'=='Monday'  ${mon}
     ...  '${letters}'=='Tuesday'  ${tue}
@@ -100,14 +100,15 @@ Click Proceed Edit Appointment Button
 Click Next Button
     Click Element   next-button
 
-Click Saturday
-    Click Element   Saturday
+Click Weekdate
+    Click Element   Friday
 
 Click Dropdown
     Click Element   view-chooser
 
 Click Appointment
-    Click Element   slots-table
+    [Arguments]  ${button}
+    Click Element   ${button}
 
 Click Delete Appointment
     Click Element   edit-delete-button
@@ -180,7 +181,7 @@ Add Appointment
     Press Keys  None    ARROW_DOWN
     Press Keys  None    ENTER
 
-View Saturday Schedule
+View Weekdate Schedule
     Page Should Contain  Aperson
     Page Should Contain  Bperson
     Page Should Contain  Cperson
@@ -188,10 +189,11 @@ View Saturday Schedule
     Page Should Contain  Eperson
     Page Should Contain  Fperson
     Page Should Contain  Gperson
-#    Page Should Contain  Hperson
+    Page Should Contain  Hperson
 
 Delete Appointment
-    Click Appointment
+    [Arguments]  ${button}
+    Click Appointment   ${button}
     Click Proceed Edit Appointment Button
     Click Delete Appointment
     Click Continue Delete Appointment
