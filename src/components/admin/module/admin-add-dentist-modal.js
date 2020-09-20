@@ -37,7 +37,7 @@ class AdminAddDentistModal extends React.Component {
                 status: "Active",
             };
             axios.post("admin/addDentist", data).then((res) => {
-                if(res.data.message == true){
+                if(res.data.message === true){
                     this.handleClose();
                     setTimeout(() => {
                         toast({

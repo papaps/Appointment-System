@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Table, Dimmer, Segment } from "semantic-ui-react";
+import { Grid, Dimmer } from "semantic-ui-react";
 import AdminDentistTable from "./admin-dentist-table";
 import AdminProcedureTable from "./admin-procedure-table";
 

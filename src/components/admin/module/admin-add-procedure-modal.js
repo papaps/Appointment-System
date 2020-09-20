@@ -24,7 +24,7 @@ class AdminAddProcedureModal extends React.Component {
                 name: this.state.procedure.trim(),
             };
             axios.post("admin/addProcess", data).then((res) => {
-                if(res.data.message == true){
+                if(res.data.message === true){
                     this.handleClose();
                     setTimeout(() => {
                         toast({
