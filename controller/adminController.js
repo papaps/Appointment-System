@@ -279,6 +279,7 @@ router.post("/editDentist", async (req, res) => {
 // ALLOWS UPDATING IF THE DOCTOR IS CURRENTLY AVAILABLE OR NOT
 router.post("/updateDentistStatus", async (req, res) => {
     Doctor.updateDoctorStatus(req.body.doctorID, req.body.status);
+    res.send(true)
 });
 
 // ADD PROCESS; This probably refers to an appointment

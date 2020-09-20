@@ -29,7 +29,7 @@ class AdminDentistTable extends React.Component {
                             lastname: dentist.lastname,
                             status: dentist.status,
                             lastLogin: dentist.lastLogin,
-                            username: dentist.username
+                            username: dentist.username,
                         };
                     }),
                 ],
@@ -41,6 +41,27 @@ class AdminDentistTable extends React.Component {
     componentWillUnmount() {
         this.handleShowDimmer();
     }
+
+    handleStatus = (e, { datakey, status }) => {
+        let data;
+        
+        if (status === "Active") {
+            console.log("active");
+            data = {
+                doctorID: datakey,
+                status: "Inactive",
+            };
+        } else {
+            data = {
+                doctorID: datakey,
+                status: "Active",
+            };
+        }
+        axios.post("admin/updateDentistStatus", data).then((response) => {
+            console.log(response)
+        });
+        console.log("out")
+    };
 
     render() {
         return (
@@ -61,32 +82,63 @@ class AdminDentistTable extends React.Component {
                 </Table.Header>
                 <Table.Body>
                     {this.state.dentists.map(
-                        ({ key, firstname, lastname, status, lastLogin, username }) => (
+                        ({
+                            key,
+                            firstname,
+                            lastname,
+                            status,
+                            lastLogin,
+                            username,
+                        }) => (
                             <Table.Row key={key}>
                                 <Table.Cell>{firstname}</Table.Cell>
                                 <Table.Cell>{lastname}</Table.Cell>
                                 <Table.Cell>{lastLogin}</Table.Cell>
                                 <Table.Cell textAlign="center">
-                                    {status}
+                                    {status === "Active" && (
+                                        <Button
+                                            color="green"
+                                            datakey={key}
+                                            status={status}
+                                            onClick={this.handleStatus}
+                                        >
+                                            Active
+                                        </Button>
+                                    )}
+                                    {status === "Inactive" && (
+                                        <Button
+                                            datakey={key}
+                                            status={status}
+                                            onClick={this.handleStatus}
+                                        >
+                                            Inactive
+                                        </Button>
+                                    )}
                                 </Table.Cell>
                                 <Table.Cell textAlign="center">
                                     <Button color="green">View</Button>
                                 </Table.Cell>
                                 <Table.Cell textAlign="right">
-                                    <Icon name="edit" size="large"
-                                    onClick={() =>
-                                        this.handleModal(
-                                            "admin-edit-dentist",
-                                            { key, firstname, lastname }
-                                        )
-                                    }></Icon>
-                                    <Icon name="trash" size="large"
-                                    onClick={() =>
-                                        this.handleModal(
-                                            "admin-delete-dentist",
-                                            { key, firstname, lastname }
-                                        )
-                                    }></Icon>
+                                    <Icon
+                                        name="edit"
+                                        size="large"
+                                        onClick={() =>
+                                            this.handleModal(
+                                                "admin-edit-dentist",
+                                                { key, firstname, lastname }
+                                            )
+                                        }
+                                    ></Icon>
+                                    <Icon
+                                        name="trash"
+                                        size="large"
+                                        onClick={() =>
+                                            this.handleModal(
+                                                "admin-delete-dentist",
+                                                { key, firstname, lastname }
+                                            )
+                                        }
+                                    ></Icon>
                                 </Table.Cell>
                             </Table.Row>
                         )
