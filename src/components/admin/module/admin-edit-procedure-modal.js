@@ -17,6 +17,8 @@ class AdminEditProcedureModal extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
+    handleUpdateTable = () => this.props.handleUpdateTable();
+
     handleSubmit = (event, { datakey }) => {
         event.preventDefault();
         if (this.handleValidation()) {
@@ -35,6 +37,7 @@ class AdminEditProcedureModal extends React.Component {
                             icon: "check",
                         });
                     }, 1000);
+                    this.handleUpdateTable()
                 }else{
                     console.log(res)
                     toast({
@@ -80,7 +83,6 @@ class AdminEditProcedureModal extends React.Component {
         let key;
         if (this.props.data != null && this.props.data.processname !=null) {
             oldprocedure = Object.values(this.props.data.processname);
-            console.log(oldprocedure)
             key = this.props.data.key;
         }
 

@@ -24,6 +24,8 @@ class AdminEditDentistModal extends React.Component {
     handleClose = () => this.props.handleModal("none");
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    
+    handleUpdateTable = () => this.props.handleUpdateTable();
 
     handleSubmit = (event, {datakey}) => {
         event.preventDefault();
@@ -44,6 +46,7 @@ class AdminEditDentistModal extends React.Component {
                         icon: "check",
                     });
                 }, 1000);
+                this.handleUpdateTable();
             });
         }
     };

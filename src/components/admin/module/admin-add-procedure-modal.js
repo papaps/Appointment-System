@@ -17,6 +17,8 @@ class AdminAddProcedureModal extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
+    handleUpdateTable = () => this.props.handleUpdateTable();
+
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.handleValidation()) {
@@ -34,6 +36,7 @@ class AdminAddProcedureModal extends React.Component {
                             icon: "check",
                         });
                     }, 1000);
+                    this.handleUpdateTable();
                 }else{
                     toast({
                         type: "error",

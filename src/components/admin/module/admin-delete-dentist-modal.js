@@ -8,6 +8,8 @@ class AdminDeleteDentistModal extends React.Component {
 
     handleClose = () => this.props.handleModal("none");
 
+    handleUpdateTable = () => this.props.handleUpdateTable();
+
     handleDelete = (event, { datakey }) => {
         event.preventDefault();
         const data = {
@@ -23,6 +25,7 @@ class AdminDeleteDentistModal extends React.Component {
                     icon: "check",
                 });
             }, 1000);
+            this.handleUpdateTable();
         });
     };
 

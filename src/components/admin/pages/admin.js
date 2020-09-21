@@ -20,6 +20,7 @@ import { SemanticToastContainer, toast } from "react-semantic-toasts";
 import AdminDeleteProcedureModal from "../module/admin-delete-procedure-modal";
 import AdminEditDentistModal from "../module/admin-edit-dentist-modal";
 import AdminDeleteDentistModal from "../module/admin-delete-dentist-modal";
+import axios from "axios";
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -27,12 +28,18 @@ class Admin extends React.Component {
         this.handleItem = this.handleItem.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.handleTable = this.handleTable.bind(this);
-
+        this.handleUpdateDentistTable = this.handleUpdateDentistTable.bind(this);
+        this.handleUpdateProcedureTable = this.handleUpdateProcedureTable.bind(this);
         this.state = {
             activeItem: "Dentist",
             activeModal: "none",
             activeTable: "Dentist",
+            dentists: [],
+            procedures: [],
         };
+
+        this.handleUpdateDentistTable();
+        this.handleUpdateProcedureTable();
     }
 
     handleItem(name) {
@@ -51,6 +58,40 @@ class Admin extends React.Component {
     handleTable(name) {
         this.setState({
             activeTable: name,
+        });
+    }
+
+    handleUpdateDentistTable(){
+        axios.get("admin/getAllDentists").then((response) => {
+            this.setState({
+                dentists: [
+                    ...response.data.dentists.map((dentist) => {
+                        return {
+                            key: dentist._id,
+                            firstname: dentist.firstname,
+                            lastname: dentist.lastname,
+                            status: dentist.status,
+                            lastLogin: dentist.lastLogin,
+                            username: dentist.username,
+                        };
+                    }),
+                ],
+            });
+        });
+    }
+
+    handleUpdateProcedureTable(){
+        axios.get("admin/getAllProcedures").then((response) => {
+            this.setState({
+                procedures: [
+                    ...response.data.procedures.map((procedure) => {
+                        return {
+                            key: procedure._id,
+                            processname: procedure.processname,
+                        };
+                    }),
+                ],
+            });
         });
     }
 
@@ -73,6 +114,10 @@ class Admin extends React.Component {
                     <AdminTable
                         activeTable={this.state.activeTable}
                         handleModal={this.handleModal}
+                        dentists={this.state.dentists}
+                        procedures={this.state.procedures}
+                        handleUpdateDentistTable={this.handleUpdateDentistTable}
+                        handleUpdateProcedureTable={this.handleUpdateProcedureTable}
                     />
                 </Grid>
                 <AdminCreateModal
@@ -82,10 +127,12 @@ class Admin extends React.Component {
                 <AdminAddDentistModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
+                    handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminAddDentistModal>
                 <AdminAddProcedureModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
+                    handleUpdateTable={this.handleUpdateProcedureTable}
                 ></AdminAddProcedureModal>
                 <AdminResetSecretaryModal
                     handleModal={this.handleModal}
@@ -103,21 +150,25 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateProcedureTable}
                 ></AdminEditProcedureModal>
                 <AdminEditDentistModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminEditDentistModal>
                 <AdminDeleteProcedureModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateProcedureTable}
                 ></AdminDeleteProcedureModal>
                 <AdminDeleteDentistModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminDeleteDentistModal>
             </>
         );

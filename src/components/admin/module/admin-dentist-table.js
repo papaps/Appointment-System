@@ -17,34 +17,8 @@ class AdminDentistTable extends React.Component {
     handleModal(name, processname) {
         this.props.handleModal(name, processname);
     }
-
-    componentDidMount() {
-        this.handleUpdateTable();
-    }
-
-    componentWillUnmount() {
-        this.handleShowDimmer();
-    }
-
-    handleUpdateTable(){
-        axios.get("admin/getAllDentists").then((response) => {
-            this.setState({
-                dentists: [
-                    ...response.data.dentists.map((dentist) => {
-                        return {
-                            key: dentist._id,
-                            firstname: dentist.firstname,
-                            lastname: dentist.lastname,
-                            status: dentist.status,
-                            lastLogin: dentist.lastLogin,
-                            username: dentist.username,
-                        };
-                    }),
-                ],
-            });
-        });
-        this.handleHideDimmer();
-    }
+ 
+    handleUpdateTable = () => this.props.handleUpdateTable()
 
     handleStatus = (e, { datakey, status }) => {
         let data;
@@ -67,6 +41,7 @@ class AdminDentistTable extends React.Component {
     };
 
     render() {
+        let {dentists} = this.props
         return (
             <Table sortable singleLine selectable id="table">
                 <Table.Header>
@@ -84,7 +59,7 @@ class AdminDentistTable extends React.Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {this.state.dentists.map(
+                    {dentists.map(
                         ({
                             key,
                             firstname,

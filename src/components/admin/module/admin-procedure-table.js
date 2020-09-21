@@ -17,27 +17,29 @@ class AdminProcedureTable extends React.Component {
         this.props.handleModal(name, processname);
     }
 
-    componentDidMount() {
-        axios.get("admin/getAllProcedures").then((response) => {
-            this.setState({
-                procedures: [
-                    ...response.data.procedures.map((procedure) => {
-                        return {
-                            key: procedure._id,
-                            processname: procedure.processname,
-                        };
-                    }),
-                ],
-            });
-        });
-        this.handleHideDimmer();
-    }
+    // componentDidMount() {
+    //     axios.get("admin/getAllProcedures").then((response) => {
+    //         this.setState({
+    //             procedures: [
+    //                 ...response.data.procedures.map((procedure) => {
+    //                     return {
+    //                         key: procedure._id,
+    //                         processname: procedure.processname,
+    //                     };
+    //                 }),
+    //             ],
+    //         });
+    //     });
+    //     this.handleHideDimmer();
+    // }
 
-    componentWillUnmount() {
-        this.handleShowDimmer();
-    }
+    // componentWillUnmount() {
+    //     this.handleShowDimmer();
+    // }
 
     render() {
+        let {procedures} = this.props
+
         return (
             <Table sortable singleLine selectable id="table">
                 <Table.Header>
@@ -47,7 +49,7 @@ class AdminProcedureTable extends React.Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {this.state.procedures.map(({ key, processname }) => (
+                    {procedures.map(({ key, processname }) => (
                         <Table.Row key={key}>
                             <Table.Cell>{processname}</Table.Cell>
                             <Table.Cell textAlign="right">
