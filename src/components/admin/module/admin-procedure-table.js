@@ -1,6 +1,5 @@
 import React from "react";
 import { Table, Button } from "semantic-ui-react";
-import axios from "axios";
 
 class AdminProcedureTable extends React.Component {
     constructor(props) {
@@ -12,30 +11,12 @@ class AdminProcedureTable extends React.Component {
     }
 
     handleShowDimmer = () => this.props.handleShowDimmer();
+    
     handleHideDimmer = () => this.props.handleHideDimmer();
+    
     handleModal(name, processname) {
         this.props.handleModal(name, processname);
     }
-
-    // componentDidMount() {
-    //     axios.get("admin/getAllProcedures").then((response) => {
-    //         this.setState({
-    //             procedures: [
-    //                 ...response.data.procedures.map((procedure) => {
-    //                     return {
-    //                         key: procedure._id,
-    //                         processname: procedure.processname,
-    //                     };
-    //                 }),
-    //             ],
-    //         });
-    //     });
-    //     this.handleHideDimmer();
-    // }
-
-    // componentWillUnmount() {
-    //     this.handleShowDimmer();
-    // }
 
     render() {
         let {procedures} = this.props
