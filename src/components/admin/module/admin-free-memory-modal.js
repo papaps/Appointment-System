@@ -1,14 +1,29 @@
 import React from "react";
 import { Modal, Icon, Button, Segment } from "semantic-ui-react";
+import axios from "axios";
+import { toast } from "react-semantic-toasts";
 
 class AdminFreeMemoryModal extends React.Component {
     handleOpen = () => this.props.handleModal("admin-free-memory");
 
     handleClose = () => this.props.handleModal("none");
 
+    handleDeleteOld = () =>{
+        axios.post("secretary/deleteXYearsApp").then((res)=>{
+            this.handleClose()
+            setTimeout(() => {
+                toast({
+                    type: "success",
+                    title: "Success",
+                    description: <p>Old appointments successfully deleted</p>,
+                    icon: "check",
+                });
+            }, 1000);
+        })
+    }
+
     render() {
         let open;
-
         if (this.props.activeModal === "admin-free-memory") {
             open = true;
         } else {
@@ -57,7 +72,8 @@ class AdminFreeMemoryModal extends React.Component {
                             icon
                             labelPosition="left"
                             color="red"
-                            id="create-procedure-button"
+                            id="delete-old"
+                            onClick={this.handleDeleteOld}
                         >
                             <Icon name="trash" />
                             DELETE
