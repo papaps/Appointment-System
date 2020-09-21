@@ -27,7 +27,7 @@ class AdminEditProcedureModal extends React.Component {
                 name: this.state.procedure.trim(),
             };
             axios.post("admin/editProcess", data).then((res) => {
-                if(res.data.message === true){
+                if (res.data.message === true) {
                     this.handleClose();
                     setTimeout(() => {
                         toast({
@@ -37,9 +37,9 @@ class AdminEditProcedureModal extends React.Component {
                             icon: "check",
                         });
                     }, 1000);
-                    this.handleUpdateTable()
-                }else{
-                    console.log(res)
+                    this.handleUpdateTable();
+                } else {
+                    console.log(res);
                     toast({
                         type: "error",
                         title: "Error",
@@ -81,7 +81,7 @@ class AdminEditProcedureModal extends React.Component {
         }
         let oldprocedure;
         let key;
-        if (this.props.data != null && this.props.data.processname !=null) {
+        if (this.props.data != null && this.props.data.processname != null) {
             oldprocedure = Object.values(this.props.data.processname);
             key = this.props.data.key;
         }

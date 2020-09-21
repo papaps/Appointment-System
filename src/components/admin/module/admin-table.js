@@ -20,7 +20,7 @@ class AdminTable extends React.Component {
     handleHideDimmer = () => this.setState({ active: false });
     render() {
         const { active } = this.state;
-        let {activeTable, dentists, procedures} = this.props;
+        let { activeTable, dentists, procedures } = this.props;
         let table;
         if (activeTable === "Dentist") {
             table = (

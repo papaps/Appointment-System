@@ -37,10 +37,10 @@ class AdminDeleteProcedureModal extends React.Component {
         } else {
             open = false;
         }
-        
+
         let procedurename;
         let key;
-        if (this.props.data != null && this.props.data.processname !=null) {
+        if (this.props.data != null && this.props.data.processname != null) {
             procedurename = Object.values(this.props.data.processname);
             key = this.props.data.key;
         }
@@ -62,15 +62,18 @@ class AdminDeleteProcedureModal extends React.Component {
                 <Modal.Content>
                     <span style={{ fontSize: 15 + "px" }}>
                         Are you sure you want to delete
-                    </span>&nbsp;
+                    </span>
+                    &nbsp;
                     <span
                         id="modal-text-delete-procedure"
                         style={{ fontSize: 15 + "px", fontWeight: "bold" }}
                     >
                         {procedurename}
                     </span>
-                    <span style={{ fontSize: 15 + "px" }}>?</span><br/><br/>
-                    <div style={{display: "flex"}} id="warning">
+                    <span style={{ fontSize: 15 + "px" }}>?</span>
+                    <br />
+                    <br />
+                    <div style={{ display: "flex" }} id="warning">
                         <Icon name="info" style={{ color: "red" }}></Icon>
                         <span style={{ color: "red", fontSize: 13 + "px" }}>
                             All appointments with this procedure will be

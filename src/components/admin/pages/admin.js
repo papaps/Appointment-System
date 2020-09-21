@@ -28,8 +28,12 @@ class Admin extends React.Component {
         this.handleItem = this.handleItem.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.handleTable = this.handleTable.bind(this);
-        this.handleUpdateDentistTable = this.handleUpdateDentistTable.bind(this);
-        this.handleUpdateProcedureTable = this.handleUpdateProcedureTable.bind(this);
+        this.handleUpdateDentistTable = this.handleUpdateDentistTable.bind(
+            this
+        );
+        this.handleUpdateProcedureTable = this.handleUpdateProcedureTable.bind(
+            this
+        );
         this.state = {
             activeItem: "Dentist",
             activeModal: "none",
@@ -61,7 +65,7 @@ class Admin extends React.Component {
         });
     }
 
-    handleUpdateDentistTable(){
+    handleUpdateDentistTable() {
         axios.get("admin/getAllDentists").then((response) => {
             this.setState({
                 dentists: [
@@ -80,7 +84,7 @@ class Admin extends React.Component {
         });
     }
 
-    handleUpdateProcedureTable(){
+    handleUpdateProcedureTable() {
         axios.get("admin/getAllProcedures").then((response) => {
             this.setState({
                 procedures: [
@@ -117,7 +121,9 @@ class Admin extends React.Component {
                         dentists={this.state.dentists}
                         procedures={this.state.procedures}
                         handleUpdateDentistTable={this.handleUpdateDentistTable}
-                        handleUpdateProcedureTable={this.handleUpdateProcedureTable}
+                        handleUpdateProcedureTable={
+                            this.handleUpdateProcedureTable
+                        }
                     />
                 </Grid>
                 <AdminCreateModal

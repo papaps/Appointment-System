@@ -11,15 +11,15 @@ class AdminProcedureTable extends React.Component {
     }
 
     handleShowDimmer = () => this.props.handleShowDimmer();
-    
+
     handleHideDimmer = () => this.props.handleHideDimmer();
-    
+
     handleModal(name, processname) {
         this.props.handleModal(name, processname);
     }
 
     render() {
-        let {procedures} = this.props
+        let { procedures } = this.props;
 
         return (
             <Table sortable singleLine selectable id="table">

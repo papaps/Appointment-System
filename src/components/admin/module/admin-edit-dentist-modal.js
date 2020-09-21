@@ -1,6 +1,14 @@
 import React from "react";
 import axios from "axios";
-import { Modal, Icon, Popup, Button, Form, Input, Message } from "semantic-ui-react";
+import {
+    Modal,
+    Icon,
+    Popup,
+    Button,
+    Form,
+    Input,
+    Message,
+} from "semantic-ui-react";
 import { toast } from "react-semantic-toasts";
 
 class AdminEditDentistModal extends React.Component {
@@ -24,10 +32,10 @@ class AdminEditDentistModal extends React.Component {
     handleClose = () => this.props.handleModal("none");
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
-    
+
     handleUpdateTable = () => this.props.handleUpdateTable();
 
-    handleSubmit = (event, {datakey}) => {
+    handleSubmit = (event, { datakey }) => {
         event.preventDefault();
         if (this.handleValidation()) {
             const data = {
@@ -178,16 +186,16 @@ class AdminEditDentistModal extends React.Component {
         return formIsValid;
     }
 
-    componentDidMount(){
-        if(this.props.data != null){
+    componentDidMount() {
+        if (this.props.data != null) {
             let datakey = this.props.data.key;
-            axios.post("admin/getUser", {doctorID: datakey}).then((res)=>{
-                if(res.data.user != null){
+            axios.post("admin/getUser", { doctorID: datakey }).then((res) => {
+                if (res.data.user != null) {
                     this.setState({
-                        username: res.data.user.username
-                    })
+                        username: res.data.user.username,
+                    });
                 }
-            })
+            });
         }
     }
     render() {
@@ -200,18 +208,20 @@ class AdminEditDentistModal extends React.Component {
         if (this.props.activeModal === "admin-edit-dentist") {
             open = true;
         } else {
-         
             open = false;
         }
 
-        
         let firstname;
         let lastname;
         let key;
-        if (this.props.data != null && this.props.data.firstname != null && this.props.data.lastname != null) {
+        if (
+            this.props.data != null &&
+            this.props.data.firstname != null &&
+            this.props.data.lastname != null
+        ) {
             key = this.props.data.key;
-            firstname = this.props.data.firstname
-            lastname = this.props.data.lastname
+            firstname = this.props.data.firstname;
+            lastname = this.props.data.lastname;
         }
 
         return (
@@ -224,7 +234,7 @@ class AdminEditDentistModal extends React.Component {
                 open={open}
             >
                 <Modal.Header as="h2">
-                    <Icon name="edit"></Icon> 
+                    <Icon name="edit"></Icon>
                     Edit Dentist
                 </Modal.Header>
 
@@ -241,7 +251,7 @@ class AdminEditDentistModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="First Name"
                                         onChange={this.handleChange}
-                                        value = {firstname}
+                                        value={firstname}
                                     />
                                 }
                                 content="Name should contain at least 2 characters"
@@ -259,7 +269,7 @@ class AdminEditDentistModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="Last Name"
                                         onChange={this.handleChange}
-                                        value = {lastname}
+                                        value={lastname}
                                     />
                                 }
                                 content="Name should contain at least 2 characters"

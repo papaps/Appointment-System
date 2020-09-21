@@ -37,14 +37,18 @@ class AdminDeleteDentistModal extends React.Component {
         } else {
             open = false;
         }
-        
+
         let firstname;
         let lastname;
         let key;
-        if (this.props.data != null && this.props.data.firstname != null && this.props.data.lastname != null) {
+        if (
+            this.props.data != null &&
+            this.props.data.firstname != null &&
+            this.props.data.lastname != null
+        ) {
             key = this.props.data.key;
-            firstname = this.props.data.firstname
-            lastname = this.props.data.lastname
+            firstname = this.props.data.firstname;
+            lastname = this.props.data.lastname;
         }
 
         return (
@@ -64,19 +68,21 @@ class AdminDeleteDentistModal extends React.Component {
                 <Modal.Content>
                     <span style={{ fontSize: 15 + "px" }}>
                         Are you sure you want to delete
-                    </span>&nbsp;
+                    </span>
+                    &nbsp;
                     <span
                         id="modal-text-delete-user"
                         style={{ fontSize: 15 + "px", fontWeight: "bold" }}
                     >
                         {lastname}, {firstname}
                     </span>
-                    <span style={{ fontSize: 15 + "px" }}>?</span><br/><br/>
-                    <div style={{display: "flex"}} id="warning">
+                    <span style={{ fontSize: 15 + "px" }}>?</span>
+                    <br />
+                    <br />
+                    <div style={{ display: "flex" }} id="warning">
                         <Icon name="info" style={{ color: "red" }}></Icon>
                         <span style={{ color: "red", fontSize: 13 + "px" }}>
-                            All appointments by this dentist will be
-                            deleted.
+                            All appointments by this dentist will be deleted.
                         </span>
                     </div>
                 </Modal.Content>

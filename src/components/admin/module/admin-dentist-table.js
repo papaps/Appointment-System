@@ -17,12 +17,12 @@ class AdminDentistTable extends React.Component {
     handleModal(name, processname) {
         this.props.handleModal(name, processname);
     }
- 
-    handleUpdateTable = () => this.props.handleUpdateTable()
+
+    handleUpdateTable = () => this.props.handleUpdateTable();
 
     handleStatus = (e, { datakey, status }) => {
         let data;
-        
+
         if (status === "Active") {
             console.log("active");
             data = {
@@ -36,12 +36,12 @@ class AdminDentistTable extends React.Component {
             };
         }
         axios.post("admin/updateDentistStatus", data).then((response) => {
-            this.handleUpdateTable()
+            this.handleUpdateTable();
         });
     };
 
     render() {
-        let {dentists} = this.props
+        let { dentists } = this.props;
         return (
             <Table sortable singleLine selectable id="table">
                 <Table.Header>
