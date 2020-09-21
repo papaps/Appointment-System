@@ -19,6 +19,14 @@ class AdminDentistTable extends React.Component {
     }
 
     componentDidMount() {
+        this.handleUpdateTable();
+    }
+
+    componentWillUnmount() {
+        this.handleShowDimmer();
+    }
+
+    handleUpdateTable(){
         axios.get("admin/getAllDentists").then((response) => {
             this.setState({
                 dentists: [
@@ -38,10 +46,6 @@ class AdminDentistTable extends React.Component {
         this.handleHideDimmer();
     }
 
-    componentWillUnmount() {
-        this.handleShowDimmer();
-    }
-
     handleStatus = (e, { datakey, status }) => {
         let data;
         
@@ -58,9 +62,8 @@ class AdminDentistTable extends React.Component {
             };
         }
         axios.post("admin/updateDentistStatus", data).then((response) => {
-            console.log(response)
+            this.handleUpdateTable()
         });
-        console.log("out")
     };
 
     render() {
