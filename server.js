@@ -10,9 +10,10 @@ const path = require("path");
 var app = new express();
 
 mongoose.Promise = global.Promise
-mongoose.connect("mongodb://localhost:27017/dental", {
+mongoose.connect("mongodb+srv://Secade:j5e3f3f3@cluster0.iggb6.mongodb.net/Cluster0?retryWrites=true&w=majority", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+	useFindAndModify: false
 })
 
 app.use(urlencoder);
