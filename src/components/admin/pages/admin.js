@@ -9,7 +9,7 @@ import AdminResetPasswordModal from "../module/admin-reset-password-modal";
 import AdminFreeMemoryModal from "../module/admin-free-memory-modal";
 import AdminEditProcedureModal from "../module/admin-edit-procedure-modal";
 import "../../../css/admin.css";
-import { Grid } from "semantic-ui-react";
+import { Grid, Dimmer } from "semantic-ui-react";
 import "semantic-ui-css/components/reset.min.css";
 import "semantic-ui-css/components/site.min.css";
 import "semantic-ui-css/components/container.min.css";
@@ -34,12 +34,15 @@ class Admin extends React.Component {
         this.handleUpdateProcedureTable = this.handleUpdateProcedureTable.bind(
             this
         );
+        this.handleShowDimmer = this.handleShowDimmer.bind(this);
+        this.handleHideDimmer = this.handleHideDimmer.bind(this);
         this.state = {
             activeItem: "Dentist",
             activeModal: "none",
             activeTable: "Dentist",
             dentists: [],
             procedures: [],
+            activeDimmer: false,
         };
 
         this.handleUpdateDentistTable();
@@ -66,6 +69,7 @@ class Admin extends React.Component {
     }
 
     handleUpdateDentistTable() {
+        this.handleShowDimmer();
         axios.get("admin/getAllDentists").then((response) => {
             this.setState({
                 dentists: [
@@ -81,10 +85,12 @@ class Admin extends React.Component {
                     }),
                 ],
             });
+            this.handleHideDimmer();
         });
     }
 
     handleUpdateProcedureTable() {
+        this.handleShowDimmer();
         axios.get("admin/getAllProcedures").then((response) => {
             this.setState({
                 procedures: [
@@ -96,13 +102,17 @@ class Admin extends React.Component {
                     }),
                 ],
             });
+            this.handleHideDimmer();
         });
     }
+
+    handleShowDimmer = () => this.setState({ activeDimmer: true });
+    handleHideDimmer = () => this.setState({ activeDimmer: false });
 
     render() {
         return (
             <>
-                <SemanticToastContainer position='top-center'></SemanticToastContainer>
+                <SemanticToastContainer position="top-center"></SemanticToastContainer>
                 <Grid
                     columns={2}
                     id="container"
@@ -114,17 +124,27 @@ class Admin extends React.Component {
                         handleModal={this.handleModal}
                         activeItem={this.state.activeItem}
                     />
-
-                    <AdminTable
-                        activeTable={this.state.activeTable}
-                        handleModal={this.handleModal}
-                        dentists={this.state.dentists}
-                        procedures={this.state.procedures}
-                        handleUpdateDentistTable={this.handleUpdateDentistTable}
-                        handleUpdateProcedureTable={
-                            this.handleUpdateProcedureTable
-                        }
-                    />
+                    <Grid.Column style={{ width: "85%" }}>
+                        <Dimmer
+                            active={this.state.activeDimmer}
+                            inverted
+                            id="list-dimmer"
+                        >
+                            <div className="ui elastic huge green loader"></div>
+                        </Dimmer>
+                        <AdminTable
+                            activeTable={this.state.activeTable}
+                            handleModal={this.handleModal}
+                            dentists={this.state.dentists}
+                            procedures={this.state.procedures}
+                            handleUpdateDentistTable={
+                                this.handleUpdateDentistTable
+                            }
+                            handleUpdateProcedureTable={
+                                this.handleUpdateProcedureTable
+                            }
+                        />
+                    </Grid.Column>
                 </Grid>
                 <AdminCreateModal
                     handleModal={this.handleModal}
