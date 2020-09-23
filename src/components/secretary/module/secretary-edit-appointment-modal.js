@@ -46,7 +46,22 @@ class EditModal extends Component {
 
     
 
-    
+    componentDidMount(){
+
+      //Changes back the procedures and doctors to IDs rather than objects
+      this.setState({
+        procedures:[
+          this.state.procedures.map(procedure=>{
+            return (procedure._id)
+          })
+        ],
+        doctors:[
+          this.state.doctors.map(doctor=>{
+            return (doctor._id)
+          })
+        ]
+      })
+    }
 
     //function for opening and closing the modal
     handleClose=()=>{
@@ -135,7 +150,7 @@ class EditModal extends Component {
 
     handleDoctorChange =(e, {value}) => {
         this.setState({doctors:this.state.doctors.concat(value)})
-        console.log(value)
+        console.log(this.state.doctors)
 
       }
 

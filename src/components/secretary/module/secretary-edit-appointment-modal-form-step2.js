@@ -20,8 +20,8 @@ class addProcStep2 extends Component {
             procedures:[],
             doctors:[],
             value:[],
-            currentProcs:[],
-            currentDocs:[],
+            currentProcs:this.props.values.procedures,
+            currentDocs:this.props.values.doctors,
             multiple: true
         }
     }
@@ -67,22 +67,6 @@ class addProcStep2 extends Component {
                 }
             })
         
-            this.setState({
-                currentDocs:[
-                    this.props.values.doctors.map(doctor =>{
-                        return(
-                            doctor._id
-                        )
-                    })
-                ],
-                currentProcs:[
-                    this.props.values.procedures.map(procedure =>{
-                        return(
-                            procedure._id
-                        )
-                    })
-                ]
-            })
             
         
 
@@ -123,10 +107,10 @@ class addProcStep2 extends Component {
                 <Form.Dropdown
                     placeholder='Procedure/s'
                     onChange={handleProcessChange}
-                    // defaultValue={this.state.currentProcs}
-                    options={this.props.values.procedures}
+                    value={this.state.currentProcs}
                     selection fluid multiple
                     id= "processDropProc"
+                    options={this.state.procedures}
                     >
                     
                 </Form.Dropdown>
@@ -141,7 +125,7 @@ class addProcStep2 extends Component {
                 <Form.Dropdown
                     placeholder='Doctor/s'
                     onChange={handleDoctorChange}
-                    defaultValue={this.state.currentDocs}
+                    value={this.state.currentDocs}
                     options={this.state.doctors}
                     selection fluid multiple
                     id= "processDropDoctor"

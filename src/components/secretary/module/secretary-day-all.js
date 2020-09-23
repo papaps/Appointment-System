@@ -84,7 +84,7 @@ class day_all extends Component{
             <Table id='week_all' celled fixed textAlign='center' columns='8'>
                 <Table.Header fullWidth>
                     <Table.Row>
-                        <Table.HeaderCell>Weekly Appointments</Table.HeaderCell>
+                        <Table.HeaderCell>Daily Appointments</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header> 
                 <Table.Body>

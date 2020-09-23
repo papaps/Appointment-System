@@ -23,9 +23,9 @@ export default class Picker extends Component {
                 <div className="picker">
                     {/* <FontAwesomeIcon icon={faCalendar}  className="calendarIcon"/> */}
                     <DatePicker
-                        selected={date}
-                        onChange={this.handleChangeDate}
-                        minDate={moment().toDate()}
+                        //Fixed for error when intially clicking a date on secretary-header (change selected to moment)
+                        selected={moment(date).toDate()}
+                        onChange={()=>this.handleChangeDate(date)}
                     />
                 </div> 
                 <div className="today" class="ui basic button with tooltip" data-title="Today (SPACEBAR)"

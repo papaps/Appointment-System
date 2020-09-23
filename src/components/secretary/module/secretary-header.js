@@ -31,7 +31,8 @@ export default class SecretaryHeader extends Component{
                 newArray.push(<Table.Cell onClick={()=>this.props.onChangeDate(this.state.weekUnparsed[i])} style={{backgroundColor}}>{this.state.days[i]}</Table.Cell>)
             }
             else{
-                newArray.push(<Table.Cell onClick={()=>this.props.onChangeDate(this.state.weekUnparsed[i])} >{this.state.days[i]}</Table.Cell>)
+                // newArray.push(<Table.Cell onClick={()=>this.props.onChangeDate(this.state.weekUnparsed[i])} >{this.state.days[i]}</Table.Cell>)
+                newArray.push(<Table.Cell onClick={this.props.onChangeDate} >{this.state.days[i]}</Table.Cell>)
             }
         }
         this.setState({
