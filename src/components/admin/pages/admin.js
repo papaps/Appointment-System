@@ -102,7 +102,7 @@ class Admin extends React.Component {
     render() {
         return (
             <>
-                <SemanticToastContainer></SemanticToastContainer>
+                <SemanticToastContainer position='top-center'></SemanticToastContainer>
                 <Grid
                     columns={2}
                     id="container"
