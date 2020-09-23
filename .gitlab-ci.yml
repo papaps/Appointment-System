@@ -9,6 +9,8 @@
       - builds
       - test
       - production
+      - auto-test
+      - report
 
     cache:
       paths:
@@ -34,3 +36,35 @@
         - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
       only:
         - production      
+        
+    auto-test:
+      stage: auto-test
+      script:
+        - apt-get update && apt-get install --quiet --assume-yes python-dev python-pip unzip wget
+        - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+        - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+        - apt update
+        - apt install -y google-chrome-stable
+        - cp requirements.txt /tmp/requirements.txt
+        - pip install -r /tmp/requirements.txt
+        - CHROMEDRIVER_VERSION=`wget --no-verbose --output-document - https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
+        - wget --no-verbose --output-document /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+        - unzip -qq /tmp/chromedriver_linux64.zip -d /opt/chromedriver
+        - chmod +x /opt/chromedriver/chromedriver
+        - ln -fs /opt/chromedriver/chromedriver /usr/local/bin/chromedriver
+        - robot -v BROWSER:HeadlessChrome -v APP_ENV:test -d tests/automation/report tests/automation
+      # artifacts:
+      # paths:
+      #   - /builds/Secade/Appointment-System/tests/automation/report
+      only:
+        - production
+        
+    publish-test-report:
+      stage: report
+      script:
+        - mkdir public
+        - mv /builds/Secade/Appointment-System/tests/automation/report/ * public/
+      # artifacts:
+      # expire_in: 1 week
+      # paths:
+      #   - public
