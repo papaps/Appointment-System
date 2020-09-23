@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBoxTissue, faCalendar} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-import SecretaryTable from './secretary_table'
+import SecretaryTable from './secretary-week-all'
 
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
@@ -13,7 +13,7 @@ import {Card} from 'semantic-ui-react';
 
 
 
-import EditProcMainForm from "./editProcMainForm"
+import EditProcMainForm from "./secretary-edit-appointment-modal-form"
 
 
 
@@ -134,13 +134,13 @@ class EditModal extends Component {
     }
 
     handleDoctorChange =(e, {value}) => {
-        this.setState({doctors:value})
+        this.setState({doctors:this.state.doctors.concat(value)})
         console.log(value)
 
       }
 
       handleProcessChange =(e, {value}) => {
-        this.setState({procedures:value})
+        this.setState({procedures:this.state.procedures.concat(value)})
         console.log(value)
 
       }

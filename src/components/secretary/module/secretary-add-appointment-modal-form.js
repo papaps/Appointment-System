@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { Step } from 'semantic-ui-react'
 
 
-import AddProcStep1 from "./addProcStep1";
-import AddProcStep2 from "./addProcStep2";
+import AddProcStep1 from "./secretary-add-appointment-modal-form-step1";
+import AddProcStep2 from "./secretary-add-appointment-modal-form-step2";
 
 
 

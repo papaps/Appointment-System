@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Table} from 'semantic-ui-react'
 import moment from 'moment'
-import AddAppointment from './appointment_modal.component'
+import AddAppointment from './secretary-add-appointment-modal'
 
 export default class SecretaryHeader extends Component{
     constructor(props){

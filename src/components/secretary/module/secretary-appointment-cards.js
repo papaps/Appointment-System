@@ -26,8 +26,7 @@ export default class SecretaryAppointmentCard extends Component{
     render(){
         return(
             <>
-            {/* <Card onClick={this.triggerEdit}>  */}
-                <Card fluid>
+            <Card onClick={this.triggerEdit}> 
                 <Card.Header>
                     {this.props.appointment.firstname+" "+this.props.appointment.lastname}
                 </Card.Header>

@@ -17,9 +17,11 @@ class addProcStep2 extends Component {
         super(props);
         
         this.state = {
-            procedures:this.props.values.procedures,
-            doctors:this.props.values.doctors,
+            procedures:[],
+            doctors:[],
             value:[],
+            currentProcs:[],
+            currentDocs:[],
             multiple: true
         }
     }
@@ -27,6 +29,8 @@ class addProcStep2 extends Component {
 
     
     componentDidMount(){
+
+        
         axios.get('http://localhost:3000/secretary/getProcess')
             .then(response => {
                 if(response.data.length > 0){
@@ -34,7 +38,6 @@ class addProcStep2 extends Component {
                         procedures: [
                             ...response.data.map(procedure =>{
                                 return{
-                                    key: procedure._id,
                                     text: procedure.processname,
                                     value: procedure._id
                                 }
@@ -46,7 +49,7 @@ class addProcStep2 extends Component {
                     })
                 }
             })
-
+        
         axios.get('http://localhost:3000/secretary/getDoctors')
             .then(response => {
                 if(response.data.length > 0){
@@ -54,7 +57,6 @@ class addProcStep2 extends Component {
                         doctors: [
                             ...response.data.map(doctor =>{
                                 return{
-                                    key: doctor._id,
                                     text: doctor.firstname+" "+doctor.lastname,
                                     value: doctor._id
                                 }
@@ -64,11 +66,32 @@ class addProcStep2 extends Component {
                     })
                 }
             })
+        
+            this.setState({
+                currentDocs:[
+                    this.props.values.doctors.map(doctor =>{
+                        return(
+                            doctor._id
+                        )
+                    })
+                ],
+                currentProcs:[
+                    this.props.values.procedures.map(procedure =>{
+                        return(
+                            procedure._id
+                        )
+                    })
+                ]
+            })
+            
+        
 
     }
 
     
     render(){
+        console.log(this.state.procedures)
+        console.log(this.props.values.procedures)
         const {values, handleChange, handleDoctorChange, handleProcessChange} = this.props
         return(
             <Form>
@@ -100,10 +123,11 @@ class addProcStep2 extends Component {
                 <Form.Dropdown
                     placeholder='Procedure/s'
                     onChange={handleProcessChange}
-                    options={this.state.procedures}
+                    // defaultValue={this.state.currentProcs}
+                    options={this.props.values.procedures}
                     selection fluid multiple
                     id= "processDropProc"
-                    value={this.props.values.procedures}>
+                    >
                     
                 </Form.Dropdown>
                 <Form.TextArea required
@@ -117,10 +141,11 @@ class addProcStep2 extends Component {
                 <Form.Dropdown
                     placeholder='Doctor/s'
                     onChange={handleDoctorChange}
+                    defaultValue={this.state.currentDocs}
                     options={this.state.doctors}
                     selection fluid multiple
                     id= "processDropDoctor"
-                    value={this.props.values.doctors}>
+                    >
                 </Form.Dropdown>
 
                 

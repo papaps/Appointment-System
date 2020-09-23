@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import Navbar from "../module/secretary_navigationbar"
-import AddAppointment from "../module/appointment_modal.component"
+import Navbar from "../module/secretary-navigationbar"
+import AddAppointment from "../module/secretary-add-appointment-modal"
 import {Grid, Header, Dropdown} from "semantic-ui-react"
 import moment from 'moment'
 import axios from 'axios'
-import SecretaryHeader from "../module/secretary_header"
-import SecretaryTable from "../module/secretary_table"
-import Trrial from "../module/day_all.component"
+import SecretaryHeader from "../module/secretary-header"
+import SecretaryTable from "../module/secretary-week-all"
+import Trrial from "../module/secretary-day-all"
 
 export default class Secretary extends Component{
 
