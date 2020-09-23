@@ -24,7 +24,6 @@ class AdminDentistTable extends React.Component {
         let data;
 
         if (status === "Active") {
-            console.log("active");
             data = {
                 doctorID: datakey,
                 status: "Inactive",

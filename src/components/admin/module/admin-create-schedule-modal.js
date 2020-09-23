@@ -1,0 +1,410 @@
+import React from "react";
+import {
+    Modal,
+    Icon,
+    Grid,
+    Button,
+    Segment,
+    Divider,
+    Checkbox,
+    Accordion,
+    Header,
+    Input,
+} from "semantic-ui-react";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+class AdminCreateScheduleModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            time: "",
+            daily: false,
+            repeat: false,
+            custom: false,
+            mon: false,
+            tue: false,
+            wed: false,
+            thu: false,
+            fri: false,
+            sat: false,
+            disabled: [],
+        };
+
+        this.onChangeTime = this.onChangeTime.bind(this);
+    }
+
+    onChangeTime = (time) => {
+        this.setState({
+            time: time,
+        });
+    };
+
+    handleOpen = () => this.props.handleModal("admin-create-schedule");
+
+    handleClose = () => this.props.handleModal("none");
+
+    handleModal(name) {
+        this.props.handleModal(name);
+    }
+
+    handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
+    handleCheckbox = (e, { name }) => {
+        this.setState({ [name]: e.target.checked });
+        let disabled = this.state.disabled;
+        if (name == "daily") {
+            disabled["repeat"] = !this.state.disabled["repeat"];
+        } else if (name == "repeat") {
+            disabled["daily"] = !this.state.disabled["daily"];
+        }
+        this.setState({ disabled: disabled });
+    };
+
+    handleDays = (e, { name }) => {
+        let active = true;
+        if (e.target.classList.contains("active")) {
+            active = false;
+        }
+        this.setState({ [name]: active });
+    };
+
+    render() {
+        console.log(this.state);
+        let open;
+
+        if (this.props.activeModal === "admin-create-schedule") {
+            open = true;
+        } else {
+            open = false;
+        }
+
+        const column_style = {
+            textAlign: "center",
+        };
+
+        const checkbox_style = {
+            margin: "20px 0 0 0",
+        };
+
+        let first_session_style = {
+            fontWeight: "bold",
+            color: "white",
+        };
+        let second_schedule;
+        let repeat_buttons;
+        if (this.state.custom) {
+            second_schedule = (
+                <>
+                    <Grid centered columns={3}>
+                        <Grid.Row style={{ padding: "0" }}>
+                            <span
+                                style={{ fontWeight: "bold" }}
+                                id="second-schedule"
+                            >
+                                Second Session
+                            </span>
+                        </Grid.Row>
+                        <Grid.Column style={{ margin: "0 14px 0 0" }}>
+                            <Input
+                                icon="time"
+                                iconPosition="left"
+                                placeholder="Start Time"
+                                id="start-add"
+                                autoComplete="false"
+                                required
+                                control={DatePicker}
+                                showtimeselect
+                                showtimeselectonly
+                                selected={this.state.time}
+                                timeintervals={30}
+                                dateFormat="h:mm aa"
+                                minTime={moment().toDate().setHours(9)}
+                                maxTime={moment().toDate().setHours(18)}
+                                onChange={this.handleChange}
+                            ></Input>
+                        </Grid.Column>
+                        <Segment
+                            basic
+                            style={{
+                                margin: "6px 0 0 0",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            to
+                        </Segment>
+                        <Grid.Column style={column_style}>
+                            <Input
+                                icon="time"
+                                iconPosition="left"
+                                placeholder="End Time"
+                                id="end-add"
+                                autoComplete="false"
+                                required
+                                control={DatePicker}
+                                showtimeselect
+                                showtimeselectonly
+                                selected={this.state.time}
+                                timeintervals={30}
+                                dateFormat="h:mm aa"
+                                minTime={moment().toDate().setHours(9)}
+                                maxTime={moment().toDate().setHours(18)}
+                                onChange={this.handleChange}
+                            ></Input>
+                        </Grid.Column>
+                    </Grid>
+                </>
+            );
+            first_session_style = {
+                fontWeight: "bold",
+            };
+        }
+        if (this.state.repeat) {
+            repeat_buttons = (
+                <>
+                    <Grid
+                        centered
+                        columns={1}
+                        style={{
+                            fontWeight: "bold",
+                            padding: "0 0 10px 0",
+                        }}
+                    >
+                        Repeat on
+                    </Grid>
+                    <Grid centered columns={6}>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.mon}
+                            name="mon"
+                            id="mon"
+                            onClick={this.handleDays}
+                        >
+                            M
+                        </Button>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.tue}
+                            name="tue"
+                            id="tue"
+                            onClick={this.handleDays}
+                        >
+                            T
+                        </Button>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.wed}
+                            name="wed"
+                            id="wed"
+                            onClick={this.handleDays}
+                        >
+                            W
+                        </Button>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.thu}
+                            name="thu"
+                            id="thu"
+                            onClick={this.handleDays}
+                        >
+                            H
+                        </Button>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.fri}
+                            name="fri"
+                            id="fri"
+                            onClick={this.handleDays}
+                        >
+                            F
+                        </Button>
+                        <Button
+                            circular
+                            toggle
+                            active={this.state.sat}
+                            name="sat"
+                            id="sat"
+                            onClick={this.handleDays}
+                        >
+                            S
+                        </Button>
+                    </Grid>
+                </>
+            );
+        }
+
+        let firstname;
+        let lastname;
+        if (
+            this.props.data != null &&
+            this.props.data.firstname != null &&
+            this.props.data.lastname != null
+        ) {
+            firstname = this.props.data.firstname;
+            lastname = this.props.data.lastname;
+        }
+
+        return (
+            <>
+                <Modal
+                    closeIcon
+                    size="small"
+                    id="adding-schedule-modal"
+                    onClose={() => this.handleClose()}
+                    onOpen={() => this.handleOpen()}
+                    open={open}
+                >
+                    <Modal.Header as="h2">
+                        <Icon name="calendar" />
+                        Set Schedule
+                    </Modal.Header>
+
+                    <Modal.Content>
+                        <Grid centered columns={1}>
+                            <Grid.Column style={column_style}>
+                                <Grid.Row>
+                                    <Icon size="huge" name="user md"></Icon>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <span
+                                        id="doctor-name"
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: 25 + "px",
+                                        }}
+                                    >
+                                        {firstname} {lastname}
+                                    </span>
+                                </Grid.Row>
+                            </Grid.Column>
+                        </Grid>
+
+                        <Divider horizontal> Customize Your Schedule</Divider>
+                        <Grid centered columns={2}>
+                            <Checkbox
+                                disabled={this.state.disabled.daily}
+                                style={checkbox_style}
+                                id="daily-field"
+                                label="Repeat Daily"
+                                name="daily"
+                                onChange={this.handleCheckbox}
+                                checked={this.state.daily}
+                            ></Checkbox>
+                            <Checkbox
+                                disabled={this.state.disabled.repeat}
+                                style={checkbox_style}
+                                id="repeat-field"
+                                label="Customized Recurrence"
+                                name="repeat"
+                                onChange={this.handleCheckbox}
+                                checked={this.state.repeat}
+                            ></Checkbox>
+                        </Grid>
+                        <Grid centered columns={1}>
+                            <Checkbox
+                                style={checkbox_style}
+                                id="custom-field"
+                                label="Customized Working Hours"
+                                name="custom"
+                                onChange={this.handleCheckbox}
+                                checked={this.state.custom}
+                            ></Checkbox>
+                        </Grid>
+
+                        <Grid centered columns={1}>
+                            <Grid.Column
+                                style={{
+                                    textAlign: "center",
+                                    margin: "15px 0 0 0",
+                                }}
+                            >
+                                <Grid.Row>
+                                    <Header as="h3">Working Hours</Header>
+                                </Grid.Row>
+                            </Grid.Column>
+                        </Grid>
+                        <Grid centered columns={3}>
+                            <Grid.Row style={{ padding: "0" }}>
+                                <span
+                                    style={first_session_style}
+                                    id="first-schedule"
+                                >
+                                    First Session
+                                </span>
+                            </Grid.Row>
+                            <Grid.Column style={{ margin: "0 14px 0 0" }}>
+                                <Input
+                                    icon="time"
+                                    iconPosition="left"
+                                    placeholder="Start Time"
+                                    id="start"
+                                    autoComplete="false"
+                                    required
+                                    control={DatePicker}
+                                    showtimeselect
+                                    showtimeselectonly
+                                    selected={this.state.time}
+                                    timeintervals={30}
+                                    dateFormat="h:mm aa"
+                                    minTime={moment().toDate().setHours(9)}
+                                    maxTime={moment().toDate().setHours(18)}
+                                    onChange={this.handleChange}
+                                ></Input>
+                            </Grid.Column>
+                            <Segment
+                                basic
+                                style={{
+                                    margin: "6px 0 0 0",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                to
+                            </Segment>
+                            <Grid.Column style={column_style}>
+                                <Input
+                                    icon="time"
+                                    iconPosition="left"
+                                    placeholder="End Time"
+                                    id="end"
+                                    autoComplete="false"
+                                    required
+                                    control={DatePicker}
+                                    showtimeselect
+                                    showtimeselectonly
+                                    selected={this.state.time}
+                                    timeintervals={30}
+                                    dateFormat="h:mm aa"
+                                    minTime={moment().toDate().setHours(9)}
+                                    maxTime={moment().toDate().setHours(18)}
+                                    onChange={this.handleChange}
+                                ></Input>
+                            </Grid.Column>
+                        </Grid>
+                        {second_schedule}
+                        {repeat_buttons}
+                    </Modal.Content>
+
+                    <Modal.Actions>
+                        <Button
+                            icon
+                            labelPosition="left"
+                            color="green"
+                            id="add-schedule-button"
+                            onClick={this.handleSubmit}
+                        >
+                            <Icon name="check" />
+                            FINISH
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+            </>
+        );
+    }
+}
+
+export default AdminCreateScheduleModal;

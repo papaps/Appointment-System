@@ -30,6 +30,8 @@ class AdminAddDentistModal extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.handleValidation()) {
+            let firstname = this.state.firstname.trim();
+            let lastname = this.state.lastname.trim();
             const data = {
                 firstname: this.state.firstname.trim(),
                 lastname: this.state.lastname.trim(),
@@ -40,7 +42,7 @@ class AdminAddDentistModal extends React.Component {
             };
             axios.post("admin/addDentist", data).then((res) => {
                 if (res.data.message === true) {
-                    this.handleClose();
+                    // this.handleClose();
                     setTimeout(() => {
                         toast({
                             type: "success",
@@ -49,6 +51,10 @@ class AdminAddDentistModal extends React.Component {
                             icon: "check",
                         });
                     }, 1000);
+                    this.props.handleModal("admin-create-schedule", {
+                        firstname,
+                        lastname,
+                    });
                     this.handleUpdateTable();
                 } else {
                     toast({

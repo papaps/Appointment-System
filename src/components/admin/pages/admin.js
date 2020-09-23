@@ -2,6 +2,7 @@ import React from "react";
 import AdminSidebar from "../module/admin-sidebar";
 import AdminTable from "../module/admin-table";
 import AdminCreateModal from "../module/admin-create-modal";
+import AdminCreateScheduleModal from "../module/admin-create-schedule-modal";
 import AdminAddDentistModal from "../module/admin-add-dentist-modal";
 import AdminAddProcedureModal from "../module/admin-add-procedure-modal";
 import AdminResetSecretaryModal from "../module/admin-reset-secretary-modal";
@@ -155,6 +156,11 @@ class Admin extends React.Component {
                     activeModal={this.state.activeModal}
                     handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminAddDentistModal>
+                <AdminCreateScheduleModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminCreateScheduleModal>
                 <AdminAddProcedureModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
