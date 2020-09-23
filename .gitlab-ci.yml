@@ -38,6 +38,7 @@
         - production      
         
     auto-test:
+      image: python:latest
       stage: auto-test
       script:
         - apt-get update -qy
