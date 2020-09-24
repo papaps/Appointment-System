@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation    Suite description
-Suite Setup       Open Browser To Login Page
+Suite Setup       Open Browser To Login Page Slow
 Suite Teardown    Close Browser
 Resource    ../login_resource.robot
 #Test
@@ -64,7 +64,7 @@ Dentist Should Be Able to Login
     Logout Page
 
 Dentist Should Not Be Able To Login
-    Input Username    ${VALID DENTIST}
+    Input Username    bchanan
     Input Password    ${VALID PASSWORD}
     Submit Credentials
     Page Should Contain   Invalid username
@@ -83,8 +83,9 @@ Dentist Should Be Available in Creating Appointments
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    TAB
-    Press Keys    None    TAB
     Page Should Contain    Dr. Daisy Buchanan
+	Press Keys    None    TAB
+    Press Keys    None    TAB
     Click Element   cancel-appointment
     Sleep   1
     Click Element   discard
@@ -98,11 +99,13 @@ Dentist Should Be Unavailable in Creating Appointments
     Click Element   add-button
     Sleep   1
     Click Element   date-done
-    Press Keys    None    TAB
+	Sleep   3
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    TAB
     Page Should Not Contain    Dr. Daisy Buchanan
+	Press Keys    None    TAB
+    Press Keys    None    TAB
     Click Element   cancel-appointment
     Sleep   1
     Click Element   discard
