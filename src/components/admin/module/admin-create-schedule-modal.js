@@ -88,7 +88,6 @@ class AdminCreateScheduleModal extends React.Component {
     };
 
     render() {
-        console.log(this.state);
         let open;
 
         if (this.props.activeModal === "admin-create-schedule") {
@@ -142,7 +141,7 @@ class AdminCreateScheduleModal extends React.Component {
                                         placeholder="Start Time"
                                         id="start-add"
                                         autoComplete="false"
-                                        name="start_add"
+                                        name="start-add"
                                         required
                                     ></Input>
                                 }
@@ -176,7 +175,7 @@ class AdminCreateScheduleModal extends React.Component {
                                         placeholder="End Time"
                                         id="end-add"
                                         autoComplete="false"
-                                        name="end_add"
+                                        name="end-add"
                                         required
                                     ></Input>
                                 }
