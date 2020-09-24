@@ -70,7 +70,6 @@ class AdminCreateScheduleModal extends React.Component {
     };
 
     render() {
-        console.log(this.state);
         let open;
 
         if (this.props.activeModal === "admin-create-schedule") {
