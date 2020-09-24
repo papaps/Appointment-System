@@ -25,9 +25,10 @@ Open Browser To Login Page Slow
     Call Method    ${chrome_options}    add_argument    --disable-gpu
     Call Method    ${chrome_options}    add_argument    --no-sandbox
     Create Webdriver    Chrome    chrome_options=${chrome_options}
-	Go To   ${LOGIN URL}
+    Open Browser    ${LOGIN URL}    ${BROWSER}
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
+	Go To   ${LOGIN URL}
 
 Open Browser To Login Page
 	${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
@@ -37,9 +38,10 @@ Open Browser To Login Page
     Call Method    ${chrome_options}    add_argument    --disable-gpu
     Call Method    ${chrome_options}    add_argument    --no-sandbox
     Create Webdriver    Chrome    chrome_options=${chrome_options}
-	Go To   ${LOGIN URL}
+	Open Browser    ${LOGIN URL}    ${BROWSER}
     Maximize Browser Window
     Set Selenium Speed  ${ASAP}
+	Go To   ${LOGIN URL}
 
 Go To Login Page
     Go To   ${LOGIN URL}
