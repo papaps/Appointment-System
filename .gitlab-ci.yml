@@ -55,9 +55,9 @@
         - chmod +x /opt/chromedriver/chromedriver
         - ln -fs /opt/chromedriver/chromedriver /usr/local/bin/chromedriver
         - robot -v BROWSER:HeadlessChrome -v APP_ENV:test -d tests/automation/report tests/automation
-      # artifacts:
-      # paths:
-      #   - /builds/Secade/Appointment-System/tests/automation/report
+      artifacts:
+      paths:
+        - /builds/Secade/Appointment-System/tests/automation/report
       only:
         - production
         
@@ -66,7 +66,7 @@
       script:
         - mkdir public
         - mv /builds/Secade/Appointment-System/tests/automation/report/ * public/
-      # artifacts:
+      artifacts:
       # expire_in: 1 week
-      # paths:
-      #   - public
+      paths:
+        - public

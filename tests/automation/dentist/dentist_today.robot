@@ -4,7 +4,7 @@ Library  DateTime
 Library  String
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
-Resource    ${CURDIR}${/}..\\login_resource.robot
+Resource    ../login_resource.robot
 
 *** Test Cases ***
 Today Button Should Work
