@@ -9,6 +9,7 @@ Inactive Dentist
     Input Username    ${VALID ADMIN}
     Input Password    ${VALID PASSWORD}
     Submit Credentials
+	Sleep   5
     Set Dentist Inactive
     Logout Page
 
