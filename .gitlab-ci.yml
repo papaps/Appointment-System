@@ -8,9 +8,9 @@
     stages:
       - builds
       - test
-      - production
       - auto-test
       - report
+      - production
 
     cache:
       paths:
@@ -26,16 +26,7 @@
 
     testing_testing:
       stage: test
-      script: npm test
-      
-    deploying:
-      type: deploy
-      stage: production
-      image: ruby:latest
-      script:
-        - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-      only:
-        - production      
+      script: npm test 
         
     auto-test:
       image: python:latest
@@ -70,3 +61,12 @@
       #expire_in: 1 week
       #paths:
       #  - public
+      
+    deploying:
+      type: deploy
+      stage: production
+      image: ruby:latest
+      script:
+        - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+      only:
+        - production     
