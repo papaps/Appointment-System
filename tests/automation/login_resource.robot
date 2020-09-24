@@ -10,7 +10,7 @@ ${ASAP}          0
 ${VALID ADMIN}     admin
 ${VALID SECRETARY}     secretary
 ${VALID DENTIST}     buchanan
-${VALID PASSWORD}    1234567890
+${VALID PASSWORD}    @dmin
 ${LOGIN URL}      http://${SERVER}/login
 ${ADMIN URL}    http://${SERVER}/admin
 ${SECRETARY URL}    http://${SERVER}/secretary
@@ -34,6 +34,7 @@ Open Browser To Login Page
     Create Webdriver    Chrome    chrome_options=${chrome_options}
     Maximize Browser Window
     Set Selenium Speed  ${ASAP}
+	Go To   ${LOGIN URL}
 
 Go To Login Page
     Go To   ${LOGIN URL}
