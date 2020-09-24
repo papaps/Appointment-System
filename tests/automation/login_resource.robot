@@ -3,7 +3,7 @@ Library  SeleniumLibrary    run_on_failure=NOTHING
 
 *** Variables ***
 #${SERVER}         localhost:3000
-${SERVER}         https://access-dental.herokuapp.com/
+${SERVER}         access-dental.herokuapp.com
 ${BROWSER}        Chrome
 ${DELAY}         0.2
 ${ASAP}          0
@@ -11,10 +11,10 @@ ${VALID ADMIN}     admin
 ${VALID SECRETARY}     secretary
 ${VALID DENTIST}     buchanan
 ${VALID PASSWORD}    @dmin
-${LOGIN URL}      http://${SERVER}/login
-${ADMIN URL}    http://${SERVER}/admin
-${SECRETARY URL}    http://${SERVER}/secretary
-${DENTIST URL}    http://${SERVER}/dentist
+${LOGIN URL}      https://${SERVER}/login
+${ADMIN URL}    https://${SERVER}/admin
+${SECRETARY URL}    https://${SERVER}/secretary
+${DENTIST URL}    https://${SERVER}/dentist
 
 *** Keywords ***
 Open Browser To Login Page Slow
