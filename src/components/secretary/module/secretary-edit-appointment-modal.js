@@ -52,12 +52,12 @@ class EditModal extends Component {
       this.setState({
         procedures:[
           this.state.procedures.map(procedure=>{
-            return (procedure._id)
+            return procedure._id
           })
         ],
         doctors:[
           this.state.doctors.map(doctor=>{
-            return (doctor._id)
+            return doctor._id
           })
         ]
       })
@@ -149,13 +149,13 @@ class EditModal extends Component {
     }
 
     handleDoctorChange =(e, {value}) => {
-        this.setState({doctors:this.state.doctors.concat(value)})
-        console.log(this.state.doctors)
+        this.setState({doctors:value})
+        console.log(value)
 
       }
 
       handleProcessChange =(e, {value}) => {
-        this.setState({procedures:this.state.procedures.concat(value)})
+        this.setState({procedures:value})
         console.log(value)
 
       }

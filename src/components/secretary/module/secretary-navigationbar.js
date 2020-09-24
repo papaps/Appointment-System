@@ -48,6 +48,7 @@ export default class SecretaryNavigationbar extends Component{
                         name="view"
                         options={this.props.viewer} 
                         onChange={this.props.onChangeView}
+                        defaultValue={this.props.viewer}
                         id="secretary-dropdown-view"
                         >
                     </Dropdown>
