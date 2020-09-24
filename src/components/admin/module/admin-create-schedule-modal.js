@@ -7,10 +7,8 @@ import {
     Segment,
     Divider,
     Checkbox,
-    Accordion,
     Header,
     Input,
-    Form,
 } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
