@@ -17,7 +17,7 @@ export default class Picker extends Component {
     }
  
     render(){
-         const{handleOnToday, handleOnPrev, handleOnNext, date} = this.props
+         const{handleOnToday, handleOnPrev, handleOnNext, date, handleChangeDate} = this.props
         return(
             <div class="item">
                 <div className="picker">
@@ -25,7 +25,8 @@ export default class Picker extends Component {
                     <DatePicker
                         //Fixed for error when intially clicking a date on secretary-header (change selected to moment)
                         selected={moment(date).toDate()}
-                        onChange={()=>this.handleChangeDate(date)}
+                        onChange={handleChangeDate}
+                        onSelect={handleChangeDate}
                     />
                 </div> 
                 <div className="today" class="ui basic button with tooltip" data-title="Today (SPACEBAR)"

@@ -8,6 +8,9 @@ import SecretaryHeader from "../module/secretary-header"
 import SecretaryTable from "../module/secretary-week-all"
 import Trrial from "../module/secretary-day-all"
 
+/*CSS FILES*/
+import '../secretary_css/secretary-view.css'
+
 export default class Secretary extends Component{
 
     
@@ -172,6 +175,7 @@ export default class Secretary extends Component{
         else if(this.state.view == 'day'){
             currView = <Trrial
                             day={this.state.date}
+                            appointments={this.state.appointments}
                         >
                             
                         </Trrial>
@@ -206,7 +210,7 @@ export default class Secretary extends Component{
                 >
 
                 </SecretaryHeader>
-                <div style={{height: 840+'px', overflowY:'scroll', overflowX:'scroll'}}>
+                <div style={{height: 840+'px', margin:0+'px', overflowY:"auto"}}>
                 {currView}
                 </div>
                 

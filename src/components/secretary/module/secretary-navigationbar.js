@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import Picker from './datepicker.component'
+import Picker from './secretary-date-picker'
 import {Dropdown, Table} from 'semantic-ui-react'
 import moment from 'moment'
 
+import '../secretary_css/secretary-view.css'
 
 export default class SecretaryNavigationbar extends Component{
     handleOnToday =()=>{
@@ -44,7 +45,7 @@ export default class SecretaryNavigationbar extends Component{
             <div class="right borderless menu" id="secretary-rightside">
                 <div class="item" id="secretary-dropdown-view-container">
                     <Dropdown fluid selection 
-                        placeholder="View"
+                        placeholder="DAY"
                         name="view"
                         options={this.props.viewer} 
                         onChange={this.props.onChangeView}
