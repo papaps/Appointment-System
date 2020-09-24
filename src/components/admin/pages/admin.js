@@ -21,6 +21,7 @@ import { SemanticToastContainer, toast } from "react-semantic-toasts";
 import AdminDeleteProcedureModal from "../module/admin-delete-procedure-modal";
 import AdminEditDentistModal from "../module/admin-edit-dentist-modal";
 import AdminDeleteDentistModal from "../module/admin-delete-dentist-modal";
+import AdminEditScheduleModal from "../module/admin-edit-schedule-modal"
 import axios from "axios";
 class Admin extends React.Component {
     constructor(props) {
@@ -190,6 +191,11 @@ class Admin extends React.Component {
                     data={this.state.data}
                     handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminEditDentistModal>
+                <AdminEditScheduleModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                ></AdminEditScheduleModal>
                 <AdminDeleteProcedureModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
