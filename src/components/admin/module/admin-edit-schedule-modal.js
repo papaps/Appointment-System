@@ -81,8 +81,6 @@ class AdminEditScheduleModal extends React.Component {
             open = false;
         }
 
-        open = true
-
         const column_style = {
             textAlign: "center",
         };
