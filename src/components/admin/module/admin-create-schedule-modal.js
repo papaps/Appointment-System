@@ -321,7 +321,7 @@ class AdminCreateScheduleModal extends React.Component {
                             <Checkbox
                                 disabled={this.state.disabled.daily}
                                 style={checkbox_style}
-                                id="daily-field"
+                                id="daily"
                                 label="Repeat Daily"
                                 name="daily"
                                 onChange={this.handleCheckbox}
@@ -330,7 +330,7 @@ class AdminCreateScheduleModal extends React.Component {
                             <Checkbox
                                 disabled={this.state.disabled.repeat}
                                 style={checkbox_style}
-                                id="repeat-field"
+                                id="repeat"
                                 label="Customized Recurrence"
                                 name="repeat"
                                 onChange={this.handleCheckbox}
@@ -340,7 +340,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Grid centered columns={1}>
                             <Checkbox
                                 style={checkbox_style}
-                                id="custom-field"
+                                id="custom"
                                 label="Customized Working Hours"
                                 name="custom"
                                 onChange={this.handleCheckbox}
