@@ -1278,7 +1278,7 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
         allDoctorsAvailability[i].firstname = allDoctors[i].firstname
         allDoctorsAvailability[i].lastname = allDoctors[i].lastname
         for (var j = 0; j < formattedWeekData.length; j++) {
-            var available = "no more slots";
+            var available = "unavailable";
             var unavDate = await UnavailableDate.getDoctorUnavailableDates(allDoctors[i])
             var docSched = await Schedule.getScheduleByID(allDoctors[i].schedule);
 
