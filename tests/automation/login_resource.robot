@@ -11,10 +11,10 @@ ${VALID ADMIN}     admin
 ${VALID SECRETARY}     secretary
 ${VALID DENTIST}     buchanan
 ${VALID PASSWORD}    1234567890
-${LOGIN URL}      http://${SERVER}/login
-${ADMIN URL}    http://${SERVER}/admin
-${SECRETARY URL}    http://${SERVER}/secretary
-${DENTIST URL}    http://${SERVER}/dentist
+${LOGIN URL}      https://${SERVER}/login
+${ADMIN URL}    https://${SERVER}/admin
+${SECRETARY URL}    https://${SERVER}/secretary
+${DENTIST URL}    https://${SERVER}/dentist
 
 *** Keywords ***
 Open Browser To Login Page Slow
@@ -28,7 +28,6 @@ Open Browser To Login Page Slow
     Open Browser    ${LOGIN URL}    ${BROWSER}
     Maximize Browser Window
     Set Selenium Speed  ${DELAY}
-    Login Page should be Open
 
 Open Browser To Login Page
 	${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
