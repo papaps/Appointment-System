@@ -2,8 +2,8 @@
 Library  SeleniumLibrary    run_on_failure=NOTHING
 
 *** Variables ***
-${SERVER}         localhost:3000
-#${SERVER}         access-dental.herokuapp.com
+#${SERVER}         localhost:3000
+${SERVER}         access-dental.herokuapp.com
 ${BROWSER}        Chrome
 ${DELAY}         0.2
 ${ASAP}          0
