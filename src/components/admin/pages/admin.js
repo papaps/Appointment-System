@@ -125,7 +125,7 @@ class Admin extends React.Component {
                         handleModal={this.handleModal}
                         activeItem={this.state.activeItem}
                     />
-                    <Grid.Column style={{ width: "85%" }}>
+                    <Grid.Column style={{ width: "85%", overflowY:"scroll", maxHeight: "100vh" }}>
                         <Dimmer
                             active={this.state.activeDimmer}
                             inverted
