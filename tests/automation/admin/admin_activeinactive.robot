@@ -3,6 +3,7 @@ Documentation    Suite description
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Resource    ../login_resource.robot
+#Test
 
 *** Test Cases ***
 Inactive Dentist
