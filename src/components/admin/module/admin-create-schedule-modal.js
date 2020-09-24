@@ -10,6 +10,7 @@ import {
     Accordion,
     Header,
     Input,
+    Form,
 } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -18,7 +19,10 @@ class AdminCreateScheduleModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            time: "",
+            start: null,
+            end: null,
+            start_add: null,
+            end_add: null,
             daily: false,
             repeat: false,
             custom: false,
@@ -50,6 +54,22 @@ class AdminCreateScheduleModal extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
+    handleStartAdd(time) {
+        this.setState({ start_add: time });
+    }
+
+    handleEndAdd(time) {
+        this.setState({ end_add: time });
+    }
+
+    handleStart(time) {
+        this.setState({ start: time });
+    }
+
+    handleEnd(time) {
+        this.setState({ end: time });
+    }
+
     handleCheckbox = (e, { name }) => {
         this.setState({ [name]: e.target.checked });
         let disabled = this.state.disabled;
@@ -70,6 +90,7 @@ class AdminCreateScheduleModal extends React.Component {
     };
 
     render() {
+        console.log(this.state);
         let open;
 
         if (this.props.activeModal === "admin-create-schedule") {
@@ -104,24 +125,30 @@ class AdminCreateScheduleModal extends React.Component {
                                 Second Session
                             </span>
                         </Grid.Row>
-                        <Grid.Column style={{ margin: "0 14px 0 0" }}>
-                            <Input
-                                icon="time"
-                                iconPosition="left"
-                                placeholder="Start Time"
-                                id="start-add"
-                                autoComplete="false"
+                        <Grid.Column>
+                            <DatePicker
+                                placeholderText="Start Time"
                                 required
-                                control={DatePicker}
-                                showtimeselect
-                                showtimeselectonly
-                                selected={this.state.time}
-                                timeintervals={30}
-                                dateFormat="h:mm aa"
-                                minTime={moment().toDate().setHours(9)}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                selected={this.state.start_add}
+                                timeIntervals={30}
+                                dateFormat="H:mm"
+                                minTime={moment().toDate().setHours(8)}
                                 maxTime={moment().toDate().setHours(18)}
-                                onChange={this.handleChange}
-                            ></Input>
+                                onChange={(time) => this.handleStartAdd(time)}
+                                customInput={
+                                    <Input
+                                        icon="time"
+                                        iconPosition="left"
+                                        placeholder="Start Time"
+                                        id="start-add"
+                                        autoComplete="false"
+                                        name="start_add"
+                                        required
+                                    ></Input>
+                                }
+                            ></DatePicker>
                         </Grid.Column>
                         <Segment
                             basic
@@ -132,24 +159,30 @@ class AdminCreateScheduleModal extends React.Component {
                         >
                             to
                         </Segment>
-                        <Grid.Column style={column_style}>
-                            <Input
-                                icon="time"
-                                iconPosition="left"
-                                placeholder="End Time"
-                                id="end-add"
-                                autoComplete="false"
+                        <Grid.Column>
+                            <DatePicker
+                                placeholderText="End Time"
                                 required
-                                control={DatePicker}
-                                showtimeselect
-                                showtimeselectonly
-                                selected={this.state.time}
-                                timeintervals={30}
-                                dateFormat="h:mm aa"
-                                minTime={moment().toDate().setHours(9)}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                selected={this.state.end_add}
+                                timeIntervals={30}
+                                dateFormat="H:mm"
+                                minTime={moment().toDate().setHours(8)}
                                 maxTime={moment().toDate().setHours(18)}
-                                onChange={this.handleChange}
-                            ></Input>
+                                onChange={(time) => this.handleEndAdd(time)}
+                                customInput={
+                                    <Input
+                                        icon="time"
+                                        iconPosition="left"
+                                        placeholder="End Time"
+                                        id="end-add"
+                                        autoComplete="false"
+                                        name="end_add"
+                                        required
+                                    ></Input>
+                                }
+                            ></DatePicker>
                         </Grid.Column>
                     </Grid>
                 </>
@@ -239,11 +272,13 @@ class AdminCreateScheduleModal extends React.Component {
 
         let firstname;
         let lastname;
+        let key;
         if (
             this.props.data != null &&
             this.props.data.firstname != null &&
             this.props.data.lastname != null
         ) {
+            key = this.props.data.key;
             firstname = this.props.data.firstname;
             lastname = this.props.data.lastname;
         }
@@ -336,24 +371,30 @@ class AdminCreateScheduleModal extends React.Component {
                                     First Session
                                 </span>
                             </Grid.Row>
-                            <Grid.Column style={{ margin: "0 14px 0 0" }}>
-                                <Input
-                                    icon="time"
-                                    iconPosition="left"
-                                    placeholder="Start Time"
-                                    id="start"
-                                    autoComplete="false"
+                            <Grid.Column>
+                                <DatePicker
+                                    placeholderText="Start Time"
                                     required
-                                    control={DatePicker}
-                                    showtimeselect
-                                    showtimeselectonly
-                                    selected={this.state.time}
-                                    timeintervals={30}
-                                    dateFormat="h:mm aa"
-                                    minTime={moment().toDate().setHours(9)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    selected={this.state.start}
+                                    timeIntervals={30}
+                                    dateFormat="H:mm"
+                                    minTime={moment().toDate().setHours(8)}
                                     maxTime={moment().toDate().setHours(18)}
-                                    onChange={this.handleChange}
-                                ></Input>
+                                    onChange={(time) => this.handleStart(time)}
+                                    customInput={
+                                        <Input
+                                            icon="time"
+                                            iconPosition="left"
+                                            placeholder="Start Time"
+                                            id="start"
+                                            autoComplete="false"
+                                            name="start"
+                                            required
+                                        ></Input>
+                                    }
+                                ></DatePicker>
                             </Grid.Column>
                             <Segment
                                 basic
@@ -364,24 +405,30 @@ class AdminCreateScheduleModal extends React.Component {
                             >
                                 to
                             </Segment>
-                            <Grid.Column style={column_style}>
-                                <Input
-                                    icon="time"
-                                    iconPosition="left"
-                                    placeholder="End Time"
-                                    id="end"
-                                    autoComplete="false"
+                            <Grid.Column>
+                                <DatePicker
+                                    placeholderText="End Time"
                                     required
-                                    control={DatePicker}
-                                    showtimeselect
-                                    showtimeselectonly
-                                    selected={this.state.time}
-                                    timeintervals={30}
-                                    dateFormat="h:mm aa"
-                                    minTime={moment().toDate().setHours(9)}
+                                    showTimeSelect
+                                    showTimeSelectOnly
+                                    selected={this.state.end}
+                                    timeIntervals={30}
+                                    dateFormat="H:mm"
+                                    minTime={moment().toDate().setHours(8)}
                                     maxTime={moment().toDate().setHours(18)}
-                                    onChange={this.handleChange}
-                                ></Input>
+                                    onChange={(time) => this.handleEnd(time)}
+                                    customInput={
+                                        <Input
+                                            icon="time"
+                                            iconPosition="left"
+                                            placeholder="End Time"
+                                            id="end"
+                                            autoComplete="false"
+                                            name="end"
+                                            required
+                                        ></Input>
+                                    }
+                                ></DatePicker>
                             </Grid.Column>
                         </Grid>
                         {second_schedule}
