@@ -184,6 +184,9 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateScheduleTable={
+                        this.handleUpdateScheduleTable
+                    }
                 ></AdminCreateScheduleModal>
                 <AdminAddProcedureModal
                     handleModal={this.handleModal}
