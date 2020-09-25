@@ -9,10 +9,13 @@ import week_avail from "../src/components/secretary/views/week_avail.component";
 import day_one from "../src/components/secretary/views/day_one.component";
 import day_all from "../src/components/secretary/views/day_all.component";
 import week_unavailable from "../src/components/secretary/views/week_unavailable.component";
-
+import loginComponent from "../src/components/sign-in/LoginComponent"
 import Example from "./components/secretary/small_components/appointment_modal.component";
-
-
+import LoginComponent from '../src/components/sign-in/LoginComponent';
+import resetPassword from '../src/components/sign-in/ResetPasswordModalComponent'
+import ResetPasswordModalComponent from '../src/components/sign-in/ResetPasswordModalComponent';
+import LoginClarification from '../src/components/sign-in/LoginClarification';
+import DentistPage from '../src/components/dentist/DentistPageComponent';
 
 //This gets called by index.js
 function App() {
@@ -21,6 +24,8 @@ function App() {
       {/* <Navbar /> */}
       {/* <Example/> */}
       {/* <addProcMainForm/> */}
+      <LoginComponent></LoginComponent>
+     <DentistPage></DentistPage>
       <Route path="/week_all" component={week_all} />
       <Route path="/week_avail" component={week_avail} />
       <Route path="/day_all" component={day_all} />

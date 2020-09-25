@@ -39,9 +39,12 @@ router.get("/", async (req, res) => {
 
 //VALIDATION
 router.post("/checkCurrentAdminPassword", async (req, res) => {
+
     let admin = await Account.getAccountByUsername("admin");
-    var temp = await Account.authenticate(admin.username, req.body.newPassword, admin.salt);
+   console.log(admin.username+" | "+req.body.password);
+    var temp = await Account.authenticate(admin.username, req.body.password, admin.salt);
     if(temp != null) {
+        console.log("TRUE");
         res.send(true);
     } else {
         res.send(false);
@@ -63,6 +66,7 @@ router.post("/checkCurrentSecretaryPassword", async (req, res) => {
 // CHECKS IF THE USERNAME INPUT IS IN THE DATABASE
 router.post("/validateUsername", async (req, res) => {
     let account = await Account.getAccountByUsername(req.body.username);
+    console.log(req.body.username);
     if (account == undefined) {
         res.send({message: false})
     } else {
