@@ -1,25 +1,9 @@
 import React from "react";
-import { Grid, Dimmer } from "semantic-ui-react";
 import AdminDentistTable from "./admin-dentist-table";
 import AdminProcedureTable from "./admin-procedure-table";
 
 class AdminTable extends React.Component {
-    state = {};
-    constructor(props) {
-        super(props);
-
-        this.handleShowDimmer = this.handleShowDimmer.bind(this);
-        this.handleHideDimmer = this.handleHideDimmer.bind(this);
-
-        this.state = {
-            active: false,
-        };
-    }
-
-    handleShowDimmer = () => this.setState({ active: true });
-    handleHideDimmer = () => this.setState({ active: false });
     render() {
-        const { active } = this.state;
         let { activeTable, dentists, procedures } = this.props;
         let table;
         if (activeTable === "Dentist") {
@@ -43,16 +27,7 @@ class AdminTable extends React.Component {
                 ></AdminProcedureTable>
             );
         }
-        return (
-            <>
-                <Grid.Column style={{ width: "85%" }}>
-                    <Dimmer active={active} inverted id="list-dimmer">
-                        <div className="ui elastic huge green loader"></div>
-                    </Dimmer>
-                    {table}
-                </Grid.Column>
-            </>
-        );
+        return <>{table}</>;
     }
 }
 
