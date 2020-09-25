@@ -20,6 +20,7 @@ const { BreakTime } = require("../model/breaktime");
 const { UnavailableDate } = require("../model/unavailableDate");
 const { CheckDate } = require("../model/checkdate");
 const appointment = require("../model/appointment");
+const { TRUE } = require("node-sass");
 
 /* 
     Ty Added :)
@@ -635,13 +636,18 @@ router.post("/create", urlencoder, (req, res) => {
 
     Appointment.addAppointment(appointment, function (appointment) {
         if (appointment) {
+            res.send({message:true}),
             res.redirect("/secretary");
         } else {
             res.redirect("/");
         }
 
     }, (error) => {
-        res.send(error);
+        
+        res.send({
+            error,
+            message: false
+        });
     })
     // appointment.save()
     //     .then(() => res.json('Exercise Added'))
@@ -677,7 +683,7 @@ router.post("/edit", urlencoder, async (req, res) => {
         doctor
     });
 
-    let newApp = await Appointment.updateAppointment(appointmentID, appointment);
+    Appointment.updateAppointment(appointmentID, appointment);
 
     res.send("Success");
 })

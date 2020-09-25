@@ -15,6 +15,10 @@ export default class Picker extends Component {
     handleChangeDate=(date)=>{
         this.props.handleChangeDate(date)
     }
+
+    disableSunday=(date)=>{
+        return moment(date).day() !== 0;
+    }
  
     render(){
          const{handleOnToday, handleOnPrev, handleOnNext, date, handleChangeDate} = this.props
@@ -27,6 +31,9 @@ export default class Picker extends Component {
                         selected={moment(date).toDate()}
                         onChange={handleChangeDate}
                         onSelect={handleChangeDate}
+                        minDate={moment().toDate()}
+                        filterDate={this.disableSunday}
+                        
                     />
                 </div> 
                 <div className="today" class="ui basic button with tooltip" data-title="Today (SPACEBAR)"
