@@ -63,17 +63,21 @@ class addProcStep2 extends Component {
                     })
                 }
             })
-
-        
-    
-
-        
-
     }
+
+    // componentDidUpdate(){
+
+    //     if((this.props.values.procedures[0]!== this.state.currentProcs) || (this.props.values.doctors[0]!==this.state.doctors) ){
+    //         console.log("Updating...")
+    //         this.setState({
+    //             doctors: this.props.values.doctors[0],
+    //             procedures: this.props.values.procedures[0]
+    //         })
+    //     }
+    // }
 
     
     render(){
-        console.log(this.state.currentDocs)
         const {values, handleChange, handleDoctorChange, handleProcessChange} = this.props
         return(
             <Form>
