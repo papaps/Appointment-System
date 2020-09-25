@@ -35,116 +35,265 @@ class AdminCreateScheduleModal extends React.Component {
                 sat: false,
             },
             disabled: [],
+            error: {
+                start: false,
+                end: false,
+                start_add: false,
+                end_add: false,
+            },
         };
     }
 
     handleSubmit = (event, { datakey }) => {
         event.preventDefault();
-        let days = this.state.days;
-        let day_array = {
-            mon: [],
-            tue: [],
-            wed: [],
-            thu: [],
-            fri: [],
-            sat: [],
-        };
-        let break_array = {
-            mon: [],
-            tue: [],
-            wed: [],
-            thu: [],
-            fri: [],
-            sat: [],
-        };
+        if (this.handleValidation()) {
+            let days = this.state.days;
+            let day_array = {
+                mon: [],
+                tue: [],
+                wed: [],
+                thu: [],
+                fri: [],
+                sat: [],
+            };
+            let break_array = {
+                mon: [],
+                tue: [],
+                wed: [],
+                thu: [],
+                fri: [],
+                sat: [],
+            };
 
-        let start = moment(this.state.start).format("k:mm");
-        let end = moment(this.state.end).format("k:mm");
-        let start_add;
-        let end_add;
-        if (this.state.start_add != null) {
-            start_add = moment(this.state.start_add).format("k:mm");
-        }
-        if (this.state.end_add != null) {
-            end_add = moment(this.state.end_add).format("k:mm");
-        }
+            let start = moment(this.state.start).format("k:mm");
+            let end = moment(this.state.end).format("k:mm");
+            let start_add;
+            let end_add;
+            if (this.state.start_add != null) {
+                start_add = moment(this.state.start_add).format("k:mm");
+            }
+            if (this.state.end_add != null) {
+                end_add = moment(this.state.end_add).format("k:mm");
+            }
 
-        moment()
-
-        for (var day in days) {
-            console.log(day);
-            if (this.state.daily && this.state.custom) {
-                day_array[day].push(start);
-                day_array[day].push(end_add);
-                break_array[day].push(end);
-                break_array[day].push(start_add);
-            } else if (this.state.daily) {
-                day_array[day].push(start);
-                day_array[day].push(end);
-            } else if (this.state.repeat) {
-                if (days[day]) {
-                    if (this.state.custom) {
-                        day_array[day].push(start);
-                        day_array[day].push(end_add);
-                        break_array[day].push(end);
-                        break_array[day].push(start_add);
-                    } else {
-                        day_array[day].push(start);
-                        day_array[day].push(end);
+            for (var day in days) {
+                if (this.state.daily && this.state.custom) {
+                    day_array[day].push(start);
+                    day_array[day].push(end_add);
+                    break_array[day].push(end);
+                    break_array[day].push(start_add);
+                } else if (this.state.daily) {
+                    day_array[day].push(start);
+                    day_array[day].push(end);
+                } else if (this.state.repeat) {
+                    if (days[day]) {
+                        if (this.state.custom) {
+                            day_array[day].push(start);
+                            day_array[day].push(end_add);
+                            break_array[day].push(end);
+                            break_array[day].push(start_add);
+                        } else {
+                            day_array[day].push(start);
+                            day_array[day].push(end);
+                        }
                     }
                 }
             }
-        }
-        const data = {
-            "monday[]": day_array["mon"],
-            "tuesday[]": day_array["tue"],
-            "wednesday[]": day_array["wed"],
-            "thursday[]": day_array["thu"],
-            "friday[]": day_array["fri"],
-            "saturday[]": day_array["sat"],
-            "mondaydifference[]": break_array["mon"],
-            "tuesdaydifference[]": break_array["tue"],
-            "wednesdaydifference[]": break_array["wed"],
-            "thursdaydifference[]": break_array["thu"],
-            "fridaydifference[]": break_array["fri"],
-            "saturdaydifference[]": break_array["sat"],
-            doctorID: datakey,
-            defaultTime: "false",
-        };
+            const data = {
+                "monday[]": day_array["mon"],
+                "tuesday[]": day_array["tue"],
+                "wednesday[]": day_array["wed"],
+                "thursday[]": day_array["thu"],
+                "friday[]": day_array["fri"],
+                "saturday[]": day_array["sat"],
+                "mondaydifference[]": break_array["mon"],
+                "tuesdaydifference[]": break_array["tue"],
+                "wednesdaydifference[]": break_array["wed"],
+                "thursdaydifference[]": break_array["thu"],
+                "fridaydifference[]": break_array["fri"],
+                "saturdaydifference[]": break_array["sat"],
+                doctorID: datakey,
+                defaultTime: "false",
+            };
 
-        console.log(data);
-        axios.post("admin/addSchedule", data).then((response) => {
-            if (response.data) {
-                setTimeout(() => {
-                    toast({
-                        type: "success",
-                        title: "Success",
-                        description: <p>Dentist schedule successfully added</p>,
-                        icon: "check",
+            console.log(data);
+            axios.post("admin/addSchedule", data).then((response) => {
+                if (response.data) {
+                    setTimeout(() => {
+                        toast({
+                            type: "success",
+                            title: "Success",
+                            description: (
+                                <p>Dentist schedule successfully added</p>
+                            ),
+                            icon: "check",
+                        });
+                    }, 1000);
+                    this.handleClose();
+                    this.setState({
+                        start: null,
+                        end: null,
+                        start_add: null,
+                        end_add: null,
+                        daily: false,
+                        repeat: false,
+                        custom: false,
+                        days: {
+                            mon: false,
+                            tue: false,
+                            wed: false,
+                            thu: false,
+                            fri: false,
+                            sat: false,
+                        },
+                        disabled: [],
                     });
-                }, 1000);
-                this.handleClose();
-                this.setState({
-                    start: null,
-                    end: null,
-                    start_add: null,
-                    end_add: null,
-                    daily: false,
-                    repeat: false,
-                    custom: false,
-                    days: {
-                        mon: false,
-                        tue: false,
-                        wed: false,
-                        thu: false,
-                        fri: false,
-                        sat: false,
-                    },
-                    disabled: [],
-                });
-            }
-        });
+                }
+            });
+        }
     };
+
+    handleValidation() {
+        let {
+            daily,
+            custom,
+            repeat,
+            days,
+            start,
+            end,
+            start_add,
+            end_add,
+        } = this.state;
+        let formIsValid = true;
+        let error = {
+            start: false,
+            end: false,
+            start_add: false,
+            end_add: false,
+        };
+        let empty_time = false;
+        let too_short = false;
+        let invalid_time = false;
+
+        if (!(daily || repeat)) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please choose an occurence</p>,
+                icon: "cancel",
+            });
+            formIsValid = false;
+        }
+
+        if (start === null) {
+            error["start"] = true;
+            empty_time = true;
+            formIsValid = false;
+        }
+
+        if (end === null) {
+            error["end"] = true;
+            empty_time = true;
+            formIsValid = false;
+        }
+        if (start != null && end != null && start === end) {
+            error["start"] = true;
+            error["end"] = true;
+            too_short = true;
+            formIsValid = false;
+        } else if (start != null && end != null && !(start < end)) {
+            error["start"] = true;
+            error["end"] = true;
+            invalid_time = true;
+            formIsValid = false;
+        }
+
+        if (custom) {
+            if (start_add === null) {
+                error["start_add"] = true;
+                empty_time = true;
+                formIsValid = false;
+            }
+            if (end_add === null) {
+                error["end_add"] = true;
+                empty_time = true;
+                formIsValid = false;
+            }
+            if (
+                start_add != null &&
+                end_add != null &&
+                (start_add === end_add ||
+                end === start_add)
+            ) {
+                error["start_add"] = true;
+                error["end_add"] = true;
+                too_short = true;
+                formIsValid = false;
+            } else if (
+                start_add != null &&
+                end_add != null &&
+                !(start_add < end_add && end < start_add)
+            ) {
+                error["start"] = true;
+                error["end"] = true;
+                error["start_add"] = true;
+                error["end_add"] = true;
+                invalid_time = true;
+                formIsValid = false;
+            }
+        }
+
+        if (repeat) {
+            let check = false;
+            for (var day in days) {
+                if (days[day]) {
+                    check = true;
+                }
+            }
+            if (!check) {
+                toast({
+                    type: "error",
+                    title: "Error",
+                    description: (
+                        <p>Please choose a specific day of reccurence</p>
+                    ),
+                    icon: "cancel",
+                });
+                formIsValid = false;
+            }
+        }
+
+        if (empty_time) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please input a valid time</p>,
+                icon: "cancel",
+            });
+        }
+
+        if (too_short) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Time interval is too short</p>,
+                icon: "cancel",
+            });
+        }
+
+        if (invalid_time) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Invalid time interval</p>,
+                icon: "cancel",
+            });
+        }
+
+        this.setState({ error: error });
+
+        return formIsValid;
+    }
 
     handleOpen = () => this.props.handleModal("admin-create-schedule");
 
@@ -216,7 +365,7 @@ class AdminCreateScheduleModal extends React.Component {
         };
         let second_schedule;
         let repeat_buttons;
-        var  minTime = new Date();
+        var minTime = new Date();
         var maxTime = new Date();
         minTime.setHours(8);
         minTime.setMinutes(0);
@@ -256,6 +405,7 @@ class AdminCreateScheduleModal extends React.Component {
                                         autoComplete="false"
                                         name="start-add"
                                         required
+                                        error={this.state.error.start_add}
                                     ></Input>
                                 }
                             ></DatePicker>
@@ -290,6 +440,7 @@ class AdminCreateScheduleModal extends React.Component {
                                         autoComplete="false"
                                         name="end-add"
                                         required
+                                        error={this.state.error.end_add}
                                     ></Input>
                                 }
                             ></DatePicker>
@@ -502,6 +653,7 @@ class AdminCreateScheduleModal extends React.Component {
                                             autoComplete="false"
                                             name="start"
                                             required
+                                            error={this.state.error.start}
                                         ></Input>
                                     }
                                 ></DatePicker>
@@ -536,6 +688,7 @@ class AdminCreateScheduleModal extends React.Component {
                                             autoComplete="false"
                                             name="end"
                                             required
+                                            error={this.state.error.end}
                                         ></Input>
                                     }
                                 ></DatePicker>
