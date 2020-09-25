@@ -766,6 +766,16 @@ router.post("/getUnavailableDates", urlencoder, async (req, res) => {
     });
 });
 
+//gets the unavailable dates of a doctor to show in the website
+router.post("/getAllUnavailableDates", urlencoder, async (req, res) => {
+    let doctorID = req.body.doctorID;
+    let data = await UnavailableDate.getDoctorUnavailableDates(doctorID);
+ 
+    res.send({
+        sched: modifyArray(data),
+    });
+});
+
 //removes uneeded data (data to not be shown) and passes data to be shown in the website
 function modifyArray(object) {
     var objectUnavailable = [];
