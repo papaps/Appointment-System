@@ -56,11 +56,11 @@ class week_all extends Component{
                     {
                         this.props.appointments.map(({slot, weekAppointments}, index)=>{
                             return(
-                            <Table.Row key={index}>
+                            <Table.Row key={index} name={'week-all-row-'+index}>
                                 <Table.Cell id="week-all-time-cell">{slot}</Table.Cell>
                                 {   
-                                    weekAppointments.map(({appointments})=>{
-                                        return( <Table.Cell id='week-all-table-cell'>
+                                    weekAppointments.map(({appointments}, index)=>{
+                                        return( <Table.Cell id={'week-all-table-cell'} name={'week-all-td-'+index}>
                                                         {
                                                            appointments.map((appointment)=>
                                                                         <AppointmentCard id="secretary-appointment-card"

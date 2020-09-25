@@ -52,7 +52,7 @@ class day_all extends Component{
                             <Table.Row key={index}>
                                 <Table.Cell id='day-all-time-cell'>{slot}</Table.Cell>
                                 {
-                                    <Table.Cell className="day-all-table-cell" id={'day-all-table-cell'+index}>
+                                    <Table.Cell Name={"day-all-table-cell"+index} id={'day-all-table-cell'}>
                                         <div id="day-all-div">
                                             {          
                                                 appointments.map((appointment)=>{
