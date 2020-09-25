@@ -98,7 +98,7 @@ class AdminDentistTable extends React.Component {
                                 <Table.Cell textAlign="right">
                                     <Icon
                                         name="edit"
-                                        id={firstname.toString()+' '+lastname.toString()+"edit"}
+                                        id={firstname.toString()+'-'+lastname.toString()+"=edit"}
                                         size="large"
                                         onClick={() =>
                                             this.handleModal(
@@ -109,7 +109,7 @@ class AdminDentistTable extends React.Component {
                                     ></Icon>
                                     <Icon
                                         name="trash"
-                                        id={firstname.toString()+' '+lastname.toString()+"delete"}
+                                        id={firstname.toString()+'-'+lastname.toString()+"-delete"}
                                         size="large"
                                         onClick={() =>
                                             this.handleModal(
