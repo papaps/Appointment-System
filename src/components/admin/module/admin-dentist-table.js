@@ -117,6 +117,9 @@ class AdminDentistTable extends React.Component {
                                             this.props.handleUpdateScheduleTable(
                                                 key
                                             );
+                                            this.props.handleUpdateUnavailableTable(
+                                                key
+                                            );
                                             this.handleModal(
                                                 "admin-view-schedule",
                                                 { key, firstname, lastname }
