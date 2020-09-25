@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import {Modal, Form, Button} from 'semantic-ui-react'
+import {Modal, Form, Button, Icon, Card} from 'semantic-ui-react'
 import axios from 'axios'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
-import {Card} from 'semantic-ui-react';
-
-
-
 import EditProcMainForm from "./secretary-edit-appointment-modal-form"
 import '../secretary_css/secretary-view.css'
 
@@ -15,7 +11,7 @@ import '../secretary_css/secretary-view.css'
 
 
 
-class EditModal extends Component {
+export default class EditModal extends Component {
     constructor(props){
     
       super(props);
@@ -36,6 +32,7 @@ class EditModal extends Component {
             procs:this.props.appointment.process,
             docs:this.props.appointment.doctor,
         open: false,
+        secondopen:false,
         step: 1,
       }
       this.setOpen = this.setOpen.bind(this);
@@ -74,10 +71,12 @@ class EditModal extends Component {
     }
 
     componentDidUpdate(){
-      if(this.state.procs !== this.props.appointment.process){
-        console.log("GGS")
+      if(this.state.docs !== this.props.appointment.doctor || this.state.procs !== this.props.appointment.process){
+        console.log("S")
         this.handleChangeInEdit()
       }
+      
+      
     }
 
     handleChangeInEdit=()=>{
@@ -102,7 +101,9 @@ class EditModal extends Component {
                 return  "Dr. "+ doctor.lastname
               })
         ],
-        procs: this.props.appointment.process
+        procs: this.props.appointment.process,
+        docs: this.props.appointment.doctor
+
       })
     }
 
@@ -110,9 +111,24 @@ class EditModal extends Component {
     //function for opening and closing the modal
     handleClose=()=>{
       this.setState({
-        open: false,
-        step : 1
+            appointment: this.props.appointment,
+            app_id: this.props.appointment._id,
+            firstname: this.props.appointment.firstname,
+            lastname: this.props.appointment.lastname,
+            procedures: this.props.appointment.process,
+            notes: this.props.appointment.notes,
+            date: moment(this.props.appointment.date).toDate(),
+            doctors: this.props.appointment.doctor,
+            patientcontact: this.props.appointment.patientcontact,
+            time: moment(this.props.appointment.time, "h:mm A").toDate(),
+            currentProcs:[],
+            currentDocs:[],
+            procs:this.props.appointment.process,
+            docs:this.props.appointment.doctor,
+            open: false,
+            step: 1,
       })
+      this.handleChangeInEdit();
       setTimeout(() => {
         toast(
             {
@@ -127,8 +143,18 @@ class EditModal extends Component {
         );
     }, 1000)
     }
+
+    
+
+    setOpen2 =()=>{
+      this.setState({
+        secondopen: !this.state.secondopen
+      })
+    }
+
+
     setOpen(){
-      console.log("Hello "+this.state.time)
+      this.handleChangeInEdit();
       if(moment(this.state.date).isSame(moment().toDate(), 'day') && moment(this.state.time).isBefore(moment().toDate())){
         console.log("1")
         setTimeout(() => {
@@ -185,6 +211,8 @@ class EditModal extends Component {
       console.log(e.target.value)
     }
     handleSubmit=(e)=>{
+      console.log("process: "+this.state.procedures)
+      console.log("doctors: "+this.state.doctors)
       e.preventDefault()
       const appointment = {
         appointmentID: this.state.app_id,
@@ -200,7 +228,6 @@ class EditModal extends Component {
 
       axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
         console.log(res.data)
-        console.log("why")
         this.props.handleDayAppointmentUpdate()
         
       
@@ -220,7 +247,34 @@ class EditModal extends Component {
     }, 1000)
       this.setOpen();
       
-    } 
+    }
+    
+    deleteAppointment=()=>{
+      console.log("Deleting...")
+      const appID = {
+        appointmentID : this.state.app_id
+      }
+      axios.post('/secretary/delete', appID).then(res=>{
+        console.log(res.data)
+        this.props.handleDayAppointmentUpdate()
+      });
+      setTimeout(() => {
+        toast(
+            {
+                description: <p>Appointment Deleted</p>,
+                icon: 'check',
+                animation: 'slide up',
+                time:1000,
+                color: 'green'
+
+            },
+            () => console.log('toast closed'),
+        );
+    }, 1000)
+      this.setOpen();
+      this.setOpen2();
+      
+    }
 
     //Datepicker change
     handleDate(date){
@@ -267,27 +321,21 @@ class EditModal extends Component {
       console.log(time)
     }
 
-    displaycontent=()=>{
-        return(console.log(this.state.currentDocs.join(', Dr.')))
-    }
-
   
     render(){
       const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors} = this.state;
       const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors}
       let button;
       let button2;
+      let button3;
       if(this.state.step === 1){
         button = <Button onClick={this.nextStep} type='button'>Next</Button>
       } else{
         button = <Button type="button" color="green" onClick={this.handleSubmit}>Submit</Button>
         button2 = <Button onClick={this.prevStep}>Back</Button>
+        button3 = <Button onClick={this.setOpen2} color="red"><Icon name="trash"/>Delete</Button>
       }
 
-      if(this.state.date === moment().toDate()){
-          console.log("I won't let you edit this")
-      }
-      else{
         return (
             <>
             <SemanticToastContainer position='top-center'></SemanticToastContainer>
@@ -296,7 +344,7 @@ class EditModal extends Component {
                 onOpen={this.setOpen}
                 open={this.state.open}
                 as={Form}
-                onSubmit={this.handleSubmit}
+                // onSubmit={this.handleSubmit}
                 trigger={
                     <Card fluid id="secretary-card-day"> 
                         <Card.Header>
@@ -329,15 +377,42 @@ class EditModal extends Component {
             <Modal.Actions>
                 <Button onClick={this.handleClose}>Cancel</Button>
                 {button2}
+                {button3}
                 {button}
+
                 
             </Modal.Actions>
+
+              <Modal
+                    closeIcon
+                    onClose={this.setOpen2}
+                    open={this.state.secondopen}
+                    size="small"
+                    // as={Form}
+                    // // onSubmit={this.hello}
+                    // trigger={<Button>Delete</Button>}
+                >
+                    <Modal.Header as={'h2'}>
+                      <p>Confirm Delete</p>
+                    </Modal.Header>
+                    <Modal.Content>
+                      <p>  Are you sure you want to delete this appointment?</p>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.setOpen2}>
+                            <Icon name="cancel"/>
+                            Cancel
+                        </Button>
+                        <Button onClick={this.deleteAppointment} color="green">
+                            <Icon name="check"/>
+                            Confirm
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </Modal>
             </>
             
             
         )
-        }
-    }
+     }
   }
-export default EditModal

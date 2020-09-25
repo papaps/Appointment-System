@@ -655,15 +655,23 @@ router.post("/create", urlencoder, (req, res) => {
 })
 //Allows editing of appointment
 router.post("/edit", urlencoder, async (req, res) => {
-    let appointmentID = req.body.appointmentID;
-    let firstname = req.body.firstname;
-    let lastname = req.body.lastname;
-    let patientcontact = req.body.patientcontact;
-    let process = req.body.procedures;
-    let notes = req.body.notes;
-    let time = req.body.time;
-    let date = req.body.date;
-    let doctor = req.body.doctors;
+    console.log("Returning edits")
+    const appointmentID = req.body.appointmentID;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const patientcontact = req.body.patientcontact;
+    const process = req.body.procedures;
+    const notes = req.body.notes;
+    const time = req.body.time;
+    const date = req.body.date;
+    const doctor = req.body.doctors;
+
+    console.log("hello?")
+    console.log("doctors: "+ doctor)
+    console.log("process: "+ process)
+
+    let proc = process;
+    let doc = doctor;
 
     let newTime = Date.parse(time);
     let formattedTime = moment(newTime).format("h:mm A");
@@ -671,21 +679,24 @@ router.post("/edit", urlencoder, async (req, res) => {
     let newDate = Date.parse(date);
     let formattedDate = moment(newDate).format("MMM D YYYY");
 
-
-    let appointment = new Appointment({
+    console.log("doctors2: "+ doctor)
+    console.log("process2: "+ process)
+    const appointment = new Appointment({
         firstname,
         lastname,
         patientcontact,
-        process,
+        process:proc,
+        doctor:doc,
         notes,
         time: formattedTime,
-        date: formattedDate,
-        doctor
+        date: formattedDate
     });
+    console.log("doctors1: "+ appointment.doctor)
+    console.log("process1: "+ appointment.process)
+    
+    await Appointment.updateAppointment(appointmentID, appointment);
 
-    Appointment.updateAppointment(appointmentID, appointment);
-
-    res.send("Success");
+    res.send("success");
 })
 
 //Checker if the appointment exists in the database

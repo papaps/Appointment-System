@@ -253,6 +253,7 @@ class AddModal extends Component {
               }, 1000)
               this.setOpen();
               this.props.handleWeekAppointmentUpdate()
+              this.props.handleDayAppointmentUpdate()
             } else {
               toast({
                 type: 'error',
