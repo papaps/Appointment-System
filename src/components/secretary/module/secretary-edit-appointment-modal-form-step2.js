@@ -7,9 +7,10 @@
  */
 import React, {Component, useState} from 'react';
 import moment from 'moment';
-import { Button, Header, Image, Modal, Form, Dropdown, Step, TextArea } from 'semantic-ui-react'
+import { Button, Header, Image, Modal, Form, Dropdown, Step, TextArea } from 'semantic-ui-react'    
 import axios from 'axios'
 import _ from 'lodash'
+import { faBoxTissue } from '@fortawesome/free-solid-svg-icons';
 
 class addProcStep2 extends Component {
 
@@ -17,11 +18,11 @@ class addProcStep2 extends Component {
         super(props);
         
         this.state = {
-            procedure:'',
             procedures:[],
             doctors:[],
-            doctor:'',
             value:[],
+            currentProcs: this.props.values.procedures[0],
+            currentDocs:this.props.values.doctors[0],
             multiple: true
         }
     }
@@ -29,6 +30,8 @@ class addProcStep2 extends Component {
 
     
     componentDidMount(){
+
+        
         axios.get('http://localhost:3000/secretary/getProcess')
             .then(response => {
                 if(response.data.length > 0){
@@ -36,19 +39,15 @@ class addProcStep2 extends Component {
                         procedures: [
                             ...response.data.map(procedure =>{
                                 return{
-                                    key: procedure._id,
                                     text: procedure.processname,
                                     value: procedure._id
                                 }
                             })
                         ],
-                        // procedures: response.data.map(procedure => procedure.processname),
-                        procedure: response.data[0].processname, 
-
                     })
                 }
             })
-
+        
         axios.get('http://localhost:3000/secretary/getDoctors')
             .then(response => {
                 if(response.data.length > 0){
@@ -56,18 +55,26 @@ class addProcStep2 extends Component {
                         doctors: [
                             ...response.data.map(doctor =>{
                                 return{
-                                    key: doctor._id,
-                                    text: doctor.firstname+" "+doctor.lastname,
+                                    text: "DR." + doctor.lastname,
                                     value: doctor._id
                                 }
                             })
                         ],
-                        doctor: response.data[0].firstname
                     })
                 }
             })
-
     }
+
+    // componentDidUpdate(){
+
+    //     if((this.props.values.procedures[0]!== this.state.currentProcs) || (this.props.values.doctors[0]!==this.state.doctors) ){
+    //         console.log("Updating...")
+    //         this.setState({
+    //             doctors: this.props.values.doctors[0],
+    //             procedures: this.props.values.procedures[0]
+    //         })
+    //     }
+    // }
 
     
     render(){
@@ -80,6 +87,8 @@ class addProcStep2 extends Component {
                     label="First Name"
                     name="firstname"
                     id= "processFirstName"
+                    value={this.props.values.firstname}
+                    
                 />
                 <Form.Input required
                     placeholder='Last Name'
@@ -87,6 +96,7 @@ class addProcStep2 extends Component {
                     label="Last Name"
                     name="lastname"
                     id= "processLastName"
+                    value={this.props.values.lastname}
                 />
                 <Form.Input required
                     placeholder='Contact Number'
@@ -94,13 +104,16 @@ class addProcStep2 extends Component {
                     label="Contact Number"
                     name="patientcontact"
                     id= "processPatientContact"
+                    value={this.props.values.patientcontact}
                 />
                 <Form.Dropdown
                     placeholder='Procedure/s'
                     onChange={handleProcessChange}
-                    options={this.state.procedures}
+                    defaultValue={this.state.currentProcs}
                     selection fluid multiple
-                    id= "processDropProc">
+                    id= "processDropProc"
+                    options={this.state.procedures}
+                    >
                     
                 </Form.Dropdown>
                 <Form.TextArea required
@@ -109,13 +122,16 @@ class addProcStep2 extends Component {
                     label="notes"
                     name="notes"
                     id= "processNotes"
+                    value={this.props.values.notes}
                 />
                 <Form.Dropdown
                     placeholder='Doctor/s'
                     onChange={handleDoctorChange}
+                    defaultValue={this.state.currentDocs}
                     options={this.state.doctors}
                     selection fluid multiple
-                    id= "processDropDoctor">
+                    id= "processDropDoctor"
+                    >
                 </Form.Dropdown>
 
                 

@@ -20,6 +20,7 @@ const { BreakTime } = require("../model/breaktime");
 const { UnavailableDate } = require("../model/unavailableDate");
 const { CheckDate } = require("../model/checkdate");
 const appointment = require("../model/appointment");
+const { TRUE } = require("node-sass");
 
 /* 
     Ty Added :)
@@ -438,7 +439,10 @@ router.get("/table_header", function (request, result) {
 router.post("/day_all", urlencoder, async function (request, result) {
 
     // Get the date from sent data
-    let date = request.body.date;
+    let date = request.body.day;
+
+    let newDate = Date.parse(date);
+    let formattedDate = moment(newDate).format("MMM D YYYY");
 
     // Load up the html template
     // let all_day = fs.readFileSync('./views/module_templates/secretary_day_all.hbs', 'utf-8');
@@ -460,7 +464,7 @@ router.post("/day_all", urlencoder, async function (request, result) {
     for (var i = 0; i < timeSlotsArray.length; i++) {
         let timeSlot = timeSlotsArray[i];
         // get all appointments in this date and time slot
-        let appointmentlist = await Appointment.getAppointmentsByDateandTime(date, timeSlot);
+        let appointmentlist = await Appointment.getAppointmentsByDateandTime(formattedDate, timeSlot);
         let appointments = [];
         for (var k = 0; k < appointmentlist.length; k++) {
             let appointment = appointmentlist[k];
@@ -632,13 +636,18 @@ router.post("/create", urlencoder, (req, res) => {
 
     Appointment.addAppointment(appointment, function (appointment) {
         if (appointment) {
+            res.send({message:true}),
             res.redirect("/secretary");
         } else {
             res.redirect("/");
         }
 
     }, (error) => {
-        res.send(error);
+        
+        res.send({
+            error,
+            message: false
+        });
     })
     // appointment.save()
     //     .then(() => res.json('Exercise Added'))
@@ -674,7 +683,7 @@ router.post("/edit", urlencoder, async (req, res) => {
         doctor
     });
 
-    let newApp = await Appointment.updateAppointment(appointmentID, appointment);
+    Appointment.updateAppointment(appointmentID, appointment);
 
     res.send("Success");
 })

@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import {Modal, Form, Button} from 'semantic-ui-react'
-import DatePicker from 'react-datepicker'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faBoxTissue, faCalendar} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-import SecretaryTable from './secretary-week-all'
-
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
 import {Card} from 'semantic-ui-react';
@@ -14,6 +9,7 @@ import {Card} from 'semantic-ui-react';
 
 
 import EditProcMainForm from "./secretary-edit-appointment-modal-form"
+import '../secretary_css/secretary-view.css'
 
 
 
@@ -25,6 +21,7 @@ class EditModal extends Component {
       super(props);
       
       this.state ={
+          appointment: this.props.appointment,
             app_id: this.props.appointment._id,
             firstname: this.props.appointment.firstname,
             lastname: this.props.appointment.lastname,
@@ -34,6 +31,10 @@ class EditModal extends Component {
             doctors: this.props.appointment.doctor,
             patientcontact: this.props.appointment.patientcontact,
             time: moment(this.props.appointment.time, "h:mm A").toDate(),
+            currentProcs:[],
+            currentDocs:[],
+            procs:this.props.appointment.process,
+            docs:this.props.appointment.doctor,
         open: false,
         step: 1,
       }
@@ -47,7 +48,6 @@ class EditModal extends Component {
     
 
     componentDidMount(){
-
       //Changes back the procedures and doctors to IDs rather than objects
       this.setState({
         procedures:[
@@ -59,9 +59,53 @@ class EditModal extends Component {
           this.state.doctors.map(doctor=>{
             return doctor._id
           })
+        ],
+        currentProcs:[
+            this.state.procedures.map(procedure=>{
+                return procedure.processname
+              })
+        ],
+        currentDocs:[
+            this.state.doctors.map(doctor=>{
+                return  "Dr. "+ doctor.lastname
+              })
         ]
       })
     }
+
+    componentDidUpdate(){
+      if(this.state.procs !== this.props.appointment.process){
+        console.log("GGS")
+        this.handleChangeInEdit()
+      }
+    }
+
+    handleChangeInEdit=()=>{
+      this.setState({
+        procedures:[
+          this.props.appointment.process.map(procedure=>{
+            return procedure._id
+          })
+        ],
+        doctors:[
+          this.props.appointment.doctor.map(doctor=>{
+            return doctor._id
+          })
+        ],
+        currentProcs:[
+            this.props.appointment.process.map(procedure=>{
+                return procedure.processname
+              })
+        ],
+        currentDocs:[
+            this.props.appointment.doctor.map(doctor=>{
+                return  "Dr. "+ doctor.lastname
+              })
+        ],
+        procs: this.props.appointment.process
+      })
+    }
+
 
     //function for opening and closing the modal
     handleClose=()=>{
@@ -84,6 +128,7 @@ class EditModal extends Component {
     }, 1000)
     }
     setOpen(){
+      console.log("Hello "+this.state.time)
       if(moment(this.state.date).isSame(moment().toDate(), 'day') && moment(this.state.time).isBefore(moment().toDate())){
         console.log("1")
         setTimeout(() => {
@@ -129,6 +174,7 @@ class EditModal extends Component {
         step : 1
             })
         }
+      
     }
 
     //Function for submitting values
@@ -138,7 +184,7 @@ class EditModal extends Component {
       })
       console.log(e.target.value)
     }
-    handleSubmit=e=>{
+    handleSubmit=(e)=>{
       e.preventDefault()
       const appointment = {
         appointmentID: this.state.app_id,
@@ -154,11 +200,15 @@ class EditModal extends Component {
 
       axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
         console.log(res.data)
+        console.log("why")
+        this.props.handleDayAppointmentUpdate()
+        
+      
       });
       setTimeout(() => {
         toast(
             {
-                description: <p>Appointment Created</p>,
+                description: <p>Appointment Updated</p>,
                 icon: 'check',
                 animation: 'slide up',
                 time:1000,
@@ -166,13 +216,9 @@ class EditModal extends Component {
 
             },
             () => console.log('toast closed'),
-
         );
     }, 1000)
-    
-    this.setOpen();
-    this.handleWeekAppointmentUpdate();
-      
+      this.setOpen();
       
     } 
 
@@ -220,6 +266,11 @@ class EditModal extends Component {
       })
       console.log(time)
     }
+
+    displaycontent=()=>{
+        return(console.log(this.state.currentDocs.join(', Dr.')))
+    }
+
   
     render(){
       const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors} = this.state;
@@ -247,11 +298,16 @@ class EditModal extends Component {
                 as={Form}
                 onSubmit={this.handleSubmit}
                 trigger={
-                    <Card> 
-                    <Card.Header id={this.props.appointment._id}>
-                        {this.props.appointment.firstname+" "+this.props.appointment.lastname}
-                    </Card.Header>
-                </Card>
+                    <Card fluid id="secretary-card-day"> 
+                        <Card.Header>
+                            {this.props.appointment.firstname+" "+this.props.appointment.lastname}
+                        </Card.Header>
+                        <Card.Content>
+                            <text className="secretary-card-day-content">🦷: {this.state.currentProcs.join(", ")}</text><br/>
+                            <text className="secretary-card-day-content">📱: {patientcontact}</text><br/>
+                            <text className="secretary-card-day-content">👨‍⚕️: {this.state.currentDocs.join(", ")}</text>
+                        </Card.Content>
+                    </Card>
                 }
             >
             

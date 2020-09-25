@@ -15,17 +15,24 @@ export default class Picker extends Component {
     handleChangeDate=(date)=>{
         this.props.handleChangeDate(date)
     }
+
+    disableSunday=(date)=>{
+        return moment(date).day() !== 0;
+    }
  
     render(){
-         const{handleOnToday, handleOnPrev, handleOnNext, date} = this.props
+         const{handleOnToday, handleOnPrev, handleOnNext, date, handleChangeDate} = this.props
         return(
             <div class="item">
                 <div className="picker">
                     {/* <FontAwesomeIcon icon={faCalendar}  className="calendarIcon"/> */}
-                    <DatePicker
-                        selected={date}
-                        onChange={this.handleChangeDate}
-                        minDate={moment().toDate()}
+                    <DatePicker id="datepicker-secretary"
+                        //Fixed for error when intially clicking a date on secretary-header (change selected to moment)
+                        selected={moment(date).toDate()}
+                        onChange={handleChangeDate}
+                        onSelect={handleChangeDate}
+                        filterDate={this.disableSunday}
+                        
                     />
                 </div> 
                 <div className="today" class="ui basic button with tooltip" data-title="Today (SPACEBAR)"
