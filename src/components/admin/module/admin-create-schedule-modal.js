@@ -297,7 +297,11 @@ class AdminCreateScheduleModal extends React.Component {
 
     handleClose = (datakey, firstname, lastname) => {
         this.props.handleUpdateScheduleTable(datakey);
-        this.props.handleModal("admin-view-schedule",{datakey, firstname, lastname});
+        this.props.handleModal("admin-view-schedule", {
+            datakey,
+            firstname,
+            lastname,
+        });
     };
 
     handleModal(name) {
@@ -548,13 +552,17 @@ class AdminCreateScheduleModal extends React.Component {
         return (
             <>
                 <Modal
-                    closeIcon
                     size="small"
                     id="adding-schedule-modal"
                     onClose={() => this.handleClose(key, firstname, lastname)}
                     onOpen={() => this.handleOpen()}
                     open={open}
                 >
+                    <Icon
+                        name="close"
+                        onClick={this.handleClose}
+                        id="close-adding-schedule-modal"
+                    ></Icon>
                     <Modal.Header as="h2">
                         <Icon name="calendar" />
                         Set Schedule

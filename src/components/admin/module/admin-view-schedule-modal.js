@@ -115,13 +115,17 @@ class AdminViewScheduleModal extends React.Component {
         return (
             <>
                 <Modal
-                    closeIcon
                     size="small"
                     id="schedule-modal"
                     onClose={() => this.handleClose()}
                     onOpen={() => this.handleOpen()}
                     open={open}
                 >
+                    <Icon
+                        name="close"
+                        onClick={this.handleClose}
+                        id="close-schedule-modal"
+                    ></Icon>
                     <Modal.Header as="h2">
                         <Icon name="calendar" />
                         Schedule

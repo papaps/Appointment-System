@@ -103,13 +103,17 @@ class AdminEditProcedureModal extends React.Component {
 
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="edit-procedure-modal"
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-edit-procedure-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="edit"></Icon>
                     Edit Procedure

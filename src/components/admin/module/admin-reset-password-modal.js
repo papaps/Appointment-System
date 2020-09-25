@@ -48,7 +48,7 @@ class AdminResetPasswordModal extends React.Component {
             currentPassword: false,
             newPassword: false,
             confirmNewPassword: false,
-        }
+        };
         let formIsValid = true;
 
         if (currentPassword === "") {
@@ -59,7 +59,7 @@ class AdminResetPasswordModal extends React.Component {
                 description: <p>Please input your current password</p>,
                 icon: "cancel",
             });
-            this.setState({error:error})
+            this.setState({ error: error });
             formIsValid = false;
             this.handleNewPasswordValidation();
         } else {
@@ -184,7 +184,6 @@ class AdminResetPasswordModal extends React.Component {
         }
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="reset-password-modal"
                 onClose={() => {
@@ -193,6 +192,11 @@ class AdminResetPasswordModal extends React.Component {
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-reset-password-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="edit"></Icon>
                     Edit Admin Password
@@ -241,7 +245,9 @@ class AdminResetPasswordModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="Confirm New Password"
                                         onChange={this.handleChange}
-                                        error={this.state.error.confirmNewPassword}
+                                        error={
+                                            this.state.error.confirmNewPassword
+                                        }
                                     />
                                 }
                                 content="Password should contain 10 to 32 alphanumeric characters"

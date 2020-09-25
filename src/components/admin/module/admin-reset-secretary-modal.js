@@ -193,6 +193,11 @@ class AdminResetSecretaryModal extends React.Component {
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-reset-secretary-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="edit"></Icon>
                     Edit Secretary Password

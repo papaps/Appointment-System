@@ -189,13 +189,17 @@ class AdminEditScheduleModal extends React.Component {
         return (
             <>
                 <Modal
-                    closeIcon
                     size="small"
-                    id="editing-schedule-modal"
+                    id="edit-schedule-modal"
                     onClose={() => this.handleClose()}
                     onOpen={() => this.handleOpen()}
                     open={open}
                 >
+                    <Icon
+                        name="close"
+                        onClick={this.handleClose}
+                        id="close-edit-schedule-modal"
+                    ></Icon>
                     <Modal.Header as="h2">
                         <Icon name="edit" />
                         Edit Schedule
@@ -225,7 +229,11 @@ class AdminEditScheduleModal extends React.Component {
                             ></Checkbox>
                         </Grid>
 
-                        <Grid centered columns={3} style={{margin:"40px 0 0 0"}}>
+                        <Grid
+                            centered
+                            columns={3}
+                            style={{ margin: "40px 0 0 0" }}
+                        >
                             <Grid.Row style={{ padding: "0" }}>
                                 <span
                                     style={first_session_style}

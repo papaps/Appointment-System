@@ -272,13 +272,17 @@ class AdminAddDentistModal extends React.Component {
         }
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="add-dentist-modal"
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-add-dentist-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="user md"></Icon>
                     New Dentist

@@ -96,13 +96,17 @@ class AdminAddProcedureModal extends React.Component {
 
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="procedure-modal"
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-procedure-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="clipboard"></Icon>
                     New Procedure
