@@ -61,6 +61,7 @@ class editProcStep1 extends Component {
                     <Form.Input required
                     label = 'Date'
                     className = "editProcStep1Date"
+                    id="editProcStep1Date-secretary"
                     control={DatePicker}
                         selected={this.state.date}
                         onChange={this.onchangeDate}
@@ -79,6 +80,7 @@ class editProcStep1 extends Component {
                     <Form.Input required
                         label = "Time"
                         className = "editProcStep1Time"
+                        id="editProcStep1Time-secretary"
                         control={DatePicker}
                             showTimeSelect
                             showTimeSelectOnly

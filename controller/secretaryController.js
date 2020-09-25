@@ -666,12 +666,8 @@ router.post("/edit", urlencoder, async (req, res) => {
     const date = req.body.date;
     const doctor = req.body.doctors;
 
-    console.log("hello?")
     console.log("doctors: "+ doctor)
     console.log("process: "+ process)
-
-    let proc = process;
-    let doc = doctor;
 
     let newTime = Date.parse(time);
     let formattedTime = moment(newTime).format("h:mm A");
@@ -679,14 +675,12 @@ router.post("/edit", urlencoder, async (req, res) => {
     let newDate = Date.parse(date);
     let formattedDate = moment(newDate).format("MMM D YYYY");
 
-    console.log("doctors2: "+ doctor)
-    console.log("process2: "+ process)
     const appointment = new Appointment({
         firstname,
         lastname,
         patientcontact,
-        process:proc,
-        doctor:doc,
+        process,
+        doctor,
         notes,
         time: formattedTime,
         date: formattedDate

@@ -31,6 +31,18 @@ export default class EditModal extends Component {
             currentDocs:[],
             procs:this.props.appointment.process,
             docs:this.props.appointment.doctor,
+            error: {
+              firstname: false,
+              lastname: false,
+              username: false,
+              password: false,
+              patientcontact: false,
+              time: false,
+              date:false,
+              doctors: false,
+              procedures: false
+    
+          },
         open: false,
         secondopen:false,
         step: 1,
@@ -40,6 +52,7 @@ export default class EditModal extends Component {
       this.handleDate = this.handleDate.bind(this);
       this.handletime = this.handleDate.bind(this);
       this.handleDoctorChange = this.handleDoctorChange.bind(this);
+      this.arraysEqual = this.arraysEqual.bind(this);
     }
 
     
@@ -79,7 +92,135 @@ export default class EditModal extends Component {
       
     }
 
+      arraysEqual(_arr1, _arr2) {
+
+      if (!Array.isArray(_arr1) || !Array.isArray(_arr2) || _arr1.length !== _arr2.length)
+          return false;
+  
+      var arr1 = _arr1.concat().sort();
+      var arr2 = _arr2.concat().sort();
+  
+      for (var i = 0; i < arr1.length; i++) {
+  
+          if (arr1[i] !== arr2[i])
+              return false;
+  
+      }
+  
+      return true;
+  
+    }
+
+    handleValidation=()=>{
+      const checkfirst = /^[a-z A-Z]+$/;
+      const checklast = /^[a-z A-Z.\-_]+$/;
+      const checkcontact = /^[+-]?\d{7,12}$/;
+
+      let firstname = this.state.firstname.trim();
+      let lastname = this.state.lastname.trim();
+      let patientcontact = this.state.patientcontact.trim();
+      let procedures = this.state.procedures;
+      let date = this.state.date;
+      let time = this.state.time;
+      let doctors = this.state.doctors;
+
+      let error = this.state.error;
+      let formIsValid = true;
+
+      if(moment(moment(time, "h:mm A").toDate()).isBefore(moment().toDate()) && moment(date).isSame(moment().toDate(), 'day')){
+          error['time']= true;
+          toast({
+            type: "error",
+            title: "Error",
+            description: <p>Please input valid time</p>,
+            icon: "cancel",
+          });
+          formIsValid = false;
+      }
+      if(firstname === ""|| !firstname.match(checkfirst)){
+        error['firstname']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid firstname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+
+      } else if( firstname.length < 2){
+        error['firstname'] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Firstname is too short</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+      if(lastname ===  ""|| !lastname.match(checklast)){
+        error["lastname"] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid lastname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      } else if(lastname.length < 2){
+        error["lastname"] = true;
+        toast({
+            type: "error",
+            title: "Error",
+            description: <p>Lastname is too short</p>,
+            icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(patientcontact === "" || !patientcontact.match(checkcontact)){
+        error['patientcontact']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid contact number</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(procedures.length < 1 || procedures === undefined){
+        error['procedures']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 procedure</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(doctors.length < 1 || doctors === undefined){
+        error['doctors']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 doctor</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(formIsValid){
+      
+        return formIsValid
+
+      }
+
+    } 
+
     handleChangeInEdit=()=>{
+      console.log(this.props.appointment.process)
+      console.log(this.props.appointment.doctor)
       this.setState({
         procedures:[
           this.props.appointment.process.map(procedure=>{
@@ -154,7 +295,7 @@ export default class EditModal extends Component {
 
 
     setOpen(){
-      this.handleChangeInEdit();
+
       if(moment(this.state.date).isSame(moment().toDate(), 'day') && moment(this.state.time).isBefore(moment().toDate())){
         console.log("1")
         setTimeout(() => {
@@ -211,41 +352,49 @@ export default class EditModal extends Component {
       console.log(e.target.value)
     }
     handleSubmit=(e)=>{
-      console.log("process: "+this.state.procedures)
-      console.log("doctors: "+this.state.doctors)
-      e.preventDefault()
-      const appointment = {
-        appointmentID: this.state.app_id,
-        firstname:this.state.firstname,
-        lastname:this.state.lastname,
-        patientcontact: this.state.patientcontact,
-        procedures: this.state.procedures,
-        notes:this.state.notes,
-        date:this.state.date,
-        time:this.state.time,
-        doctors:this.state.doctors,
-      }
-
-      axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
-        console.log(res.data)
-        this.props.handleDayAppointmentUpdate()
-        
       
-      });
-      setTimeout(() => {
-        toast(
-            {
-                description: <p>Appointment Updated</p>,
-                icon: 'check',
-                animation: 'slide up',
-                time:1000,
-                color: 'green'
+      e.preventDefault()
+      if(this.handleValidation()){
+          const appointment = {
+          appointmentID: this.state.app_id,
+          firstname:this.state.firstname,
+          lastname:this.state.lastname,
+          patientcontact: this.state.patientcontact,
+          procedures: this.state.procedures,
+          notes:this.state.notes,
+          date:this.state.date,
+          time:this.state.time,
+          doctors:this.state.doctors,
+        }
 
-            },
-            () => console.log('toast closed'),
-        );
-    }, 1000)
-      this.setOpen();
+        axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
+          console.log(res.data)
+          this.props.handleDayAppointmentUpdate()
+          
+        
+        });
+        setTimeout(() => {
+          toast(
+              {
+                  description: <p>Appointment Updated</p>,
+                  icon: 'check',
+                  animation: 'slide up',
+                  time:1000,
+                  color: 'green'
+
+              },
+              () => console.log('toast closed'),
+          );
+      }, 1000)
+        this.setOpen();
+    }else{
+      toast({
+        type: 'error',
+        title: 'Error',
+        description: <p>Invalid Appointment</p>,
+        icon: "cancel"
+      })
+    }
       
     }
     
@@ -323,8 +472,8 @@ export default class EditModal extends Component {
 
   
     render(){
-      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors} = this.state;
-      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors}
+      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error} = this.state;
+      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error}
       let button;
       let button2;
       let button3;
