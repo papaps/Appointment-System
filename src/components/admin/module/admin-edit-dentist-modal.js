@@ -68,7 +68,13 @@ class AdminEditDentistModal extends React.Component {
         let lastname = this.state.lastname.trim();
         let password = this.state.password.trim();
         let confirmPassword = this.state.confirmPassword.trim();
-        let error = this.state.error;
+        let error = {
+            firstname: false,
+            lastname: false,
+            username: false,
+            password: false,
+            confirmPassword: false,
+        };
         let formIsValid = true;
 
         if (firstname === "" || !firstname.match(checkfirst)) {
@@ -100,7 +106,7 @@ class AdminEditDentistModal extends React.Component {
             formIsValid = false;
         }
 
-        if (lastname === "" || !firstname.match(checklast)) {
+        if (lastname === "" || !lastname.match(checklast)) {
             error["lastname"] = true;
             toast({
                 type: "error",
