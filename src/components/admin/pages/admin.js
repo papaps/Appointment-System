@@ -136,7 +136,6 @@ class Admin extends React.Component {
                 this.setState({
                     unavailable: res.data.sched,
                 });
-                console.log(this.state.unavailable);
                 this.handleHideScheduleDimmer();
             });
     }
