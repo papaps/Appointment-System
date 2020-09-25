@@ -12,6 +12,8 @@ import {
 } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import axios from "axios";
+import { toast } from "react-semantic-toasts";
 
 class AdminCreateScheduleModal extends React.Component {
     constructor(props) {
@@ -24,21 +26,123 @@ class AdminCreateScheduleModal extends React.Component {
             daily: false,
             repeat: false,
             custom: false,
-            mon: false,
-            tue: false,
-            wed: false,
-            thu: false,
-            fri: false,
-            sat: false,
+            days: {
+                mon: false,
+                tue: false,
+                wed: false,
+                thu: false,
+                fri: false,
+                sat: false,
+            },
             disabled: [],
         };
-
-        this.onChangeTime = this.onChangeTime.bind(this);
     }
 
-    onChangeTime = (time) => {
-        this.setState({
-            time: time,
+    handleSubmit = (event, { datakey }) => {
+        event.preventDefault();
+        let days = this.state.days;
+        let day_array = {
+            mon: [],
+            tue: [],
+            wed: [],
+            thu: [],
+            fri: [],
+            sat: [],
+        };
+        let break_array = {
+            mon: [],
+            tue: [],
+            wed: [],
+            thu: [],
+            fri: [],
+            sat: [],
+        };
+
+        let start = moment(this.state.start).format("k:mm");
+        let end = moment(this.state.end).format("k:mm");
+        let start_add;
+        let end_add;
+        if (this.state.start_add != null) {
+            start_add = moment(this.state.start_add).format("k:mm");
+        }
+        if (this.state.end_add != null) {
+            end_add = moment(this.state.end_add).format("k:mm");
+        }
+
+        moment()
+
+        for (var day in days) {
+            console.log(day);
+            if (this.state.daily && this.state.custom) {
+                day_array[day].push(start);
+                day_array[day].push(end_add);
+                break_array[day].push(end);
+                break_array[day].push(start_add);
+            } else if (this.state.daily) {
+                day_array[day].push(start);
+                day_array[day].push(end);
+            } else if (this.state.repeat) {
+                if (days[day]) {
+                    if (this.state.custom) {
+                        day_array[day].push(start);
+                        day_array[day].push(end_add);
+                        break_array[day].push(end);
+                        break_array[day].push(start_add);
+                    } else {
+                        day_array[day].push(start);
+                        day_array[day].push(end);
+                    }
+                }
+            }
+        }
+        const data = {
+            "monday[]": day_array["mon"],
+            "tuesday[]": day_array["tue"],
+            "wednesday[]": day_array["wed"],
+            "thursday[]": day_array["thu"],
+            "friday[]": day_array["fri"],
+            "saturday[]": day_array["sat"],
+            "mondaydifference[]": break_array["mon"],
+            "tuesdaydifference[]": break_array["tue"],
+            "wednesdaydifference[]": break_array["wed"],
+            "thursdaydifference[]": break_array["thu"],
+            "fridaydifference[]": break_array["fri"],
+            "saturdaydifference[]": break_array["sat"],
+            doctorID: datakey,
+            defaultTime: "false",
+        };
+
+        console.log(data);
+        axios.post("admin/addSchedule", data).then((response) => {
+            if (response.data) {
+                setTimeout(() => {
+                    toast({
+                        type: "success",
+                        title: "Success",
+                        description: <p>Dentist schedule successfully added</p>,
+                        icon: "check",
+                    });
+                }, 1000);
+                this.handleClose();
+                this.setState({
+                    start: null,
+                    end: null,
+                    start_add: null,
+                    end_add: null,
+                    daily: false,
+                    repeat: false,
+                    custom: false,
+                    days: {
+                        mon: false,
+                        tue: false,
+                        wed: false,
+                        thu: false,
+                        fri: false,
+                        sat: false,
+                    },
+                    disabled: [],
+                });
+            }
         });
     };
 
@@ -80,11 +184,13 @@ class AdminCreateScheduleModal extends React.Component {
     };
 
     handleDays = (e, { name }) => {
+        let days = this.state.days;
         let active = true;
         if (e.target.classList.contains("active")) {
             active = false;
         }
-        this.setState({ [name]: active });
+        days[name] = active;
+        this.setState({ days: days });
     };
 
     render() {
@@ -110,6 +216,13 @@ class AdminCreateScheduleModal extends React.Component {
         };
         let second_schedule;
         let repeat_buttons;
+        var  minTime = new Date();
+        var maxTime = new Date();
+        minTime.setHours(8);
+        minTime.setMinutes(0);
+        maxTime.setHours(18);
+        maxTime.setMinutes(0);
+
         if (this.state.custom) {
             second_schedule = (
                 <>
@@ -131,8 +244,8 @@ class AdminCreateScheduleModal extends React.Component {
                                 selected={this.state.start_add}
                                 timeIntervals={30}
                                 dateFormat="H:mm"
-                                minTime={moment().toDate().setHours(8)}
-                                maxTime={moment().toDate().setHours(18)}
+                                minTime={minTime}
+                                maxTime={maxTime}
                                 onChange={(time) => this.handleStartAdd(time)}
                                 customInput={
                                     <Input
@@ -165,8 +278,8 @@ class AdminCreateScheduleModal extends React.Component {
                                 selected={this.state.end_add}
                                 timeIntervals={30}
                                 dateFormat="H:mm"
-                                minTime={moment().toDate().setHours(8)}
-                                maxTime={moment().toDate().setHours(18)}
+                                minTime={minTime}
+                                maxTime={maxTime}
                                 onChange={(time) => this.handleEndAdd(time)}
                                 customInput={
                                     <Input
@@ -205,7 +318,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.mon}
+                            active={this.state.days.mon}
                             name="mon"
                             id="mon"
                             onClick={this.handleDays}
@@ -215,7 +328,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.tue}
+                            active={this.state.days.tue}
                             name="tue"
                             id="tue"
                             onClick={this.handleDays}
@@ -225,7 +338,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.wed}
+                            active={this.state.days.wed}
                             name="wed"
                             id="wed"
                             onClick={this.handleDays}
@@ -235,7 +348,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.thu}
+                            active={this.state.days.thu}
                             name="thu"
                             id="thu"
                             onClick={this.handleDays}
@@ -245,7 +358,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.fri}
+                            active={this.state.days.fri}
                             name="fri"
                             id="fri"
                             onClick={this.handleDays}
@@ -255,7 +368,7 @@ class AdminCreateScheduleModal extends React.Component {
                         <Button
                             circular
                             toggle
-                            active={this.state.sat}
+                            active={this.state.days.sat}
                             name="sat"
                             id="sat"
                             onClick={this.handleDays}
@@ -377,8 +490,8 @@ class AdminCreateScheduleModal extends React.Component {
                                     selected={this.state.start}
                                     timeIntervals={30}
                                     dateFormat="H:mm"
-                                    minTime={moment().toDate().setHours(8)}
-                                    maxTime={moment().toDate().setHours(18)}
+                                    minTime={minTime}
+                                    maxTime={maxTime}
                                     onChange={(time) => this.handleStart(time)}
                                     customInput={
                                         <Input
@@ -411,8 +524,8 @@ class AdminCreateScheduleModal extends React.Component {
                                     selected={this.state.end}
                                     timeIntervals={30}
                                     dateFormat="H:mm"
-                                    minTime={moment().toDate().setHours(8)}
-                                    maxTime={moment().toDate().setHours(18)}
+                                    minTime={minTime}
+                                    maxTime={maxTime}
                                     onChange={(time) => this.handleEnd(time)}
                                     customInput={
                                         <Input
@@ -439,6 +552,7 @@ class AdminCreateScheduleModal extends React.Component {
                             color="green"
                             id="add-schedule-button"
                             onClick={this.handleSubmit}
+                            datakey={key}
                         >
                             <Icon name="check" />
                             FINISH

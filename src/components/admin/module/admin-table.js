@@ -1,19 +1,9 @@
 import React from "react";
-import { Grid, Dimmer } from "semantic-ui-react";
 import AdminDentistTable from "./admin-dentist-table";
 import AdminProcedureTable from "./admin-procedure-table";
 
 class AdminTable extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            active: false,
-        };
-    }
-
     render() {
-        const { active } = this.state;
         let { activeTable, dentists, procedures } = this.props;
         let table;
         if (activeTable === "Dentist") {

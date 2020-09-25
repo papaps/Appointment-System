@@ -131,6 +131,7 @@ class Admin extends React.Component {
                             active={this.state.activeDimmer}
                             inverted
                             id="list-dimmer"
+                            style={{maxHeight: "100%"}}
                         >
                             <div className="ui elastic huge green loader"></div>
                         </Dimmer>

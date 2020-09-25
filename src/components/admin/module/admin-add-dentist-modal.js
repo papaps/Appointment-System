@@ -52,6 +52,7 @@ class AdminAddDentistModal extends React.Component {
                         });
                     }, 1000);
                     this.props.handleModal("admin-create-schedule", {
+                        key: res.data.doctor._id,
                         firstname,
                         lastname,
                     });
