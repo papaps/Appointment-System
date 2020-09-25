@@ -78,6 +78,7 @@ class AdminDentistTable extends React.Component {
                                             datakey={key}
                                             status={status}
                                             onClick={this.handleStatus}
+                                            id={firstname.toString()+'-'+lastname.toString()+"-active"}
                                         >
                                             Active
                                         </Button>
@@ -87,17 +88,19 @@ class AdminDentistTable extends React.Component {
                                             datakey={key}
                                             status={status}
                                             onClick={this.handleStatus}
+                                            id={firstname.toString()+'-'+lastname.toString()+"-active"}
                                         >
                                             Inactive
                                         </Button>
                                     )}
                                 </Table.Cell>
                                 <Table.Cell textAlign="center">
-                                    <Button color="green">View</Button>
+                                    <Button color="green" id={firstname.toString()+'-'+lastname.toString()+"-view"}>View</Button>
                                 </Table.Cell>
                                 <Table.Cell textAlign="right">
                                     <Icon
                                         name="edit"
+                                        id={firstname.toString()+'-'+lastname.toString()+"=edit"}
                                         size="large"
                                         onClick={() =>
                                             this.handleModal(
@@ -108,6 +111,7 @@ class AdminDentistTable extends React.Component {
                                     ></Icon>
                                     <Icon
                                         name="trash"
+                                        id={firstname.toString()+'-'+lastname.toString()+"-delete"}
                                         size="large"
                                         onClick={() =>
                                             this.handleModal(
