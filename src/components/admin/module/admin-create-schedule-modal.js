@@ -44,6 +44,33 @@ class AdminCreateScheduleModal extends React.Component {
         };
     }
 
+    resetState() {
+        this.setState({
+            start: null,
+            end: null,
+            start_add: null,
+            end_add: null,
+            daily: false,
+            repeat: false,
+            custom: false,
+            days: {
+                mon: false,
+                tue: false,
+                wed: false,
+                thu: false,
+                fri: false,
+                sat: false,
+            },
+            disabled: [],
+            error: {
+                start: false,
+                end: false,
+                start_add: false,
+                end_add: false,
+            },
+        });
+    }
+
     handleSubmit = (event, { datakey, firstname, lastname }) => {
         event.preventDefault();
         if (this.handleValidation()) {
@@ -129,24 +156,6 @@ class AdminCreateScheduleModal extends React.Component {
                         });
                     }, 1000);
                     this.handleClose(datakey, firstname, lastname);
-                    this.setState({
-                        start: null,
-                        end: null,
-                        start_add: null,
-                        end_add: null,
-                        daily: false,
-                        repeat: false,
-                        custom: false,
-                        days: {
-                            mon: false,
-                            tue: false,
-                            wed: false,
-                            thu: false,
-                            fri: false,
-                            sat: false,
-                        },
-                        disabled: [],
-                    });
                 }
             });
         }
@@ -295,13 +304,14 @@ class AdminCreateScheduleModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-create-schedule");
 
-    handleClose = (datakey, firstname, lastname) => {
-        this.props.handleUpdateScheduleTable(datakey);
+    handleClose(datakey, firstname, lastname){
         this.props.handleModal("admin-view-schedule", {
-            datakey,
+            key: datakey,
             firstname,
             lastname,
         });
+        this.props.handleUpdateScheduleTable(datakey);
+        this.resetState()
     };
 
     handleModal(name) {
@@ -560,7 +570,7 @@ class AdminCreateScheduleModal extends React.Component {
                 >
                     <Icon
                         name="close"
-                        onClick={this.handleClose}
+                        onClick={() => this.handleClose(key, firstname, lastname)}
                         id="close-adding-schedule-modal"
                     ></Icon>
                     <Modal.Header as="h2">

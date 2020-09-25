@@ -42,7 +42,6 @@ class AdminViewScheduleModal extends React.Component {
             firstname = this.props.data.firstname;
             lastname = this.props.data.lastname;
         }
-
         const icon_styling = {
             marginRight: 13.5 + "px",
         };
@@ -156,6 +155,11 @@ class AdminViewScheduleModal extends React.Component {
                                         id="add-schedule"
                                         color="green"
                                         key={key}
+                                        onClick={
+                                            ()=>{ 
+                                                this.props.handleModal("admin-create-schedule", {key, firstname, lastname})
+                                            }
+                                        }
                                     >
                                         Reset
                                     </Button>

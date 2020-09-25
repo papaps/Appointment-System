@@ -17,14 +17,12 @@ class AdminDeleteProcedureModal extends React.Component {
         };
         axios.post("admin/deleteProcess", data).then((res) => {
             this.handleClose();
-            setTimeout(() => {
-                toast({
-                    type: "success",
-                    title: "Success",
-                    description: <p>Procedure successfully deleted</p>,
-                    icon: "check",
-                });
-            }, 1000);
+            toast({
+                type: "success",
+                title: "Success",
+                description: <p>Procedure successfully deleted</p>,
+                icon: "check",
+            });
             this.handleUpdateTable();
         });
     };
