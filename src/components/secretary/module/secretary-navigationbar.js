@@ -55,7 +55,9 @@ export default class SecretaryNavigationbar extends Component{
                     </Dropdown>
                 </div>
                 <div class="item" id="secretary-dropdown-filter-container">
-                    <Dropdown placeholder="Filter" name="date" id="secretary-dropdown-filter">
+                    <Dropdown placeholder="APPOINTMENTS" name="date" id="secretary-dropdown-filter" defaultValue={this.props.filter}
+                        onChange={this.props.onChangeView}
+                    >
                         <Dropdown.Menu>
                             <Dropdown.Item id="secretary-dropdown-filter-appointment">APPOINTMENTS</Dropdown.Item>
                             <Dropdown.Item id="secretary-dropdown-filter-availability">AVAILABILITY</Dropdown.Item>

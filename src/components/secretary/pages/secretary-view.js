@@ -6,7 +6,9 @@ import moment from 'moment'
 import axios from 'axios'
 import SecretaryHeader from "../module/secretary-header"
 import SecretaryTable from "../module/secretary-week-all"
-import Trrial from "../module/secretary-day-all"
+import DayAll from "../module/secretary-day-all"
+
+import { SemanticToastContainer} from 'react-semantic-toasts';
 
 /*CSS FILES*/
 import '../secretary_css/secretary-view.css'
@@ -30,22 +32,26 @@ export default class Secretary extends Component{
                 numdays.push(formatted);
                 dayStart = dayStart.clone().add(1, 'd');
             }
+        
+        this.onChangeDate = this.onChangeDate.bind(this)
+        this.handleWeekAppointmentUpdate = this.handleWeekAppointmentUpdate.bind(this)
+        this.handleDayAppointmentUpdate = this.handleDayAppointmentUpdate.bind(this)
 
         this.state = {
             doctors:[],
-            appointments:[],
+            weekAppointments:[],
+            dayAppointments:[],
             view:'day',
             filter:'appointments',
             date: moment().toDate(), 
             startOfWeek: moment(moment().toDate()).startOf('week'),
             endOfWeek: moment(moment().toDate()).endOf('week'),
             days:numdays,
-            weekUnparsed:unparsed
-            
-            
-        }
+            weekUnparsed:unparsed,
 
-        this.onChangeDate = this.onChangeDate.bind(this)
+        }
+        this.handleDayAppointmentUpdate()
+        this.handleWeekAppointmentUpdate()
     }
 
 
@@ -78,9 +84,41 @@ export default class Secretary extends Component{
             .catch((error)=>{
                 console.log(error)
         })
-
+        
            
     }
+
+    handleWeekAppointmentUpdate(){
+        console.log("i was called")
+        const week = {
+            weeks: this.state.weekUnparsed
+        }
+        axios.post('http://localhost:3000/secretary/week_all', week).then(res =>{
+            console.log("I tried to update")
+            this.setState({
+                weekAppointments: res.data.data.data
+            })
+            console.log(res.data.data.data)
+        })
+   }
+
+   handleDayAppointmentUpdate(){
+       console.log("HELLO?")
+        const day = {
+            day: this.state.date
+        }
+        axios.post('http://localhost:3000/secretary/day_all', day).then(res =>{
+            this.setState({
+                dayAppointments: res.data.data.data
+            })
+            
+        })
+
+        
+     
+     }
+
+   
 
     //Updates week
     onWeek=(date)=>{
@@ -104,6 +142,7 @@ export default class Secretary extends Component{
                 days:numdays,
                 weekUnparsed:unparsed
             })
+            
     }
 
     //changes the current date
@@ -115,6 +154,7 @@ export default class Secretary extends Component{
             });
         }else{
             this.onWeek(date)
+            
             this.setState({
                 date:date,
             })
@@ -164,25 +204,27 @@ export default class Secretary extends Component{
             {text:"DAY", key:"day", value:"day"},
             {text:"WEEK", key:"week", value:"week"}
         ]
-        let currView
-        if(this.state.view == 'week' ){
+        let currView;
+
+        if(this.state.view === 'week' && this.state.filter === 'appointments'){
             currView = <SecretaryTable 
-                            appointments={this.state.appointments}
                             week={this.state.weekUnparsed}
+                            appointments={this.state.weekAppointments}
+                            handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
                         >
                         </SecretaryTable>
         }
-        else if(this.state.view == 'day'){
-            currView = <Trrial
+        else if(this.state.view === 'day' && this.state.filter === 'appointments'){
+            currView = <DayAll
                             day={this.state.date}
-                            appointments={this.state.appointments}
-                        >
-                            
-                        </Trrial>
+                            appointments={this.state.dayAppointments}
+                            handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                        > 
+                        </DayAll>
         }
         return(
             <>
-            
+                <SemanticToastContainer position='top-center'></SemanticToastContainer>
                 <Header id='secretary_header_container' content={
                     <Navbar id='secretary_navbar'
                         // doctors={doctors}
@@ -193,7 +235,7 @@ export default class Secretary extends Component{
                         onToday={this.onToday}
                         onChangeView={this.onChangeView}
                         date={this.state.date}
-                        
+                        filter={this.state.filter}
                         viewer={viewer}
                         doctors={this.state.doctors}
                     />
@@ -207,6 +249,8 @@ export default class Secretary extends Component{
                     daysParent={this.state.days}
                     weekUnparsed={this.state.weekUnparsed}
                     weekLength={this.state.days.length}
+                    handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
+                    handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
                 >
 
                 </SecretaryHeader>

@@ -25,7 +25,7 @@ class EditModal extends Component {
       super(props);
       
       this.state ={
-            // app_id: this.props.appointment._id,
+            app_id: this.props.appointment._id,
             firstname: this.props.appointment.firstname,
             lastname: this.props.appointment.lastname,
             procedures: this.props.appointment.process,
@@ -80,18 +80,55 @@ class EditModal extends Component {
 
             },
             () => console.log('toast closed'),
-            () => console.log('toast clicked'),
-            () => console.log('toast dismissed')
         );
     }, 1000)
     }
     setOpen(){
-      console.log(this.state.time)
-      this.setState({
+      if(moment(this.state.date).isSame(moment().toDate(), 'day') && moment(this.state.time).isBefore(moment().toDate())){
+        console.log("1")
+        setTimeout(() => {
+          toast(
+              {
+                  description: <p>Cannot edit past dates</p>,
+                  icon: 'clock',
+                  animation: 'slide up',
+                  time:1000,
+                  color: 'red'
+  
+              },
+              () => console.log('toast closed')
+          );
+          }, 1000)
+        this.setState({
+            open:false
+        })
+      }
+      else if(moment(this.state.date).isBefore(moment().toDate(), 'day')){
+        console.log("2")
+            setTimeout(() => {
+            toast(
+                {
+                    description: <p>Cannot edit past dates</p>,
+                    icon: 'clock',
+                    animation: 'slide up',
+                    time:1000,
+                    color: 'red'
+    
+                },
+                () => console.log('toast closed')
+            );
+            }, 1000)
+          this.setState({
+              open:false
+          })
+      }
+      
+      else{
+          this.setState({
         open: !this.state.open,
         step : 1
-      })
-      
+            })
+        }
     }
 
     //Function for submitting values
@@ -104,6 +141,7 @@ class EditModal extends Component {
     handleSubmit=e=>{
       e.preventDefault()
       const appointment = {
+        appointmentID: this.state.app_id,
         firstname:this.state.firstname,
         lastname:this.state.lastname,
         patientcontact: this.state.patientcontact,
@@ -114,10 +152,9 @@ class EditModal extends Component {
         doctors:this.state.doctors,
       }
 
-      axios.post('http://localhost:3000/secretary/edit', appointment).then(res => console.log(res.data));
-      this.setState({
-        //Axios: Connects to DB and sends the data
-      })
+      axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
+        console.log(res.data)
+      });
       setTimeout(() => {
         toast(
             {
@@ -129,12 +166,13 @@ class EditModal extends Component {
 
             },
             () => console.log('toast closed'),
-            () => console.log('toast clicked'),
-            () => console.log('toast dismissed')
+
         );
     }, 1000)
-      this.setOpen();
-      // window.location.reload()
+    
+    this.setOpen();
+    this.handleWeekAppointmentUpdate();
+      
       
     } 
 
@@ -210,7 +248,7 @@ class EditModal extends Component {
                 onSubmit={this.handleSubmit}
                 trigger={
                     <Card> 
-                    <Card.Header>
+                    <Card.Header id={this.props.appointment._id}>
                         {this.props.appointment.firstname+" "+this.props.appointment.lastname}
                     </Card.Header>
                 </Card>
