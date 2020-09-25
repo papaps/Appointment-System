@@ -26,12 +26,11 @@ export default class Picker extends Component {
             <div class="item">
                 <div className="picker">
                     {/* <FontAwesomeIcon icon={faCalendar}  className="calendarIcon"/> */}
-                    <DatePicker
+                    <DatePicker id="datepicker-secretary"
                         //Fixed for error when intially clicking a date on secretary-header (change selected to moment)
                         selected={moment(date).toDate()}
                         onChange={handleChangeDate}
                         onSelect={handleChangeDate}
-                        minDate={moment().toDate()}
                         filterDate={this.disableSunday}
                         
                     />
