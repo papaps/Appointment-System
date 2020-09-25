@@ -63,7 +63,7 @@ class week_all extends Component{
                                         return( <Table.Cell id={'week-all-table-cell'} name={'week-all-td-'+index}>
                                                         {
                                                            appointments.map((appointment)=>
-                                                                        <AppointmentCard id="secretary-appointment-card"
+                                                                        <AppointmentCard id={"secretary-appointment-card-" + appointment._id}
                                                                             appointment={appointment}
                                                                             handleWeekAppointmentUpdate={this.props.handleWeekAppointmentUpdate}
                                                                         />

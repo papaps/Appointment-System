@@ -206,7 +206,7 @@ export default class Secretary extends Component{
         ]
         let currView;
 
-        if(this.state.view === 'week' ){
+        if(this.state.view === 'week' && this.state.filter === 'appointments'){
             currView = <SecretaryTable 
                             week={this.state.weekUnparsed}
                             appointments={this.state.weekAppointments}
@@ -214,7 +214,7 @@ export default class Secretary extends Component{
                         >
                         </SecretaryTable>
         }
-        else if(this.state.view === 'day'){
+        else if(this.state.view === 'day' && this.state.filter === 'appointments'){
             currView = <DayAll
                             day={this.state.date}
                             appointments={this.state.dayAppointments}
@@ -235,7 +235,7 @@ export default class Secretary extends Component{
                         onToday={this.onToday}
                         onChangeView={this.onChangeView}
                         date={this.state.date}
-                        
+                        filter={this.state.filter}
                         viewer={viewer}
                         doctors={this.state.doctors}
                     />

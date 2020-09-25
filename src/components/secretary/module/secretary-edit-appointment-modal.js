@@ -248,7 +248,7 @@ class EditModal extends Component {
                 onSubmit={this.handleSubmit}
                 trigger={
                     <Card> 
-                    <Card.Header>
+                    <Card.Header id={this.props.appointment._id}>
                         {this.props.appointment.firstname+" "+this.props.appointment.lastname}
                     </Card.Header>
                 </Card>
