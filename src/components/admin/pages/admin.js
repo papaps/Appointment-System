@@ -23,6 +23,7 @@ import AdminEditDentistModal from "../module/admin-edit-dentist-modal";
 import AdminDeleteDentistModal from "../module/admin-delete-dentist-modal";
 import AdminEditScheduleModal from "../module/admin-edit-schedule-modal"
 import axios from "axios";
+import AdminViewScheduleModal from "../module/admin-view-schedule-modal";
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -36,6 +37,7 @@ class Admin extends React.Component {
         this.handleUpdateProcedureTable = this.handleUpdateProcedureTable.bind(
             this
         );
+        this.handleUpdateScheduleTable = this.handleUpdateScheduleTable.bind(this)
         this.handleShowDimmer = this.handleShowDimmer.bind(this);
         this.handleHideDimmer = this.handleHideDimmer.bind(this);
         this.state = {
@@ -44,7 +46,9 @@ class Admin extends React.Component {
             activeTable: "Dentist",
             dentists: [],
             procedures: [],
+            schedule: [],
             activeDimmer: false,
+            activeScheduleDimmer:false,
         };
 
         this.handleUpdateDentistTable();
@@ -108,9 +112,24 @@ class Admin extends React.Component {
         });
     }
 
+    handleUpdateScheduleTable(datakey){
+        this.handleShowScheduleDimmer()
+        axios
+            .post("admin/getDentistSchedule", { doctorID: datakey })
+            .then((res) => {
+                this.setState({
+                    schedule: res.data.sched,
+                });
+                this.handleHideScheduleDimmer()
+            });
+    }
+
     handleShowDimmer = () => this.setState({ activeDimmer: true });
     handleHideDimmer = () => this.setState({ activeDimmer: false });
-
+    
+    handleShowScheduleDimmer = () => this.setState({ activeScheduleDimmer: true });
+    handleHideScheduleDimmer = () => this.setState({ activeScheduleDimmer: false });
+    
     render() {
         return (
             <>
@@ -146,6 +165,9 @@ class Admin extends React.Component {
                             handleUpdateProcedureTable={
                                 this.handleUpdateProcedureTable
                             }
+                            handleUpdateScheduleTable={
+                                this.handleUpdateScheduleTable
+                            }
                         />
                     </Grid.Column>
                 </Grid>
@@ -162,6 +184,9 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateScheduleTable={
+                        this.handleUpdateScheduleTable
+                    }
                 ></AdminCreateScheduleModal>
                 <AdminAddProcedureModal
                     handleModal={this.handleModal}
@@ -209,6 +234,14 @@ class Admin extends React.Component {
                     data={this.state.data}
                     handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminDeleteDentistModal>
+                <AdminViewScheduleModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                    handleUpdateTable={this.handleUpdateDentistTable}
+                    schedule={this.state.schedule}
+                    activeDimmer={this.state.activeScheduleDimmer}>
+                </AdminViewScheduleModal>
             </>
         );
     }

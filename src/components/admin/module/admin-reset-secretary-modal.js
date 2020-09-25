@@ -14,20 +14,41 @@ class AdminResetSecretaryModal extends React.Component {
             confirmNewPassword: false,
         },
     };
+
     handleOpen = () => this.props.handleModal("admin-reset-secretary");
 
-    handleClose = () => this.props.handleModal("none");
+    handleClose = () => {
+        this.resetState();
+        this.props.handleModal("none");
+    };
 
     handleModal(name) {
         this.props.handleModal(name);
     }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
-    
+
+    resetState() {
+        this.setState({
+            currentPassword: "",
+            newPassword: "",
+            confirmNewPassword: "",
+            error: {
+                currentPassword: false,
+                newPassword: false,
+                confirmNewPassword: false,
+            },
+        });
+    }
+
     handleValidation = (event) => {
         event.preventDefault();
         let currentPassword = this.state.currentPassword.trim();
-        let error = this.state.error;
+        let error = {
+            currentPassword: false,
+            newPassword: false,
+            confirmNewPassword: false,
+        };
         let formIsValid = true;
 
         if (currentPassword === "") {
@@ -39,6 +60,7 @@ class AdminResetSecretaryModal extends React.Component {
                 icon: "cancel",
             });
             formIsValid = false;
+            this.setState({ error: error });
             this.handleNewPasswordValidation();
         } else {
             let data = {
@@ -68,6 +90,7 @@ class AdminResetSecretaryModal extends React.Component {
                                 .post("admin/updateAccountPassword", data)
                                 .then((res) => {
                                     this.handleClose();
+                                    this.resetState();
                                     setTimeout(() => {
                                         toast({
                                             type: "success",
@@ -96,7 +119,7 @@ class AdminResetSecretaryModal extends React.Component {
 
         if (newPassword === "") {
             error["newPassword"] = true;
-            error["confirmPassword"] = true;
+            error["confirmNewPassword"] = true;
             toast({
                 type: "error",
                 title: "Error",
@@ -170,6 +193,11 @@ class AdminResetSecretaryModal extends React.Component {
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-reset-secretary-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="edit"></Icon>
                     Edit Secretary Password
@@ -186,6 +214,7 @@ class AdminResetSecretaryModal extends React.Component {
                                 autoComplete="false"
                                 placeholder="Current Password"
                                 onChange={this.handleChange}
+                                error={this.state.error.currentPassword}
                             />
                         </Form.Field>
                         <Form.Field required id="sec-new-password-field">
@@ -199,6 +228,7 @@ class AdminResetSecretaryModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="New Password"
                                         onChange={this.handleChange}
+                                        error={this.state.error.newPassword}
                                     />
                                 }
                                 content="Password should contain 10 to 32 alphanumeric characters"
@@ -219,6 +249,9 @@ class AdminResetSecretaryModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="Confirm New Password"
                                         onChange={this.handleChange}
+                                        error={
+                                            this.state.error.confirmNewPassword
+                                        }
                                     />
                                 }
                                 content="Password should contain 10 to 32 alphanumeric characters"

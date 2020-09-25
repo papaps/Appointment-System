@@ -17,7 +17,10 @@ class AdminResetPasswordModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-reset-password");
 
-    handleClose = () => this.props.handleModal("none");
+    handleClose = () => {
+        this.resetState();
+        this.props.handleModal("none");
+    };
 
     handleModal(name) {
         this.props.handleModal(name);
@@ -25,10 +28,27 @@ class AdminResetPasswordModal extends React.Component {
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
+    resetState() {
+        this.setState({
+            currentPassword: "",
+            newPassword: "",
+            confirmNewPassword: "",
+            error: {
+                currentPassword: false,
+                newPassword: false,
+                confirmNewPassword: false,
+            },
+        });
+    }
+
     handleValidation = (event) => {
         event.preventDefault();
         let currentPassword = this.state.currentPassword.trim();
-        let error = this.state.error;
+        let error = {
+            currentPassword: false,
+            newPassword: false,
+            confirmNewPassword: false,
+        };
         let formIsValid = true;
 
         if (currentPassword === "") {
@@ -39,6 +59,7 @@ class AdminResetPasswordModal extends React.Component {
                 description: <p>Please input your current password</p>,
                 icon: "cancel",
             });
+            this.setState({ error: error });
             formIsValid = false;
             this.handleNewPasswordValidation();
         } else {
@@ -69,6 +90,7 @@ class AdminResetPasswordModal extends React.Component {
                                 .post("admin/updateAccountPassword", data)
                                 .then((res) => {
                                     this.handleClose();
+                                    this.resetState();
                                     setTimeout(() => {
                                         toast({
                                             type: "success",
@@ -97,7 +119,7 @@ class AdminResetPasswordModal extends React.Component {
 
         if (newPassword === "") {
             error["newPassword"] = true;
-            error["confirmPassword"] = true;
+            error["confirmNewPassword"] = true;
             toast({
                 type: "error",
                 title: "Error",
@@ -162,7 +184,6 @@ class AdminResetPasswordModal extends React.Component {
         }
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="reset-password-modal"
                 onClose={() => {
@@ -171,6 +192,11 @@ class AdminResetPasswordModal extends React.Component {
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-reset-password-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="edit"></Icon>
                     Edit Admin Password
@@ -187,6 +213,7 @@ class AdminResetPasswordModal extends React.Component {
                                 autoComplete="false"
                                 placeholder="Current Password"
                                 onChange={this.handleChange}
+                                error={this.state.error.currentPassword}
                             />
                         </Form.Field>
                         <Form.Field required id="new-password-field">
@@ -200,6 +227,7 @@ class AdminResetPasswordModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="New Password"
                                         onChange={this.handleChange}
+                                        error={this.state.error.newPassword}
                                     />
                                 }
                                 content="Password should contain 10 to 32 alphanumeric characters"
@@ -217,6 +245,9 @@ class AdminResetPasswordModal extends React.Component {
                                         autoComplete="false"
                                         placeholder="Confirm New Password"
                                         onChange={this.handleChange}
+                                        error={
+                                            this.state.error.confirmNewPassword
+                                        }
                                     />
                                 }
                                 content="Password should contain 10 to 32 alphanumeric characters"

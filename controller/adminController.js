@@ -571,6 +571,25 @@ router.post("/getSchedule", urlencoder, async (req, res) => {
         data: sendData,
     });
 });
+router.post("/getDentistSchedule", urlencoder, async (req, res) => {
+    let doctorID = req.body.doctorID;
+    let doctor = await Doctor.getDoctorByID(doctorID);
+    let docSched = await Schedule.getScheduleByID(doctor.schedule);
+    let breaktime = await BreakTime.getBreakTimeByID(doctor.breakTime);
+
+    let array = [],
+        docID;
+    if (docSched != undefined) {
+        array = getObject(docSched, breaktime);
+        docID = docSched._id;
+    } else {
+        docID = "";
+    }
+    res.send({
+        sched: array,
+        schedID: docID,
+    });
+});
 
 //pushes an empty sched? *** to be checked ***
 function getObject(object, breakTime) {

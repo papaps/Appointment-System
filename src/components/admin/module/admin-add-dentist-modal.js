@@ -21,8 +21,27 @@ class AdminAddDentistModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-add-dentist");
 
-    handleClose = () => this.props.handleModal("none");
+    handleClose = () => {
+        this.resetState();
+        this.props.handleModal("none");
+    };
 
+    resetState() {
+        this.setState({
+            firstname: "",
+            lastname: "",
+            username: "",
+            password: "",
+            confirmPassword: "",
+            error: {
+                firstname: false,
+                lastname: false,
+                username: false,
+                password: false,
+                confirmPassword: false,
+            },
+        });
+    }
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
     handleUpdateTable = () => this.props.handleUpdateTable();
@@ -56,6 +75,7 @@ class AdminAddDentistModal extends React.Component {
                         firstname,
                         lastname,
                     });
+                    this.resetState();
                     this.handleUpdateTable();
                 } else {
                     toast({
@@ -80,7 +100,13 @@ class AdminAddDentistModal extends React.Component {
         let username = this.state.username.trim();
         let password = this.state.password.trim();
         let confirmPassword = this.state.confirmPassword.trim();
-        let error = this.state.error;
+        let error = {
+            firstname: false,
+            lastname: false,
+            username: false,
+            password: false,
+            confirmPassword: false,
+        };
         let formIsValid = true;
 
         if (firstname === "" || !firstname.match(checkfirst)) {
@@ -112,7 +138,7 @@ class AdminAddDentistModal extends React.Component {
             formIsValid = false;
         }
 
-        if (lastname === "" || !firstname.match(checklast)) {
+        if (lastname === "" || !lastname.match(checklast)) {
             error["lastname"] = true;
             toast({
                 type: "error",
@@ -246,13 +272,17 @@ class AdminAddDentistModal extends React.Component {
         }
         return (
             <Modal
-                closeIcon
                 size="mini"
                 id="add-dentist-modal"
                 onClose={() => this.handleClose()}
                 onOpen={() => this.handleOpen()}
                 open={open}
             >
+                <Icon
+                    name="close"
+                    onClick={this.handleClose}
+                    id="close-add-dentist-modal"
+                ></Icon>
                 <Modal.Header as="h2">
                     <Icon name="user md"></Icon>
                     New Dentist
