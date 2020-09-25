@@ -14,6 +14,7 @@ class AdminTable extends React.Component {
                     handleModal={this.props.handleModal}
                     dentists={dentists}
                     handleUpdateTable={this.props.handleUpdateDentistTable}
+                    handleUpdateScheduleTable={this.props.handleUpdateScheduleTable}
                 ></AdminDentistTable>
             );
         } else if (activeTable === "Procedure") {
