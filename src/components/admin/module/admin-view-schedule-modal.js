@@ -50,13 +50,13 @@ class AdminViewScheduleModal extends React.Component {
 
         let firstname;
         let lastname;
-        let key;
+        let doctorID;
         if (
             this.props.data != null &&
             this.props.data.firstname != null &&
             this.props.data.lastname != null
         ) {
-            key = this.props.data.key;
+            doctorID = this.props.data.key;
             firstname = this.props.data.firstname;
             lastname = this.props.data.lastname;
         }
@@ -86,7 +86,6 @@ class AdminViewScheduleModal extends React.Component {
                 <Button
                     id="add-schedule"
                     color="green"
-                    key={key}
                     onClick={() => {
                         this.props.handleModal("admin-create-schedule");
                     }}
@@ -143,7 +142,6 @@ class AdminViewScheduleModal extends React.Component {
                 <Button
                     id="add-unavailable"
                     color="green"
-                    key={key}
                     onClick={() => {
                         this.props.handleModal("admin-add-unavailable");
                     }}
@@ -164,7 +162,7 @@ class AdminViewScheduleModal extends React.Component {
             if (unavailable != null && unavailable.length >= 1) {
                 schedule_table = (
                     <>
-                        {unavailable.map(({ key, time, index }) => (
+                        {unavailable.map(({ _id, time, index }) => (
                             <Table.Row>
                                 <Table.Cell
                                     style={{
@@ -178,8 +176,7 @@ class AdminViewScheduleModal extends React.Component {
                                         name="trash"
                                         id={"delete-unavailable-button" + index}
                                         size="large"
-                                        key={key}
-                                        time={time}
+                                        onClick={()=> {this.props.handleModal("admin-delete-unavailable", {doctorID, unavailableDateID: _id, time, firstname, lastname})}}
                                     ></Icon>
                                 </Table.Cell>
                             </Table.Row>

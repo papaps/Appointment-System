@@ -682,7 +682,6 @@ router.post("/addUnavailableDates", urlencoder, async (req, res) => {
     let startDate = req.body.startDate;
     let endDate = req.body.endDate;
 
-    console.log(req.body);
     let startnewDate = Date.parse(startDate);
     let startformattedDate = moment(startnewDate).format("YYYY-MM-DD");
     let endnewDate = Date.parse(endDate);
