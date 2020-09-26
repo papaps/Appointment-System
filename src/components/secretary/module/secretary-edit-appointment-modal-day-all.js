@@ -508,9 +508,9 @@ export default class EditModal extends Component {
                             {this.props.appointment.firstname+" "+this.props.appointment.lastname}
                         </Card.Header>
                         <Card.Content>
-                            <p className="secretary-card-day-content">🦷: {this.state.currentProcs.join(", ")}</p><br/>
-                            <p className="secretary-card-day-content">📱: {patientcontact}</p><br/>
-                            <p className="secretary-card-day-content">👨‍⚕️: {this.state.currentDocs.join(", ")}</p>
+                            <span className="secretary-card-day-content">🦷: {this.state.currentProcs.join(", ")}</span><br/>
+                            <span className="secretary-card-day-content">📱: {patientcontact}</span><br/>
+                            <span className="secretary-card-day-content">👨‍⚕️: {this.state.currentDocs.join(", ")}</span>
                         </Card.Content>
                     </Card>
                 }
