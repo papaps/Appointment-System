@@ -74,7 +74,6 @@ router.post("/week_all", urlencoder, async function (request, response) {
 
     let weekData = request.body.weeks;
 
-    console.log(weekData[0])
     
     //Convert data to MMM D YYYY
     let formattedWeekData = [];
@@ -84,7 +83,6 @@ router.post("/week_all", urlencoder, async function (request, response) {
         let formattedDate = moment(newDate).format("MMM D YYYY");
         formattedWeekData.push(formattedDate);
     }
-    console.log(formattedWeekData[0])
 
     // Load up the html template
     // let all_week = fs.readFileSync('./views/module_templates/secretary_week_all.hbs', 'utf-8');
@@ -118,13 +116,11 @@ router.post("/week_all", urlencoder, async function (request, response) {
             // find all appointments in a date in a timeslot
             let appointmentlist = await Appointment.getAppointmentsByDateandTime(date, timeSlot);
             let appointments = [];
-            console.log(appointmentlist.length)
             for (var l = 0; l < appointmentlist.length; l++) {
                 let appointment = appointmentlist[l];
                 //populate necessary info
                 appointment = await appointment.populateDoctorAndProcess();
                 appointments.push(appointment);
-                console.log("Hello "+ appointment)
             }
 
             if (appointmentlist.length > maxInWeek) {
@@ -338,8 +334,7 @@ router.post("/week_unavailable", async function (request, result) {
 });
 // shows all available doctors/timeslots of a week
 router.post("/week_available", async function (request, result) {
-
-    let weekData = request.body["dates[]"];
+    let weekData = request.body.weeks;
 
     //Convert data to MMM D YYYY
     let formattedWeekData = [];
@@ -351,7 +346,6 @@ router.post("/week_available", async function (request, result) {
     }
 
     // Load up the html template
-    let week_available = fs.readFileSync('./views/module_templates/secretary_week_avail.hbs', 'utf-8');
 
     // Array for iterating time slots
     let timeSlotsArray = ["8:00 AM", "8:30 AM",
@@ -423,7 +417,6 @@ router.post("/week_available", async function (request, result) {
 
 
     result.send({
-        htmlData: week_available,
         data: final
     });
 
@@ -675,16 +668,16 @@ router.post("/edit", urlencoder, async (req, res) => {
     let newDate = Date.parse(date);
     let formattedDate = moment(newDate).format("MMM D YYYY");
 
-    const appointment = new Appointment({
-        firstname,
-        lastname,
-        patientcontact,
-        process,
-        doctor,
-        notes,
+    const appointment ={
+        firstname: firstname,
+        lastname: lastname,
+        patientcontact: patientcontact,
+        process:process,
+        doctor:doctor,
+        notes:notes,
         time: formattedTime,
         date: formattedDate
-    });
+    };
     console.log("doctors1: "+ appointment.doctor)
     console.log("process1: "+ appointment.process)
     
@@ -1280,7 +1273,9 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
 
 //checks all availability time per doctor
 router.post("/availabilityAll", urlencoder, async (req, res) => {
-    let weekData = req.body["dates[]"];
+
+    console.log("AvailabilityAll was called...")
+    let weekData = req.body.weeks;
 
     let timeSlotsArray = ["8:00", "8:30",
         "9:00", "9:30",
@@ -1302,10 +1297,11 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
         momentWeekData.push(moment(newDate))
         formattedWeekData.push(formattedDate);
     }
+    
 
 
 
-    let availabilityhbs = fs.readFileSync('./views/module_templates/secretary_availability.hbs', 'utf-8');
+    //let availabilityhbs = fs.readFileSync('./views/module_templates/secretary_availability.hbs', 'utf-8');
 
     var allDoctors = await Doctor.getAllDoctors();
     var allDoctorsAvailability = []
@@ -1351,8 +1347,9 @@ router.post("/availabilityAll", urlencoder, async (req, res) => {
     let final = {
         doctors: allDoctorsAvailability
     };
+    
     res.send({
-        htmlData: availabilityhbs,
+       // htmlData: availabilityhbs,
         data: final
     });
 
