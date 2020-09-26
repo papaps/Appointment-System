@@ -1,10 +1,9 @@
-import React, {Component, useState} from 'react';
-import moment from 'moment';
-import { Button, Header, Image, Modal, Form, Select, Step } from 'semantic-ui-react'
+import React, {Component} from 'react';
+import { Step } from 'semantic-ui-react'
 
 
-import AddProcStep1 from "../AddApp/addProcStep1";
-import AddProcStep2 from "../AddApp/addProcStep2";
+import AddProcStep1 from "./secretary-add-appointment-modal-form-step1";
+import AddProcStep2 from "./secretary-add-appointment-modal-form-step2";
 
 
 
@@ -77,6 +76,7 @@ class addProcMainForm extends Component {
                                 handleTime={handleTime}
                                 handleDoctorChange={handleDoctorChange}
                                 handleProcessChange={handleProcessChange}
+                                values = {values}
                             />
                         </div> 
                     )
