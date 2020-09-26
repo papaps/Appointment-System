@@ -161,7 +161,7 @@ class AdminViewScheduleModal extends React.Component {
             if (unavailable != null && unavailable.length >= 1) {
                 schedule_table = (
                     <>
-                        {unavailable.map(({ _id, time, index }) => (
+                        {unavailable.map(({ _id, time}, index) => (
                             <Table.Row>
                                 <Table.Cell
                                     style={{
@@ -173,7 +173,7 @@ class AdminViewScheduleModal extends React.Component {
                                 <Table.Cell textAlign="right">
                                     <Icon
                                         name="trash"
-                                        id={"delete-unavailable-button" + index}
+                                        id={"delete-unavailable-button-" + index}
                                         size="large"
                                         onClick={()=> {this.props.handleModal("admin-delete-unavailable", {doctorID, unavailableDateID: _id, time, firstname, lastname})}}
                                     ></Icon>
