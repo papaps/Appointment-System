@@ -13,6 +13,7 @@ import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css"
 import "../secretary_css/addProcStep1.scss"
+import '../secretary_css/secretary-view.css'
 
 class editProcStep1 extends Component {
     constructor(props){
