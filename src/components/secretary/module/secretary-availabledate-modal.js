@@ -19,18 +19,12 @@ class SecretaryAvailabilityModal extends Component{
 
         this.setOpen = this.setOpen.bind(this)
     }
-
-    componentDidMount(){
-        this.props.handleHideDimmer()
-    }
-
     setOpen(){
         this.setState({
             open:!this.state.open
         })
     }
     render(){
-        let backgroundColor ='green'
         return(
             <Modal
                     closeIcon
@@ -42,7 +36,7 @@ class SecretaryAvailabilityModal extends Component{
                         </Table.Cell>}
                 >
                     <Modal.Header as={'h2'}>
-                        Confirm Delete
+                        
                     </Modal.Header>
                     <Modal.Content>
                         Are you sure you want to delete this appointment?
