@@ -15,11 +15,29 @@ class AdminViewScheduleModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-view-schedule");
 
-    handleClose = () => this.props.handleModal("none");
+    handleClose = () => {
+        this.resetState();
+        this.props.handleModal("none");
+    };
 
     handleModal(name) {
         this.props.handleModal(name);
     }
+
+    resetState() {
+        this.setState({
+            activeTable: "weekly",
+        });
+    }
+
+    handleTable = () => {
+        let { activeTable } = this.state;
+        if (activeTable === "weekly") {
+            this.setState({ activeTable: "unavailable" });
+        } else {
+            this.setState({ activeTable: "weekly" });
+        }
+    };
 
     render() {
         let open;
@@ -47,16 +65,36 @@ class AdminViewScheduleModal extends React.Component {
         };
 
         let schedule = this.props.schedule;
+        let unavailable = this.props.unavailable;
         let schedule_table;
-        let buttons;
+        let table_buttons;
+        let add_button;
         if (this.state.activeTable == "weekly") {
-            buttons = (
+            table_buttons = (
                 <>
                     <Button id="weekly" color="green">
                         Weekly Schedule
                     </Button>
-                    <Button id="unavailable">Unavailable Date</Button>
+                    <Button id="unavailable" onClick={this.handleTable}>
+                        Unavailable Date
+                    </Button>
                 </>
+            );
+            add_button = (
+                <Button
+                    id="add-schedule"
+                    color="green"
+                    key={key}
+                    onClick={() => {
+                        this.props.handleModal("admin-create-schedule", {
+                            key,
+                            firstname,
+                            lastname,
+                        });
+                    }}
+                >
+                    Reset
+                </Button>
             );
             if (schedule != null) {
                 schedule_table = (
@@ -93,6 +131,7 @@ class AdminViewScheduleModal extends React.Component {
                                         id={name.toString() + "-edit"}
                                         size="large"
                                         key={key}
+                                        day_name={name}
                                     ></Icon>
                                 </Table.Cell>
                             </Table.Row>
@@ -101,14 +140,47 @@ class AdminViewScheduleModal extends React.Component {
                 );
             }
         } else {
-            buttons = (
+            add_button = (
+                <Button id="add-schedule" color="green" key={key}>
+                    Add
+                </Button>
+            );
+            table_buttons = (
                 <>
-                    <Button id="weekly">Weekly Schedule</Button>
+                    <Button id="weekly" onClick={this.handleTable}>
+                        Weekly Schedule
+                    </Button>
                     <Button id="unavailable" color="green">
                         Unavailable Date
                     </Button>
                 </>
             );
+            if (unavailable != null) {
+                schedule_table = (
+                    <>
+                        {unavailable.map(({ key, time, index }) => (
+                            <Table.Row>
+                                <Table.Cell
+                                    style={{
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    {time}
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    <Icon
+                                        name="trash"
+                                        id={"delete-unavailable-button" + index}
+                                        size="large"
+                                        key={key}
+                                        time={time}
+                                    ></Icon>
+                                </Table.Cell>
+                            </Table.Row>
+                        ))}
+                    </>
+                );
+            }
         }
 
         return (
@@ -135,7 +207,7 @@ class AdminViewScheduleModal extends React.Component {
                             <Grid.Row>
                                 <Grid.Column width={13}>
                                     <Icon
-                                        name="user"
+                                        name="user md"
                                         size="big"
                                         style={icon_styling}
                                     />
@@ -151,21 +223,10 @@ class AdminViewScheduleModal extends React.Component {
                                     </span>
                                 </Grid.Column>
                                 <Grid.Column width={3} textAlign="right">
-                                    <Button
-                                        id="add-schedule"
-                                        color="green"
-                                        key={key}
-                                        onClick={
-                                            ()=>{ 
-                                                this.props.handleModal("admin-create-schedule", {key, firstname, lastname})
-                                            }
-                                        }
-                                    >
-                                        Reset
-                                    </Button>
+                                    {add_button}
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row centered={true}>{buttons}</Grid.Row>
+                            <Grid.Row centered={true}>{table_buttons}</Grid.Row>
                             <Table celled selectable id="schedule-table">
                                 <Table.Body id="table-schedule">
                                     {schedule_table}

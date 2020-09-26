@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import {Modal, Form, Button} from 'semantic-ui-react'
+import {Modal, Form, Button, Icon, Card} from 'semantic-ui-react'
 import axios from 'axios'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
-import {Card} from 'semantic-ui-react';
-
-
-
 import EditProcMainForm from "./secretary-edit-appointment-modal-form"
 import '../secretary_css/secretary-view.css'
 
@@ -15,7 +11,7 @@ import '../secretary_css/secretary-view.css'
 
 
 
-class EditModal extends Component {
+export default class EditModal extends Component {
     constructor(props){
     
       super(props);
@@ -35,7 +31,20 @@ class EditModal extends Component {
             currentDocs:[],
             procs:this.props.appointment.process,
             docs:this.props.appointment.doctor,
+            error: {
+              firstname: false,
+              lastname: false,
+              username: false,
+              password: false,
+              patientcontact: false,
+              time: false,
+              date:false,
+              doctors: false,
+              procedures: false
+    
+          },
         open: false,
+        secondopen:false,
         step: 1,
       }
       this.setOpen = this.setOpen.bind(this);
@@ -43,6 +52,7 @@ class EditModal extends Component {
       this.handleDate = this.handleDate.bind(this);
       this.handletime = this.handleDate.bind(this);
       this.handleDoctorChange = this.handleDoctorChange.bind(this);
+      this.arraysEqual = this.arraysEqual.bind(this);
     }
 
     
@@ -74,13 +84,143 @@ class EditModal extends Component {
     }
 
     componentDidUpdate(){
-      if(this.state.procs !== this.props.appointment.process){
-        console.log("GGS")
+      if(this.state.docs !== this.props.appointment.doctor || this.state.procs !== this.props.appointment.process){
+        console.log("S")
         this.handleChangeInEdit()
       }
+      
+      
     }
 
+      arraysEqual(_arr1, _arr2) {
+
+      if (!Array.isArray(_arr1) || !Array.isArray(_arr2) || _arr1.length !== _arr2.length)
+          return false;
+  
+      var arr1 = _arr1.concat().sort();
+      var arr2 = _arr2.concat().sort();
+  
+      for (var i = 0; i < arr1.length; i++) {
+  
+          if (arr1[i] !== arr2[i])
+              return false;
+  
+      }
+  
+      return true;
+  
+    }
+
+    handleValidation=()=>{
+      const checkfirst = /^[a-z A-Z]+$/;
+      const checklast = /^[a-z A-Z.\-_]+$/;
+      const checkcontact = /^[+-]?\d{7,12}$/;
+
+      let firstname = this.state.firstname.trim();
+      let lastname = this.state.lastname.trim();
+      let patientcontact = this.state.patientcontact.trim();
+      let procedures = this.state.procedures;
+      let date = this.state.date;
+      let time = this.state.time;
+      let doctors = this.state.doctors;
+
+      let error = this.state.error;
+      let formIsValid = true;
+
+      if(moment(moment(time, "h:mm A").toDate()).isBefore(moment().toDate()) && moment(date).isSame(moment().toDate(), 'day')){
+          error['time']= true;
+          toast({
+            type: "error",
+            title: "Error",
+            description: <p>Please input valid time</p>,
+            icon: "cancel",
+          });
+          formIsValid = false;
+      }
+      if(firstname === ""|| !firstname.match(checkfirst)){
+        error['firstname']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid firstname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+
+      } else if( firstname.length < 2){
+        error['firstname'] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Firstname is too short</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+      if(lastname ===  ""|| !lastname.match(checklast)){
+        error["lastname"] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid lastname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      } else if(lastname.length < 2){
+        error["lastname"] = true;
+        toast({
+            type: "error",
+            title: "Error",
+            description: <p>Lastname is too short</p>,
+            icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(patientcontact === "" || !patientcontact.match(checkcontact)){
+        error['patientcontact']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid contact number</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(procedures.length < 1 || procedures === undefined){
+        error['procedures']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 procedure</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(doctors.length < 1 || doctors === undefined){
+        error['doctors']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 doctor</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(formIsValid){
+      
+        return formIsValid
+
+      }
+
+    } 
+
     handleChangeInEdit=()=>{
+      console.log(this.props.appointment.process)
+      console.log(this.props.appointment.doctor)
       this.setState({
         procedures:[
           this.props.appointment.process.map(procedure=>{
@@ -102,7 +242,9 @@ class EditModal extends Component {
                 return  "Dr. "+ doctor.lastname
               })
         ],
-        procs: this.props.appointment.process
+        procs: this.props.appointment.process,
+        docs: this.props.appointment.doctor
+
       })
     }
 
@@ -110,9 +252,24 @@ class EditModal extends Component {
     //function for opening and closing the modal
     handleClose=()=>{
       this.setState({
-        open: false,
-        step : 1
+            appointment: this.props.appointment,
+            app_id: this.props.appointment._id,
+            firstname: this.props.appointment.firstname,
+            lastname: this.props.appointment.lastname,
+            procedures: this.props.appointment.process,
+            notes: this.props.appointment.notes,
+            date: moment(this.props.appointment.date).toDate(),
+            doctors: this.props.appointment.doctor,
+            patientcontact: this.props.appointment.patientcontact,
+            time: moment(this.props.appointment.time, "h:mm A").toDate(),
+            currentProcs:[],
+            currentDocs:[],
+            procs:this.props.appointment.process,
+            docs:this.props.appointment.doctor,
+            open: false,
+            step: 1,
       })
+      this.handleChangeInEdit();
       setTimeout(() => {
         toast(
             {
@@ -127,8 +284,18 @@ class EditModal extends Component {
         );
     }, 1000)
     }
+
+    
+
+    setOpen2 =()=>{
+      this.setState({
+        secondopen: !this.state.secondopen
+      })
+    }
+
+
     setOpen(){
-      console.log("Hello "+this.state.time)
+
       if(moment(this.state.date).isSame(moment().toDate(), 'day') && moment(this.state.time).isBefore(moment().toDate())){
         console.log("1")
         setTimeout(() => {
@@ -185,30 +352,65 @@ class EditModal extends Component {
       console.log(e.target.value)
     }
     handleSubmit=(e)=>{
-      e.preventDefault()
-      const appointment = {
-        appointmentID: this.state.app_id,
-        firstname:this.state.firstname,
-        lastname:this.state.lastname,
-        patientcontact: this.state.patientcontact,
-        procedures: this.state.procedures,
-        notes:this.state.notes,
-        date:this.state.date,
-        time:this.state.time,
-        doctors:this.state.doctors,
-      }
-
-      axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
-        console.log(res.data)
-        console.log("why")
-        this.props.handleDayAppointmentUpdate()
-        
       
+      e.preventDefault()
+      if(this.handleValidation()){
+          const appointment = {
+          appointmentID: this.state.app_id,
+          firstname:this.state.firstname,
+          lastname:this.state.lastname,
+          patientcontact: this.state.patientcontact,
+          procedures: this.state.procedures,
+          notes:this.state.notes,
+          date:this.state.date,
+          time:this.state.time,
+          doctors:this.state.doctors,
+        }
+
+        axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
+          console.log(res.data)
+          this.props.handleDayAppointmentUpdate()
+          
+        
+        });
+        setTimeout(() => {
+          toast(
+              {
+                  description: <p>Appointment Updated</p>,
+                  icon: 'check',
+                  animation: 'slide up',
+                  time:1000,
+                  color: 'green'
+
+              },
+              () => console.log('toast closed'),
+          );
+      }, 1000)
+        this.setOpen();
+    }else{
+      toast({
+        type: 'error',
+        title: 'Error',
+        description: <p>Invalid Appointment</p>,
+        icon: "cancel"
+      })
+    }
+      
+    }
+    
+    deleteAppointment=()=>{
+      console.log("Deleting...")
+      const appID = {
+        appointmentID : this.state.app_id
+      }
+      axios.post('/secretary/delete', appID).then(res=>{
+        console.log(res.data)
+        this.props.handleDayAppointmentUpdate()
       });
       setTimeout(() => {
         toast(
             {
-                description: <p>Appointment Updated</p>,
+                description: <p>Appointment Deleted</p>,
                 icon: 'check',
                 animation: 'slide up',
                 time:1000,
@@ -219,8 +421,9 @@ class EditModal extends Component {
         );
     }, 1000)
       this.setOpen();
+      this.setOpen2();
       
-    } 
+    }
 
     //Datepicker change
     handleDate(date){
@@ -267,27 +470,21 @@ class EditModal extends Component {
       console.log(time)
     }
 
-    displaycontent=()=>{
-        return(console.log(this.state.currentDocs.join(', Dr.')))
-    }
-
   
     render(){
-      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors} = this.state;
-      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors}
+      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error} = this.state;
+      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error}
       let button;
       let button2;
+      let button3;
       if(this.state.step === 1){
         button = <Button onClick={this.nextStep} type='button'>Next</Button>
       } else{
         button = <Button type="button" color="green" onClick={this.handleSubmit}>Submit</Button>
         button2 = <Button onClick={this.prevStep}>Back</Button>
+        button3 = <Button onClick={this.setOpen2} color="red"><Icon name="trash"/>Delete</Button>
       }
 
-      if(this.state.date === moment().toDate()){
-          console.log("I won't let you edit this")
-      }
-      else{
         return (
             <>
             <SemanticToastContainer position='top-center'></SemanticToastContainer>
@@ -296,7 +493,7 @@ class EditModal extends Component {
                 onOpen={this.setOpen}
                 open={this.state.open}
                 as={Form}
-                onSubmit={this.handleSubmit}
+                // onSubmit={this.handleSubmit}
                 trigger={
                     <Card fluid id="secretary-card-day"> 
                         <Card.Header>
@@ -329,15 +526,42 @@ class EditModal extends Component {
             <Modal.Actions>
                 <Button onClick={this.handleClose}>Cancel</Button>
                 {button2}
+                {button3}
                 {button}
+
                 
             </Modal.Actions>
+
+              <Modal
+                    closeIcon
+                    onClose={this.setOpen2}
+                    open={this.state.secondopen}
+                    size="small"
+                    // as={Form}
+                    // // onSubmit={this.hello}
+                    // trigger={<Button>Delete</Button>}
+                >
+                    <Modal.Header as={'h2'}>
+                      <p>Confirm Delete</p>
+                    </Modal.Header>
+                    <Modal.Content>
+                      <p>  Are you sure you want to delete this appointment?</p>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button onClick={this.setOpen2}>
+                            <Icon name="cancel"/>
+                            Cancel
+                        </Button>
+                        <Button onClick={this.deleteAppointment} color="green">
+                            <Icon name="check"/>
+                            Confirm
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </Modal>
             </>
             
             
         )
-        }
-    }
+     }
   }
-export default EditModal

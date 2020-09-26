@@ -103,17 +103,19 @@ export default class Secretary extends Component{
    }
 
    handleDayAppointmentUpdate(){
-       console.log("HELLO?")
+       console.log("DayUpdate")
         const day = {
             day: this.state.date
         }
         axios.post('http://localhost:3000/secretary/day_all', day).then(res =>{
+            
             this.setState({
                 dayAppointments: res.data.data.data
             })
+            console.log(res.data.data.data)
             
         })
-
+        
         
      
      }
