@@ -89,12 +89,8 @@ class AdminAddUnavailableModal extends React.Component {
         this.setState({ error: error });
 
         if (formIsValid) {
-            console.log(start);
-            console.log(end);
             start = moment(start).format("MMMM D, yyyy");
             end = moment(end).format("MMMM D, yyyy");
-            console.log(start);
-            console.log(end);
             let data = {
                 doctorID: datakey,
                 startDate: start,
@@ -115,11 +111,7 @@ class AdminAddUnavailableModal extends React.Component {
                         .post("admin/addUnavailableDates", data)
                         .then((response) => {
                             if (response.data === true) {
-                                this.handleClose();
-                                this.resetState();
-                                this.props.handleUpdateUnavailableTable(
-                                    datakey
-                                );
+                                this.handleClose(datakey);
                                 toast({
                                     type: "success",
                                     title: "Success",
@@ -141,7 +133,7 @@ class AdminAddUnavailableModal extends React.Component {
 
     handleClose(datakey) {
         this.props.handleModal("admin-view-schedule");
-        this.props.handleUpdateUnavailableTable(datakey);
+        this.props.handleUpdateTable(datakey);
         this.resetState();
     }
 
