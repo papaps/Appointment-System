@@ -18,6 +18,7 @@ class day_all extends Component{
     }
     
     componentDidMount(){
+        this.props.handleDayAppointmentUpdate()
         console.log("Im in secretary-day-all componentDidMount")
         this.setState({
             appointments:this.props.appointments

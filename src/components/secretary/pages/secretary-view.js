@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Navbar from "../module/secretary-navigationbar"
 import AddAppointment from "../module/secretary-add-appointment-modal"
-import {Grid, Header, Dropdown} from "semantic-ui-react"
+import {Grid, Header, Dropdown, Dimmer} from "semantic-ui-react"
 import moment from 'moment'
 import axios from 'axios'
 import SecretaryHeader from "../module/secretary-header"
@@ -13,6 +13,12 @@ import { SemanticToastContainer} from 'react-semantic-toasts';
 
 /*CSS FILES*/
 import '../secretary_css/secretary-view.css'
+import 'semantic-ui-css/components/reset.min.css';
+import 'semantic-ui-css/components/site.min.css';
+import 'semantic-ui-css/components/container.min.css';
+import 'semantic-ui-css/components/icon.min.css';
+import 'semantic-ui-css/components/message.min.css';
+import 'semantic-ui-css/components/header.min.css';
 
 export default class Secretary extends Component{
 
@@ -38,6 +44,8 @@ export default class Secretary extends Component{
         this.handleWeekAppointmentUpdate = this.handleWeekAppointmentUpdate.bind(this)
         this.handleDayAppointmentUpdate = this.handleDayAppointmentUpdate.bind(this)
         this.handleWeekAvailable = this.handleWeekAvailable.bind(this)
+        this.handleShowDimmer = this.handleShowDimmer.bind(this)
+        this.handleHideDimmer = this.handleHideDimmer.bind(this)
 
         this.state = {
             doctors:[],
@@ -50,7 +58,8 @@ export default class Secretary extends Component{
             endOfWeek: moment(moment().toDate()).endOf('week'),
             days:numdays,
             weekUnparsed:unparsed,
-            weekAvailable:[]
+            weekAvailable:[],
+            activeDimmer: false,
 
         }
         this.handleDayAppointmentUpdate()
@@ -58,9 +67,13 @@ export default class Secretary extends Component{
         this.handleWeekAvailable()
     }
 
+    handleShowDimmer = () => this.setState({activeDimmer: true});
+    handleHideDimmer = () => this.setState({activeDimmer: false})
+
 
 
     componentDidMount(){
+        this.handleShowDimmer();
         axios.get('http://localhost:3000/secretary/getDoctors')
             .then(response => {
                 if(response.data.length > 0){
@@ -88,12 +101,13 @@ export default class Secretary extends Component{
             .catch((error)=>{
                 console.log(error)
         })
-        
+        this.handleHideDimmer();
            
     }
 
     handleWeekAvailable(){
         console.log("Updating Availability...")
+        this.handleShowDimmer();
         const week = {
             weeks: this.state.weekUnparsed
         }
@@ -105,6 +119,7 @@ export default class Secretary extends Component{
             })
             console.log("WeekAvailable Data: ")
             console.log(res.data.data)
+            this.handleHideDimmer();
         })
         
        
@@ -112,6 +127,7 @@ export default class Secretary extends Component{
 
 
     handleWeekAppointmentUpdate(){
+        this.handleShowDimmer();
         console.log("Updating Week-all...")
         const week = {
             weeks: this.state.weekUnparsed
@@ -123,11 +139,14 @@ export default class Secretary extends Component{
             })
             console.log("Week-all Data: ")
             console.log(res.data.data.data)
+            this.handleHideDimmer()
         })
+        
    }
 
    handleDayAppointmentUpdate(){
        console.log("DayUpdate")
+       this.handleShowDimmer();
         const day = {
             day: this.state.date
         }
@@ -138,8 +157,9 @@ export default class Secretary extends Component{
             })
             console.log("Day-all Data")
             console.log(res.data.data.data)
-            
+            this.handleHideDimmer()
         })
+        
         
         
      
@@ -194,6 +214,7 @@ export default class Secretary extends Component{
         this.setState({
             [name]:value
         })
+        console.log(value)
     }
 
     onChangeView=(e, {name, value})=>{
@@ -255,6 +276,8 @@ export default class Secretary extends Component{
                             week={this.state.weekUnparsed}
                             appointments={this.state.weekAppointments}
                             handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                         >
                         </SecretaryTable>
         }
@@ -263,6 +286,8 @@ export default class Secretary extends Component{
                             day={this.state.date}
                             appointments={this.state.dayAppointments}
                             handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                         > 
                         </DayAll>
         }
@@ -272,11 +297,21 @@ export default class Secretary extends Component{
                             week={this.state.weekUnparsed}
                             weekAvailable={this.state.weekAvailable}
                             handleWeekAvailable={this.handleWeekAvailable}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                             
                         />
         }
         return(
             <>
+                <Dimmer
+                            active={this.state.activeDimmer}
+                            inverted
+                            id="list-dimmer"
+                            style={{ maxHeight: "100%" }}
+                        >
+                            <div className="ui elastic huge green loader"></div>
+                </Dimmer>
                 <SemanticToastContainer position='top-center'></SemanticToastContainer>
                 <Header id='secretary_header_container' content={
                     <Navbar id='secretary_navbar'

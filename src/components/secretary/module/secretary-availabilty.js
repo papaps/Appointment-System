@@ -4,6 +4,7 @@ import {Modal, Form, Button, Icon, Card, Table, Tab} from 'semantic-ui-react'
 import axios from 'axios'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
+import SecretaryAvailabilityModal from './secretary-availabledate-modal'
 import '../secretary_css/secretary-view.css'
 
 
@@ -13,9 +14,15 @@ class SecretaryAvailability extends Component{
         super(props);
 
         this.state = {
-            weekAvailable:this.props.weekAvailable,
+            weekAvailable:[],
             weeks:this.props.week,
         }
+    }
+
+    componentDidMount(){
+        
+        this.props.handleWeekAvailable();
+        
     }
 
     componentDidUpdate(){
@@ -29,6 +36,7 @@ class SecretaryAvailability extends Component{
             })
         }
     }
+
 
     render(){
         return(
@@ -49,10 +57,11 @@ class SecretaryAvailability extends Component{
                                                         </Table.Cell>
                                                     )
                                                 }else{
-                                                    let backgroundColor ='green'
+                                                    
                                                     return(
-                                                        <Table.Cell id="secretary-available-table-cell" style={{backgroundColor}}>
-                                                        </Table.Cell>
+                                                        
+                                                            <SecretaryAvailabilityModal />
+                                                        
                                                     )
                                                 }
                                             })
