@@ -232,6 +232,7 @@ class AdminViewScheduleModal extends React.Component {
                             <Grid.Row centered={true}>{table_buttons}</Grid.Row>
                             <Table
                                 celled={table_celled}
+                                striped
                                 selectable
                                 id="schedule-table"
                             >
