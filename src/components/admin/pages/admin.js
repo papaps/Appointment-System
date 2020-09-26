@@ -25,6 +25,7 @@ import AdminEditScheduleModal from "../module/admin-edit-schedule-modal";
 import axios from "axios";
 import AdminViewScheduleModal from "../module/admin-view-schedule-modal";
 import AdminAddUnavailableModal from "../module/admin-add-unavailable-modal";
+import AdminDeleteUnavailableModal from "../module/admin-delete-unavailable-modal";
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -140,6 +141,13 @@ class Admin extends React.Component {
                 });
                 this.handleHideScheduleDimmer();
             });
+        axios.post("admin/getDoctorSchedule", {doctorID: datakey})
+            .then((res)=>{
+                this.setState({
+                    editSchedule: res.data.docSched,
+                    editBreaktime: res.data.breakTime,
+                })
+            })
     }
 
     handleUpdateUnavailableTable(datakey) {
@@ -157,7 +165,6 @@ class Admin extends React.Component {
     handleUpdateModalUsername(datakey) {
         this.handleShowEditDentistDimmer();
         axios.post("admin/getUser", { doctorID: datakey }).then((res) => {
-            console.log(res);
             this.setState({ username: res.data.user.username });
             this.handleHideEditDentistDimmer();
         });
@@ -253,7 +260,7 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
-                    handleUpdateUnavailableTable={
+                    handleUpdateTable={
                         this.handleUpdateUnavailableTable
                     }
                 ></AdminAddUnavailableModal>
@@ -287,6 +294,9 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateScheduleTable}
+                    schedule={this.state.editSchedule}
+                    breaktime={this.state.editBreaktime}
                 ></AdminEditScheduleModal>
                 <AdminDeleteProcedureModal
                     handleModal={this.handleModal}
@@ -300,6 +310,12 @@ class Admin extends React.Component {
                     data={this.state.data}
                     handleUpdateTable={this.handleUpdateDentistTable}
                 ></AdminDeleteDentistModal>
+                <AdminDeleteUnavailableModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                    handleUpdateTable={this.handleUpdateUnavailableTable}
+                ></AdminDeleteUnavailableModal>
                 <AdminViewScheduleModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
