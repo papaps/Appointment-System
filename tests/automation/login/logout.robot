@@ -2,11 +2,11 @@
 Documentation     A test suite containing tests related to logout.
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
-Resource    login_resource.robot
+Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Test Cases ***
 Admin Logout
-    Set Selenium Speed  0.1
+    Set Selenium Speed  0.5
     Input Username    ${VALID ADMIN}
     Input Password    ${VALID PASSWORD}
     Submit Credentials

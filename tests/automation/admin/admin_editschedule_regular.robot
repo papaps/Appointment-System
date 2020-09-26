@@ -43,6 +43,7 @@ Edit Date Schedule
 
 Input New Schedule
     Set Selenium Speed  0.3
+    Click Element   edit-custom
     Double Click Element   edit-start
     Press Keys  None    DELETE
     Double Click Element   edit-start

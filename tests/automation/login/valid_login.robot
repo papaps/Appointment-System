@@ -3,10 +3,11 @@ Documentation     A test suite containing tests related to valid login.
 ...
 ...               This test has a workflow that is created using keywords in
 ...               the imported resource file.
-Resource    login_resource.robot
+Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Test Cases ***
 Valid Admin Login
+    Set Selenium Speed  0.5
     Open Browser To Login Page Slow
     Input Username    admin
     Input Password    1234567890

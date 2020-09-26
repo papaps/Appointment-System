@@ -14,7 +14,7 @@ View Dentist Schedule Should Be Correct
 
 *** Keywords ***
 View Dentist's Schedule
-    Set Selenium Speed  0.05
+    Set Selenium Speed  0.5
     Click Element   Daisy-Buchanan-view
 
 Schedule Table Should Be Correct

@@ -13,6 +13,7 @@ Export Appointment Data
     Export Data
 
 Check For Data File
+    Sleep   2
     Data Should Exist   Appointment.csv
     Delete Data     Appointment.csv
 

@@ -10,10 +10,11 @@ Documentation     A test suite containing tests related to invalid login.
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
 Test Setup        Go To Login Page
-Resource          login_resource.robot
+Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Test Cases ***
 Invalid Username / Both Invalid Credentials Login
+    Set Selenium Speed  0.5
     [Template]  Login With Invalid Username / Both Invalid Credentials Should Fail
     [Tags]                                      USER NAME            PASSWORD
     Invalid Admin Username                      invalid             ${VALID PASSWORD}

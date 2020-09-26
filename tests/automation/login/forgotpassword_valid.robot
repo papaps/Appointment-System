@@ -2,7 +2,7 @@
 Documentation    Suite description
 Suite Setup       Open Browser To Login Page
 Suite Teardown    Close Browser
-Resource    login_resource.robot
+Resource    ${CURDIR}${/}..\\login_resource.robot
 
 *** Variables ***
 ${NEW PASSWORD}     0123456789
@@ -48,7 +48,7 @@ Revert Dentist Password
 
 *** Keywords ***
 Forgot Password
-    Set Selenium Speed  0.3
+    Set Selenium Speed  0.5
     Click Element   forgot
 
 Input Reset Password Details

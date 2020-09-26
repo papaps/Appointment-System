@@ -48,11 +48,11 @@ Input Edit Dentist Details
     Input Text  edit-password-dentist    ${PASSWORD}
     Input Text  edit-confirm-password-dentist    ${PASSWORD}
     Click Element    edit-dentist-button
-    Set Selenium Speed  0.3
     Element Text Should Be   class:success   Dentist detail successfully edited
 
 Edited Dentist Should Exist in Table
     Set Selenium Speed  0.5
+    Sleep   1
     Table Should Contain    table   ${FIRST_NAME} ${LASTNAME}
 
 Edited Dentist Should Be Available in Creating Appointments
@@ -68,6 +68,7 @@ Edited Dentist Should Be Available in Creating Appointments
     Press Keys    None    TAB
     Press Keys    None    TAB
     Press Keys    None    TAB
+    Sleep   1
     Page Should Contain    Dr. Lily Van Der Woodsen
     Click Element   cancel-appointment
     Sleep   1
@@ -76,6 +77,7 @@ Edited Dentist Should Be Available in Creating Appointments
 Dentist Should Appear in Availability Page
     Click Element   filter-dropdown
     Press Keys    None    ARROW_DOWN
+    Sleep   1
     Page Should Contain    Dr. Lily Van Der Woodsen
 
 Dentist Should Appear in Doctor Dropdown

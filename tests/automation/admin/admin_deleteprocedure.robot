@@ -37,7 +37,7 @@ Procedure Should Not Exist in Creating Appointments
     Input Username  ${VALID SECRETARY}
     Input Password  ${VALID PASSWORD}
     Submit Credentials
-    Sleep   1
+    Sleep   2
     Click Element   add-button
     Click Element   date-done
     Press Keys    None    TAB

@@ -57,6 +57,8 @@ Dentist Should Not Exist in Creating Appointments
     Press Keys    None    TAB
     Press Keys    None    TAB
     Page Should Not Contain    Dr. Jack Skellington
+    Click Element   cancel-appointment
+    Click Element   discard
 
 Dentist Should Not Appear in Availability Page
     Click Element   filter-dropdown

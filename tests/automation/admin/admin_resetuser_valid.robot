@@ -46,7 +46,7 @@ Valid Reset Secretary Password
 
 *** Keywords ***
 Reset Admin
-    Set Selenium Speed  0.05
+    Set Selenium Speed  0.2
     Click Element   resetAdmin
     Input Text    current-password        ${CUR_ADMIN_PASS}
     Input Text    new-password            ${NEW_ADMIN_PASS}

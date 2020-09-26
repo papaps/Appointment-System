@@ -127,7 +127,7 @@ Short Regular Daily
     Input Text  end     8:00
     Click Element   add-header
     Click Element   add-schedule-button
-    Page Should Contain    Time interval is too short
+    Wait Until Page Contains    Time interval is too short
 
 Empty Custom
     Delete Regular Input
@@ -179,7 +179,7 @@ Short Custom Daily
     Input Text  end-add     10:00
     Click Element   add-header
     Click Element   add-schedule-button
-    Page Should Contain    Time interval is too short
+    Wait Until Page Contains    Time interval is too short
 
 Empty Regular Recurrence
     Delete Custom Input
@@ -204,7 +204,7 @@ Short Regular Recurrence
     Input Text  end     8:00
     Click Element   add-header
     Click Element   add-schedule-button
-    Page Should Contain    Time interval is too short
+    Wait Until Page Contains    Time interval is too short
 
 Empty Custom Recurrence
     Delete Regular Input
@@ -252,7 +252,7 @@ Short Custom Recurrence
     Input Text  end-add     10:00
     Click Element   add-header
     Click Element   add-schedule-button
-    Page Should Contain    Time interval is too short
+    Wait Until Page Contains    Time interval is too short
 
 
 

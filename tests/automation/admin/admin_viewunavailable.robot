@@ -10,6 +10,7 @@ View Dentist Unavailable Date
     Input Password  ${VALID PASSWORD}
     Submit Credentials
     Set Unavailable Date
+    Sleep   1
     View Dentist's Unavailable Schedule
     Delete Dentist's Unavailable Schedule
 
@@ -21,6 +22,8 @@ Set Unavailable Date
     Click Element   unavailable
     Click Element   add-schedule
     Sleep   1
+    Press Keys    None    ARROW_RIGHT
+    Press Keys    None    ARROW_RIGHT
     Press Keys    None    ENTER
     Sleep   1
     Press Keys    None    TAB
@@ -33,6 +36,7 @@ Set Unavailable Date
     Set Suite Variable  ${END DATE}   ${end}
     Click Element   add-unavailable-button
     Click Element   close-schedule-modal
+    Wait Until Page Does Not Contain    schedule-modal
 
 View Dentist's Unavailable Schedule
     Click Element   Daisy-Buchanan-view

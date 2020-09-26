@@ -26,7 +26,7 @@ Invalid Reset Admin Password Inputs
 
 *** Keywords ***
 Reset Secretary
-    Set Selenium Speed  0.05
+    Set Selenium Speed  0.2
     Click Element   resetSecretary
 
 Invalid Current Password Empty

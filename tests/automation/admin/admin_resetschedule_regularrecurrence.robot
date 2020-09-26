@@ -63,6 +63,7 @@ Reset Schedule Should Be in Secretary View
     Reset Schedule Should Reflect in Availablity
 
 Reset Schedule Should Reflect In Adding Appointment
+    Sleep   1
     Click Element   add-button
     ${date}=    Get Date
     Run Keyword If  '${date}'=='Sun'  Action For Add Appointment Sun

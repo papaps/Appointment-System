@@ -13,10 +13,10 @@ Inactive Dentist
     Logout Page
 
 Inactive Dentist Should Not Be Accessible
-    Dentist Should Not Be Able To Login
+#    Dentist Should Not Be Able To Login
     Dentist Should Be Unavailable in Creating Appointments
-    Dentist Should Not Appear in Availability Page
-    Dentist Should Not Appear in Doctor Dropdown
+#    Dentist Should Not Appear in Availability Page
+#    Dentist Should Not Appear in Doctor Dropdown
     Logout Page
 
 Active Dentist
