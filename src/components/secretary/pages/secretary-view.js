@@ -7,6 +7,7 @@ import axios from 'axios'
 import SecretaryHeader from "../module/secretary-header"
 import SecretaryTable from "../module/secretary-week-all"
 import DayAll from "../module/secretary-day-all"
+import SecretaryAvailable from '../module/secretary-availabilty'
 
 import { SemanticToastContainer} from 'react-semantic-toasts';
 
@@ -36,6 +37,7 @@ export default class Secretary extends Component{
         this.onChangeDate = this.onChangeDate.bind(this)
         this.handleWeekAppointmentUpdate = this.handleWeekAppointmentUpdate.bind(this)
         this.handleDayAppointmentUpdate = this.handleDayAppointmentUpdate.bind(this)
+        this.handleWeekAvailable = this.handleWeekAvailable.bind(this)
 
         this.state = {
             doctors:[],
@@ -48,10 +50,12 @@ export default class Secretary extends Component{
             endOfWeek: moment(moment().toDate()).endOf('week'),
             days:numdays,
             weekUnparsed:unparsed,
+            weekAvailable:[]
 
         }
         this.handleDayAppointmentUpdate()
         this.handleWeekAppointmentUpdate()
+        this.handleWeekAvailable()
     }
 
 
@@ -88,35 +92,59 @@ export default class Secretary extends Component{
            
     }
 
-    handleWeekAppointmentUpdate(){
-        console.log("i was called")
+    handleWeekAvailable(){
+        console.log("Updating Availability...")
         const week = {
             weeks: this.state.weekUnparsed
         }
+        console.log("Current week")
+        console.log(this.state.weekUnparsed)
+        axios.post("http://localhost:3000/secretary/availabilityAll", week).then(res=>{
+            this.setState({
+                weekAvailable: res.data.data
+            })
+            console.log("WeekAvailable Data: ")
+            console.log(res.data.data)
+        })
+        
+       
+    }
+
+
+    handleWeekAppointmentUpdate(){
+        console.log("Updating Week-all...")
+        const week = {
+            weeks: this.state.weekUnparsed
+        }
+        
         axios.post('http://localhost:3000/secretary/week_all', week).then(res =>{
-            console.log("I tried to update")
             this.setState({
                 weekAppointments: res.data.data.data
             })
+            console.log("Week-all Data: ")
             console.log(res.data.data.data)
         })
    }
 
    handleDayAppointmentUpdate(){
-       console.log("HELLO?")
+       console.log("DayUpdate")
         const day = {
             day: this.state.date
         }
         axios.post('http://localhost:3000/secretary/day_all', day).then(res =>{
+            
             this.setState({
                 dayAppointments: res.data.data.data
             })
+            console.log("Day-all Data")
+            console.log(res.data.data.data)
             
         })
-
+        
         
      
      }
+
 
    
 
@@ -142,6 +170,7 @@ export default class Secretary extends Component{
                 days:numdays,
                 weekUnparsed:unparsed
             })
+        
             
     }
 
@@ -154,12 +183,17 @@ export default class Secretary extends Component{
             });
         }else{
             this.onWeek(date)
-            
             this.setState({
                 date:date,
             })
             
         }
+    }
+    onChangeFilter=(e, {name, value})=>{
+        console.log("Selecting Filter...")
+        this.setState({
+            [name]:value
+        })
     }
 
     onChangeView=(e, {name, value})=>{
@@ -200,6 +234,15 @@ export default class Secretary extends Component{
     }
     render(){
 
+        const filter =[
+            {text:"APPOINTMENTS", key:"appointments", value:"appointments"},
+            {text:"AVAILABILITY", key:"availability", value:"availability"},
+            <Dropdown selection options={this.state.doctors} onChange={this.onChangeFilter} name='filter'>
+
+            </Dropdown>
+
+        ]
+
         const viewer=[
             {text:"DAY", key:"day", value:"day"},
             {text:"WEEK", key:"week", value:"week"}
@@ -207,6 +250,7 @@ export default class Secretary extends Component{
         let currView;
 
         if(this.state.view === 'week' && this.state.filter === 'appointments'){
+            console.log("Changing to week Appointment table...")
             currView = <SecretaryTable 
                             week={this.state.weekUnparsed}
                             appointments={this.state.weekAppointments}
@@ -222,6 +266,15 @@ export default class Secretary extends Component{
                         > 
                         </DayAll>
         }
+        else if(this.state.filter === 'availability'){
+            console.log("Changing to availability table...")
+            currView = <SecretaryAvailable
+                            week={this.state.weekUnparsed}
+                            weekAvailable={this.state.weekAvailable}
+                            handleWeekAvailable={this.handleWeekAvailable}
+                            
+                        />
+        }
         return(
             <>
                 <SemanticToastContainer position='top-center'></SemanticToastContainer>
@@ -236,8 +289,10 @@ export default class Secretary extends Component{
                         onChangeView={this.onChangeView}
                         date={this.state.date}
                         filter={this.state.filter}
+                        filters={filter}
                         viewer={viewer}
                         doctors={this.state.doctors}
+                        onChangeFilter={this.onChangeFilter}
                     />
                 }
                     style={{height: 65+'px'}}/>
@@ -251,6 +306,8 @@ export default class Secretary extends Component{
                     weekLength={this.state.days.length}
                     handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
                     handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                    handleWeekAvailable={this.handleWeekAvailable}
+
                 >
 
                 </SecretaryHeader>

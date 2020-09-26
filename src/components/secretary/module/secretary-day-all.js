@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Tab, Table} from 'semantic-ui-react';
 import AppointmentCard from './secretary-edit-appointment-modal-day-all'
 import moment from 'moment'
+import '../secretary_css/secretary-view.css'    
 
 class day_all extends Component{
 

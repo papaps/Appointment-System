@@ -42,6 +42,10 @@ class week_all extends Component{
         }
     }
     render(){
+        console.log("prop: ")
+        console.log(this.props.week)
+        console.log("state: ")
+        console.log(this.state.weeks)
        return(
             <>
                 <Table id="table-header-title" compact>
