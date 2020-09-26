@@ -96,7 +96,7 @@ class AdminViewScheduleModal extends React.Component {
             if (schedule != null) {
                 schedule_table = (
                     <>
-                        {schedule.map(({ key, name, time }) => (
+                        {schedule.map(({ name, time }) => (
                             <Table.Row>
                                 <Table.Cell
                                     style={{
