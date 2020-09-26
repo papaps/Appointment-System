@@ -95,6 +95,7 @@ export default class SecretaryHeader extends Component{
                             <AddAppointment
                                 handleWeekAppointmentUpdate={this.props.handleWeekAppointmentUpdate}
                                 handleDayAppointmentUpdate={this.props.handleDayAppointmentUpdate}
+                                handleWeekAvailable={this.props.handleWeekAvailable}
                             >
                                 
                             </AddAppointment>

@@ -24,6 +24,7 @@ import AdminDeleteDentistModal from "../module/admin-delete-dentist-modal";
 import AdminEditScheduleModal from "../module/admin-edit-schedule-modal";
 import axios from "axios";
 import AdminViewScheduleModal from "../module/admin-view-schedule-modal";
+import AdminAddUnavailableModal from "../module/admin-add-unavailable-modal";
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +41,9 @@ class Admin extends React.Component {
         this.handleUpdateScheduleTable = this.handleUpdateScheduleTable.bind(
             this
         );
-        this.handleUpdateUnavailableTable = this.handleUpdateUnavailableTable.bind(this)
+        this.handleUpdateUnavailableTable = this.handleUpdateUnavailableTable.bind(
+            this
+        );
         this.handleShowDimmer = this.handleShowDimmer.bind(this);
         this.handleHideDimmer = this.handleHideDimmer.bind(this);
         this.state = {
@@ -66,10 +69,16 @@ class Admin extends React.Component {
     }
 
     handleModal(name, data) {
-        this.setState({
-            activeModal: name,
-            data: data,
-        });
+        if (data != undefined) {
+            this.setState({
+                activeModal: name,
+                data: data,
+            });
+        } else {
+            this.setState({
+                activeModal: name,
+            });
+        }
     }
 
     handleTable(name) {
@@ -218,6 +227,14 @@ class Admin extends React.Component {
                     activeModal={this.state.activeModal}
                     handleUpdateTable={this.handleUpdateProcedureTable}
                 ></AdminAddProcedureModal>
+                <AdminAddUnavailableModal
+                    handleModal={this.handleModal}
+                    activeModal={this.state.activeModal}
+                    data={this.state.data}
+                    handleUpdateUnavailableTable={
+                        this.handleUpdateUnavailableTable
+                    }
+                ></AdminAddUnavailableModal>
                 <AdminResetSecretaryModal
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}

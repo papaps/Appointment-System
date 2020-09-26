@@ -283,7 +283,7 @@ class AdminCreateScheduleModal extends React.Component {
                     type: "error",
                     title: "Error",
                     description: (
-                        <p>Please choose a specific day of reccurence</p>
+                        <p>Please choose a specific day of recurrence</p>
                     ),
                     icon: "cancel",
                 });
@@ -373,7 +373,7 @@ class AdminCreateScheduleModal extends React.Component {
             repeat: !prevState.repeat,
             disabled: disabled,
         }));
-    }
+    };
 
     handleDaily = () => {
         let disabled = this.state.disabled;
@@ -382,11 +382,11 @@ class AdminCreateScheduleModal extends React.Component {
             daily: !prevState.daily,
             disabled: disabled,
         }));
-    }
+    };
 
-    handleCustom = () =>{
+    handleCustom = () => {
         this.setState((prevState) => ({ custom: !prevState.custom }));
-    }
+    };
 
     handleDays = (e, { name }) => {
         let days = this.state.days;
