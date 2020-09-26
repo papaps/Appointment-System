@@ -366,16 +366,27 @@ class AdminCreateScheduleModal extends React.Component {
         this.setState({ end: time });
     }
 
-    handleCheckbox = (e, { name }) => {
-        this.setState({ [name]: e.target.checked });
+    handleRepeat = () => {
         let disabled = this.state.disabled;
-        if (name == "daily") {
-            disabled["repeat"] = !this.state.disabled["repeat"];
-        } else if (name == "repeat") {
-            disabled["daily"] = !this.state.disabled["daily"];
-        }
-        this.setState({ disabled: disabled });
-    };
+        disabled["daily"] = !this.state.disabled["daily"];
+        this.setState((prevState) => ({
+            repeat: !prevState.repeat,
+            disabled: disabled,
+        }));
+    }
+
+    handleDaily = () => {
+        let disabled = this.state.disabled;
+        disabled["repeat"] = !this.state.disabled["repeat"];
+        this.setState((prevState) => ({
+            daily: !prevState.daily,
+            disabled: disabled,
+        }));
+    }
+
+    handleCustom = () =>{
+        this.setState((prevState) => ({ custom: !prevState.custom }));
+    }
 
     handleDays = (e, { name }) => {
         let days = this.state.days;
@@ -635,29 +646,50 @@ class AdminCreateScheduleModal extends React.Component {
                             <Checkbox
                                 disabled={this.state.disabled.daily}
                                 style={checkbox_style}
-                                id="daily"
-                                label="Repeat Daily"
+                                label={(checked) => (
+                                    <label
+                                        id="daily"
+                                        htmlFor="daily"
+                                        checked={checked}
+                                    >
+                                        Repeat Daily
+                                    </label>
+                                )}
                                 name="daily"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleDaily}
                                 checked={this.state.daily}
                             ></Checkbox>
                             <Checkbox
                                 disabled={this.state.disabled.repeat}
                                 style={checkbox_style}
-                                id="repeat"
-                                label="Customized Recurrence"
+                                label={(checked) => (
+                                    <label
+                                        id="repeat"
+                                        htmlFor="repeat"
+                                        checked={checked}
+                                    >
+                                        Customized Recurrence
+                                    </label>
+                                )}
                                 name="repeat"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleRepeat}
                                 checked={this.state.repeat}
                             ></Checkbox>
                         </Grid>
                         <Grid centered columns={1}>
                             <Checkbox
                                 style={checkbox_style}
-                                id="custom"
-                                label="Customized Working Hours"
+                                label={(checked) => (
+                                    <label
+                                        id="custom"
+                                        htmlFor="custom"
+                                        checked={checked}
+                                    >
+                                        Customized Working Hours
+                                    </label>
+                                )}
                                 name="custom"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleCustom}
                                 checked={this.state.custom}
                             ></Checkbox>
                         </Grid>
