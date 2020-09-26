@@ -127,8 +127,7 @@ class AdminViewScheduleModal extends React.Component {
                                         name="edit"
                                         id={name.toString() + "-edit"}
                                         size="large"
-                                        key={key}
-                                        day_name={name}
+                                        onClick={()=>this.props.handleModal("admin-edit-schedule", {firstname, lastname, doctorID, name})}
                                     ></Icon>
                                 </Table.Cell>
                             </Table.Row>

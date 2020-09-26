@@ -141,6 +141,13 @@ class Admin extends React.Component {
                 });
                 this.handleHideScheduleDimmer();
             });
+        axios.post("admin/getDoctorSchedule", {doctorID: datakey})
+            .then((res)=>{
+                this.setState({
+                    editSchedule: res.data.docSched,
+                    editBreaktime: res.data.breakTime,
+                })
+            })
     }
 
     handleUpdateUnavailableTable(datakey) {
@@ -287,6 +294,9 @@ class Admin extends React.Component {
                     handleModal={this.handleModal}
                     activeModal={this.state.activeModal}
                     data={this.state.data}
+                    handleUpdateTable={this.handleUpdateScheduleTable}
+                    schedule={this.state.editSchedule}
+                    breaktime={this.state.editBreaktime}
                 ></AdminEditScheduleModal>
                 <AdminDeleteProcedureModal
                     handleModal={this.handleModal}
