@@ -156,14 +156,14 @@ class addProcStep2 extends Component {
                             error={values.error.doctors}
                             onChange={handleDoctorChange}
                             placeholder='Doctor/s'
-                            autoComplete="false"
+                            
                             options={this.state.doctors}
                             defaultValue={this.state.currentDocs}
                             selection fluid multiple
                             id= "processDropDoctor"
                             />  
                         }
-                        content="Must have at least 1 procedure"
+                        content="Must have at least 1 doctor"
                         position="right center"
                     />
                 </Form.Field>
