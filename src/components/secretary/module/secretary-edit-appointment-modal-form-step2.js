@@ -163,7 +163,7 @@ class addProcStep2 extends Component {
                             id= "processDropDoctor"
                             />  
                         }
-                        content="Must have at least 1 procedure"
+                        content="Must have at least 1 doctor"
                         position="right center"
                     />
                 </Form.Field>

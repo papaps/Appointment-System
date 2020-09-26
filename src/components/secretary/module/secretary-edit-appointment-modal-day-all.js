@@ -59,6 +59,8 @@ export default class EditModal extends Component {
     componentDidMount(){
       //Changes back the procedures and doctors to IDs rather than objects
       this.setState({
+        docs: this.state.doctors,
+        procs: this.state.procedures,
         procedures:[
           this.state.procedures.map(procedure=>{
             return procedure._id
@@ -126,13 +128,16 @@ export default class EditModal extends Component {
       let firstname = this.state.firstname.trim();
       let lastname = this.state.lastname.trim();
       let patientcontact = this.state.patientcontact.trim();
-      let procedures = this.state.procedures;
+      let procedures = this.state.procedures.filter(function(el){return el;});
       let date = this.state.date;
       let time = this.state.time;
-      let doctors = this.state.doctors;
+      let doctors = this.state.doctors.filter(function(el){return el;});
 
       let error = this.state.error;
       let formIsValid = true;
+
+      console.log("Procedures num: "+procedures.toString())
+      console.log("Doctors num: "+doctors.toString())
 
       if(moment(moment(time, "h:mm A").toDate()).isBefore(moment().toDate()) && moment(date).isSame(moment().toDate(), 'day')){
           error['time']= true;
@@ -195,7 +200,7 @@ export default class EditModal extends Component {
         formIsValid = false;
       }
 
-      if(procedures.length < 1 || procedures === undefined){
+      if(procedures.length < 1 || procedures === null){
         error['procedures']= true;
         toast({
           type: "error",
@@ -206,7 +211,7 @@ export default class EditModal extends Component {
         formIsValid = false;
       }
 
-      if(doctors.length < 1 || doctors === undefined){
+      if(doctors.length < 1 || doctors === null){
         error['doctors']= true;
         toast({
           type: "error",
@@ -217,41 +222,40 @@ export default class EditModal extends Component {
         formIsValid = false;
       }
 
-      if(formIsValid){
+      
       
         return formIsValid
 
-      }
 
     } 
 
-    // handleChangeInEdit=()=>{
-    //   this.setState({
-    //     procedures:[
-    //       this.props.appointment.process.map(procedure=>{
-    //         return procedure._id
-    //       })
-    //     ],
-    //     doctors:[
-    //       this.props.appointment.doctor.map(doctor=>{
-    //         return doctor._id
-    //       })
-    //     ],
-    //     currentProcs:[
-    //         this.props.appointment.process.map(procedure=>{
-    //             return procedure.processname
-    //           })
-    //     ],
-    //     currentDocs:[
-    //         this.props.appointment.doctor.map(doctor=>{
-    //             return  "Dr. "+ doctor.lastname
-    //           })
-    //     ],
-    //     procs: this.props.appointment.process,
-    //     docs: this.props.appointment.doctor
+    handleChangeInEdit=()=>{
+      this.setState({
+        procedures:[
+          this.props.appointment.process.map(procedure=>{
+            return procedure._id
+          })
+        ],
+        doctors:[
+          this.props.appointment.doctor.map(doctor=>{
+            return doctor._id
+          })
+        ],
+        currentProcs:[
+            this.props.appointment.process.map(procedure=>{
+                return procedure.processname
+              })
+        ],
+        currentDocs:[
+            this.props.appointment.doctor.map(doctor=>{
+                return  "Dr. "+ doctor.lastname
+              })
+        ],
+        procs: this.props.appointment.process,
+        docs: this.props.appointment.doctor
 
-    //   })
-    // }
+      })
+    }
 
 
     //function for opening and closing the modal
@@ -504,9 +508,9 @@ export default class EditModal extends Component {
                             {this.props.appointment.firstname+" "+this.props.appointment.lastname}
                         </Card.Header>
                         <Card.Content>
-                            <text className="secretary-card-day-content">🦷: {this.state.currentProcs.join(", ")}</text><br/>
-                            <text className="secretary-card-day-content">📱: {patientcontact}</text><br/>
-                            <text className="secretary-card-day-content">👨‍⚕️: {this.state.currentDocs.join(", ")}</text>
+                            <p className="secretary-card-day-content">🦷: {this.state.currentProcs.join(", ")}</p><br/>
+                            <p className="secretary-card-day-content">📱: {patientcontact}</p><br/>
+                            <p className="secretary-card-day-content">👨‍⚕️: {this.state.currentDocs.join(", ")}</p>
                         </Card.Content>
                     </Card>
                 }
