@@ -181,6 +181,7 @@ class AdminCreateScheduleModal extends React.Component {
         };
         let empty_time = false;
         let too_short = false;
+        let invalid_time_interval = false;
         let invalid_time = false;
 
         if (!(daily || repeat)) {
@@ -197,11 +198,19 @@ class AdminCreateScheduleModal extends React.Component {
             error["start"] = true;
             empty_time = true;
             formIsValid = false;
+        } else if (!(start.getMinutes() == 30 || start.getMinutes() == 0)) {
+            error["start"] = true;
+            invalid_time = true;
+            formIsValid = false;
         }
 
         if (end === null) {
             error["end"] = true;
             empty_time = true;
+            formIsValid = false;
+        } else if (!(end.getMinutes() == 30 || end.getMinutes() == 0)) {
+            error["end"] = true;
+            invalid_time = true;
             formIsValid = false;
         }
         if (start != null && end != null && start === end) {
@@ -212,7 +221,7 @@ class AdminCreateScheduleModal extends React.Component {
         } else if (start != null && end != null && !(start < end)) {
             error["start"] = true;
             error["end"] = true;
-            invalid_time = true;
+            invalid_time_interval = true;
             formIsValid = false;
         }
 
@@ -221,10 +230,22 @@ class AdminCreateScheduleModal extends React.Component {
                 error["start_add"] = true;
                 empty_time = true;
                 formIsValid = false;
+            } else if (
+                !(start_add.getMinutes() == 30 || start_add.getMinutes() == 0)
+            ) {
+                error["start_add"] = true;
+                invalid_time = true;
+                formIsValid = false;
             }
             if (end_add === null) {
                 error["end_add"] = true;
                 empty_time = true;
+                formIsValid = false;
+            } else if (
+                !(end_add.getMinutes() == 30 || end_add.getMinutes() == 0)
+            ) {
+                error["end_add"] = true;
+                invalid_time = true;
                 formIsValid = false;
             }
             if (
@@ -245,7 +266,7 @@ class AdminCreateScheduleModal extends React.Component {
                 error["end"] = true;
                 error["start_add"] = true;
                 error["end_add"] = true;
-                invalid_time = true;
+                invalid_time_interval = true;
                 formIsValid = false;
             }
         }
@@ -288,11 +309,20 @@ class AdminCreateScheduleModal extends React.Component {
             });
         }
 
-        if (invalid_time) {
+        if (invalid_time_interval) {
             toast({
                 type: "error",
                 title: "Error",
                 description: <p>Invalid time interval</p>,
+                icon: "cancel",
+            });
+        }
+
+        if (invalid_time) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Invalid time</p>,
                 icon: "cancel",
             });
         }
@@ -304,15 +334,15 @@ class AdminCreateScheduleModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-create-schedule");
 
-    handleClose(datakey, firstname, lastname){
+    handleClose(datakey, firstname, lastname) {
         this.props.handleModal("admin-view-schedule", {
             key: datakey,
             firstname,
             lastname,
         });
         this.props.handleUpdateScheduleTable(datakey);
-        this.resetState()
-    };
+        this.resetState();
+    }
 
     handleModal(name) {
         this.props.handleModal(name);
@@ -411,12 +441,12 @@ class AdminCreateScheduleModal extends React.Component {
                                 minTime={minTime}
                                 maxTime={maxTime}
                                 onChange={(time) => this.handleStartAdd(time)}
+                                id="start-add"
                                 customInput={
                                     <Input
                                         icon="time"
                                         iconPosition="left"
                                         placeholder="Start Time"
-                                        id="start-add"
                                         autoComplete="false"
                                         name="start-add"
                                         required
@@ -446,12 +476,12 @@ class AdminCreateScheduleModal extends React.Component {
                                 minTime={minTime}
                                 maxTime={maxTime}
                                 onChange={(time) => this.handleEndAdd(time)}
+                                id="end-add"
                                 customInput={
                                     <Input
                                         icon="time"
                                         iconPosition="left"
                                         placeholder="End Time"
-                                        id="end-add"
                                         autoComplete="false"
                                         name="end-add"
                                         required
@@ -570,7 +600,9 @@ class AdminCreateScheduleModal extends React.Component {
                 >
                     <Icon
                         name="close"
-                        onClick={() => this.handleClose(key, firstname, lastname)}
+                        onClick={() =>
+                            this.handleClose(key, firstname, lastname)
+                        }
                         id="close-adding-schedule-modal"
                     ></Icon>
                     <Modal.Header as="h2">
@@ -663,12 +695,12 @@ class AdminCreateScheduleModal extends React.Component {
                                     minTime={minTime}
                                     maxTime={maxTime}
                                     onChange={(time) => this.handleStart(time)}
+                                    id="start"
                                     customInput={
                                         <Input
                                             icon="time"
                                             iconPosition="left"
                                             placeholder="Start Time"
-                                            id="start"
                                             autoComplete="false"
                                             name="start"
                                             required
@@ -698,12 +730,12 @@ class AdminCreateScheduleModal extends React.Component {
                                     minTime={minTime}
                                     maxTime={maxTime}
                                     onChange={(time) => this.handleEnd(time)}
+                                    id="end"
                                     customInput={
                                         <Input
                                             icon="time"
                                             iconPosition="left"
                                             placeholder="End Time"
-                                            id="end"
                                             autoComplete="false"
                                             name="end"
                                             required
