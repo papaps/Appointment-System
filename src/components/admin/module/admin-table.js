@@ -20,6 +20,9 @@ class AdminTable extends React.Component {
                     handleUpdateUnavailableTable={
                         this.props.handleUpdateUnavailableTable
                     }
+                    handleUpdateModalUsername={
+                        this.props.handleUpdateModalUsername
+                    }
                 ></AdminDentistTable>
             );
         } else if (activeTable === "Procedure") {

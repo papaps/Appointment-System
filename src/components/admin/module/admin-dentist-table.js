@@ -139,12 +139,15 @@ class AdminDentistTable extends React.Component {
                                             "-edit"
                                         }
                                         size="large"
-                                        onClick={() =>
+                                        onClick={() => {
+                                            this.props.handleUpdateModalUsername(
+                                                key
+                                            );
                                             this.handleModal(
                                                 "admin-edit-dentist",
                                                 { key, firstname, lastname }
-                                            )
-                                        }
+                                            );
+                                        }}
                                     ></Icon>
                                     <Icon
                                         name="trash"
