@@ -181,6 +181,7 @@ class AdminCreateScheduleModal extends React.Component {
         };
         let empty_time = false;
         let too_short = false;
+        let invalid_time_interval = false;
         let invalid_time = false;
 
         if (!(daily || repeat)) {
@@ -197,11 +198,19 @@ class AdminCreateScheduleModal extends React.Component {
             error["start"] = true;
             empty_time = true;
             formIsValid = false;
+        } else if (!(start.getMinutes() == 30 || start.getMinutes() == 0)) {
+            error["start"] = true;
+            invalid_time = true;
+            formIsValid = false;
         }
 
         if (end === null) {
             error["end"] = true;
             empty_time = true;
+            formIsValid = false;
+        } else if (!(end.getMinutes() == 30 || end.getMinutes() == 0)) {
+            error["end"] = true;
+            invalid_time = true;
             formIsValid = false;
         }
         if (start != null && end != null && start === end) {
@@ -212,7 +221,7 @@ class AdminCreateScheduleModal extends React.Component {
         } else if (start != null && end != null && !(start < end)) {
             error["start"] = true;
             error["end"] = true;
-            invalid_time = true;
+            invalid_time_interval = true;
             formIsValid = false;
         }
 
@@ -221,10 +230,22 @@ class AdminCreateScheduleModal extends React.Component {
                 error["start_add"] = true;
                 empty_time = true;
                 formIsValid = false;
+            } else if (
+                !(start_add.getMinutes() == 30 || start_add.getMinutes() == 0)
+            ) {
+                error["start_add"] = true;
+                invalid_time = true;
+                formIsValid = false;
             }
             if (end_add === null) {
                 error["end_add"] = true;
                 empty_time = true;
+                formIsValid = false;
+            } else if (
+                !(end_add.getMinutes() == 30 || end_add.getMinutes() == 0)
+            ) {
+                error["end_add"] = true;
+                invalid_time = true;
                 formIsValid = false;
             }
             if (
@@ -245,7 +266,7 @@ class AdminCreateScheduleModal extends React.Component {
                 error["end"] = true;
                 error["start_add"] = true;
                 error["end_add"] = true;
-                invalid_time = true;
+                invalid_time_interval = true;
                 formIsValid = false;
             }
         }
@@ -262,7 +283,7 @@ class AdminCreateScheduleModal extends React.Component {
                     type: "error",
                     title: "Error",
                     description: (
-                        <p>Please choose a specific day of reccurence</p>
+                        <p>Please choose a specific day of recurrence</p>
                     ),
                     icon: "cancel",
                 });
@@ -288,11 +309,20 @@ class AdminCreateScheduleModal extends React.Component {
             });
         }
 
-        if (invalid_time) {
+        if (invalid_time_interval) {
             toast({
                 type: "error",
                 title: "Error",
                 description: <p>Invalid time interval</p>,
+                icon: "cancel",
+            });
+        }
+
+        if (invalid_time) {
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Invalid time</p>,
                 icon: "cancel",
             });
         }
@@ -304,15 +334,15 @@ class AdminCreateScheduleModal extends React.Component {
 
     handleOpen = () => this.props.handleModal("admin-create-schedule");
 
-    handleClose(datakey, firstname, lastname){
+    handleClose(datakey, firstname, lastname) {
         this.props.handleModal("admin-view-schedule", {
             key: datakey,
             firstname,
             lastname,
         });
         this.props.handleUpdateScheduleTable(datakey);
-        this.resetState()
-    };
+        this.resetState();
+    }
 
     handleModal(name) {
         this.props.handleModal(name);
@@ -336,15 +366,26 @@ class AdminCreateScheduleModal extends React.Component {
         this.setState({ end: time });
     }
 
-    handleCheckbox = (e, { name }) => {
-        this.setState({ [name]: e.target.checked });
+    handleRepeat = () => {
         let disabled = this.state.disabled;
-        if (name == "daily") {
-            disabled["repeat"] = !this.state.disabled["repeat"];
-        } else if (name == "repeat") {
-            disabled["daily"] = !this.state.disabled["daily"];
-        }
-        this.setState({ disabled: disabled });
+        disabled["daily"] = !this.state.disabled["daily"];
+        this.setState((prevState) => ({
+            repeat: !prevState.repeat,
+            disabled: disabled,
+        }));
+    };
+
+    handleDaily = () => {
+        let disabled = this.state.disabled;
+        disabled["repeat"] = !this.state.disabled["repeat"];
+        this.setState((prevState) => ({
+            daily: !prevState.daily,
+            disabled: disabled,
+        }));
+    };
+
+    handleCustom = () => {
+        this.setState((prevState) => ({ custom: !prevState.custom }));
     };
 
     handleDays = (e, { name }) => {
@@ -411,12 +452,12 @@ class AdminCreateScheduleModal extends React.Component {
                                 minTime={minTime}
                                 maxTime={maxTime}
                                 onChange={(time) => this.handleStartAdd(time)}
+                                id="start-add"
                                 customInput={
                                     <Input
                                         icon="time"
                                         iconPosition="left"
                                         placeholder="Start Time"
-                                        id="start-add"
                                         autoComplete="false"
                                         name="start-add"
                                         required
@@ -446,12 +487,12 @@ class AdminCreateScheduleModal extends React.Component {
                                 minTime={minTime}
                                 maxTime={maxTime}
                                 onChange={(time) => this.handleEndAdd(time)}
+                                id="end-add"
                                 customInput={
                                     <Input
                                         icon="time"
                                         iconPosition="left"
                                         placeholder="End Time"
-                                        id="end-add"
                                         autoComplete="false"
                                         name="end-add"
                                         required
@@ -570,7 +611,9 @@ class AdminCreateScheduleModal extends React.Component {
                 >
                     <Icon
                         name="close"
-                        onClick={() => this.handleClose(key, firstname, lastname)}
+                        onClick={() =>
+                            this.handleClose(key, firstname, lastname)
+                        }
                         id="close-adding-schedule-modal"
                     ></Icon>
                     <Modal.Header as="h2">
@@ -603,29 +646,50 @@ class AdminCreateScheduleModal extends React.Component {
                             <Checkbox
                                 disabled={this.state.disabled.daily}
                                 style={checkbox_style}
-                                id="daily"
-                                label="Repeat Daily"
+                                label={(checked) => (
+                                    <label
+                                        id="daily"
+                                        htmlFor="daily"
+                                        checked={checked}
+                                    >
+                                        Repeat Daily
+                                    </label>
+                                )}
                                 name="daily"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleDaily}
                                 checked={this.state.daily}
                             ></Checkbox>
                             <Checkbox
                                 disabled={this.state.disabled.repeat}
                                 style={checkbox_style}
-                                id="repeat"
-                                label="Customized Recurrence"
+                                label={(checked) => (
+                                    <label
+                                        id="repeat"
+                                        htmlFor="repeat"
+                                        checked={checked}
+                                    >
+                                        Customized Recurrence
+                                    </label>
+                                )}
                                 name="repeat"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleRepeat}
                                 checked={this.state.repeat}
                             ></Checkbox>
                         </Grid>
                         <Grid centered columns={1}>
                             <Checkbox
                                 style={checkbox_style}
-                                id="custom"
-                                label="Customized Working Hours"
+                                label={(checked) => (
+                                    <label
+                                        id="custom"
+                                        htmlFor="custom"
+                                        checked={checked}
+                                    >
+                                        Customized Working Hours
+                                    </label>
+                                )}
                                 name="custom"
-                                onChange={this.handleCheckbox}
+                                onChange={this.handleCustom}
                                 checked={this.state.custom}
                             ></Checkbox>
                         </Grid>
@@ -663,12 +727,12 @@ class AdminCreateScheduleModal extends React.Component {
                                     minTime={minTime}
                                     maxTime={maxTime}
                                     onChange={(time) => this.handleStart(time)}
+                                    id="start"
                                     customInput={
                                         <Input
                                             icon="time"
                                             iconPosition="left"
                                             placeholder="Start Time"
-                                            id="start"
                                             autoComplete="false"
                                             name="start"
                                             required
@@ -698,12 +762,12 @@ class AdminCreateScheduleModal extends React.Component {
                                     minTime={minTime}
                                     maxTime={maxTime}
                                     onChange={(time) => this.handleEnd(time)}
+                                    id="end"
                                     customInput={
                                         <Input
                                             icon="time"
                                             iconPosition="left"
                                             placeholder="End Time"
-                                            id="end"
                                             autoComplete="false"
                                             name="end"
                                             required
