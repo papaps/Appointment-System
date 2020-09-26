@@ -158,7 +158,7 @@ router.post("/week_all", urlencoder, async function (request, response) {
 });
 //returns a table/view of one week including the current date
 router.post("/week_one", urlencoder, async function (request, result) {
-    let weekData = request.body["dates[]"];
+    let weekData = request.body.weeks;
     let doctorID = request.body.doctor;
 
     //Convert data to MMM D YYYY
@@ -1166,7 +1166,7 @@ router.post("/info4", urlencoder, async function (request, result) {
 router.post("/availabilityTime", urlencoder, async (req, res) => {
     let date = req.body.date
     let doctorID = req.body.doctorID
-    let availability_modalhbs = fs.readFileSync('./views/module_templates/secretary_availability_modal.hbs', 'utf-8');
+    
 
     var slots1Military = ["8:00", "8:30",
         "9:00", "9:30",
@@ -1264,7 +1264,6 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
     
 
     res.send({
-        htmlData: availability_modalhbs,
         data: final
     })
 

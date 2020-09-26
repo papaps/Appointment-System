@@ -8,6 +8,7 @@ import SecretaryHeader from "../module/secretary-header"
 import SecretaryTable from "../module/secretary-week-all"
 import DayAll from "../module/secretary-day-all"
 import SecretaryAvailable from '../module/secretary-availabilty'
+import SecretaryWeekDoc from "../module/secretary-week-all-one-doc"
 
 import { SemanticToastContainer} from 'react-semantic-toasts';
 
@@ -44,6 +45,7 @@ export default class Secretary extends Component{
         this.handleWeekAppointmentUpdate = this.handleWeekAppointmentUpdate.bind(this)
         this.handleDayAppointmentUpdate = this.handleDayAppointmentUpdate.bind(this)
         this.handleWeekAvailable = this.handleWeekAvailable.bind(this)
+        this.handleDocWeekAppointmentUpdate = this.handleDocWeekAppointmentUpdate.bind(this)
         this.handleShowDimmer = this.handleShowDimmer.bind(this)
         this.handleHideDimmer = this.handleHideDimmer.bind(this)
 
@@ -60,11 +62,14 @@ export default class Secretary extends Component{
             weekUnparsed:unparsed,
             weekAvailable:[],
             activeDimmer: false,
+            weekAppointmentsDoc:[],
+            dayAppointmentsDoc:[]
 
         }
         this.handleDayAppointmentUpdate()
         this.handleWeekAppointmentUpdate()
         this.handleWeekAvailable()
+        this.handleDocWeekAppointmentUpdate()
     }
 
     handleShowDimmer = () => this.setState({activeDimmer: true});
@@ -159,11 +164,27 @@ export default class Secretary extends Component{
             console.log(res.data.data.data)
             this.handleHideDimmer()
         })
-        
-        
-        
-     
+
      }
+
+    handleDocWeekAppointmentUpdate(){
+        console.log("Week Doctor Update")
+       this.handleShowDimmer();
+        const data = {
+            weeks: this.state.weekUnparsed,
+            doctor: this.state.filter
+        }
+        axios.post('http://localhost:3000/secretary/week_one', data).then(res =>{
+            
+            this.setState({
+                weekAppointmentsDoc: res.data.data.data
+            })
+            console.log("Week-all-Doc Data: ")
+            console.log(res.data.data.data)
+            this.handleHideDimmer()
+        })
+
+    }
 
 
    
@@ -258,12 +279,10 @@ export default class Secretary extends Component{
         const filter =[
             {text:"APPOINTMENTS", key:"appointments", value:"appointments"},
             {text:"AVAILABILITY", key:"availability", value:"availability"},
-            <Dropdown selection options={this.state.doctors} onChange={this.onChangeFilter} name='filter'>
-
-            </Dropdown>
-
         ]
-
+        this.state.doctors.map(doc=>{
+            filter.push(doc)
+        })
         const viewer=[
             {text:"DAY", key:"day", value:"day"},
             {text:"WEEK", key:"week", value:"week"}
@@ -293,14 +312,30 @@ export default class Secretary extends Component{
         }
         else if(this.state.filter === 'availability'){
             console.log("Changing to availability table...")
+            
             currView = <SecretaryAvailable
                             week={this.state.weekUnparsed}
                             weekAvailable={this.state.weekAvailable}
                             handleWeekAvailable={this.handleWeekAvailable}
+                            handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                            handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
                             handleShowDimmer={this.handleShowDimmer}
                             handleHideDimmer={this.handleHideDimmer}
                             
                         />
+        }
+        else{
+            console.log("Changing to doctor view...")
+            if(this.state.filter !== 'appointments' && this.state.filter !== 'availability' && this.state.view === 'week'){
+                currView =<SecretaryWeekDoc
+                            week={this.state.weekUnparsed}
+                            appointments={this.state.weekAppointmentsDoc}
+                            handleDocWeekAppointmentUpdate={this.handleDocWeekAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
+                            doc={this.state.filter}
+                        />
+            }
         }
         return(
             <>

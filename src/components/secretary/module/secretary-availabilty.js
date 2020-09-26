@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
-import {Modal, Form, Button, Icon, Card, Table, Tab} from 'semantic-ui-react'
+import {Modal, Form, Button, Icon, Card, Table, Tab, Dimmer} from 'semantic-ui-react'
 import axios from 'axios'
 import { SemanticToastContainer, toast } from 'react-semantic-toasts';
 import 'react-semantic-toasts/styles/react-semantic-alert.css';
@@ -44,23 +44,30 @@ class SecretaryAvailability extends Component{
                 <Table id="week-available" compact celled fixed textAlign='center'>
                     <Table.Body>
                         {
-                            this.props.weekAvailable.doctors.map(({availability, firstname, lastname}, index)=>{
+                            this.props.weekAvailable.doctors.map(({availability, firstname, lastname, _id}, index)=>{
                                 return(
                                     <Table.Row key={index}>
                                         <Table.Cell id='week-availability-time-cell'>{firstname}, {lastname}</Table.Cell>
                                         {
                                             availability.map((available)=>{
-                                                if(available[1]=='past' || moment(available[0]).days() == 0){
+                                                if(available[1]=='unavailable' || moment(available[0]).days() == 0 || available[1]=='past'){
                                                     let backgroundColor ='grey'
                                                     return(
                                                         <Table.Cell id="secretary-available-table-cell" style={{backgroundColor}}>
                                                         </Table.Cell>
                                                     )
                                                 }else{
+
                                                     
                                                     return(
-                                                        
-                                                            <SecretaryAvailabilityModal />
+                                                            
+                                                            <SecretaryAvailabilityModal doctorID = {_id} appDate = {available[0]}
+                                                                handleShowDimmer = {this.props.handleShowDimmer}
+                                                                handleHideDimmer = {this.props.handleHideDimmer}
+                                                                handleWeekAvailable={this.props.handleWeekAvailable}
+                                                                handleDayAppointmentUpdate={this.props.handleDayAppointmentUpdate}
+                                                                handleWeekAppointmentUpdate={this.props.handleWeekAppointmentUpdate}
+                                                            />
                                                         
                                                     )
                                                 }
