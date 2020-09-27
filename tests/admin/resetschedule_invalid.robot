@@ -2,7 +2,6 @@
 Documentation    Suite description
 Suite Setup       Open Admin Browser
 Suite Teardown    Close Browser
-Library     ImageHorizonLibrary
 Resource    ${CURDIR}${/}..\\browser_resource.robot
 
 *** Variables ***
