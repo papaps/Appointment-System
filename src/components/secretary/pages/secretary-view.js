@@ -1,18 +1,26 @@
 import React, {Component} from 'react';
 import Navbar from "../module/secretary-navigationbar"
 import AddAppointment from "../module/secretary-add-appointment-modal"
-import {Grid, Header, Dropdown} from "semantic-ui-react"
+import {Grid, Header, Dropdown, Dimmer} from "semantic-ui-react"
 import moment from 'moment'
 import axios from 'axios'
 import SecretaryHeader from "../module/secretary-header"
 import SecretaryTable from "../module/secretary-week-all"
 import DayAll from "../module/secretary-day-all"
 import SecretaryAvailable from '../module/secretary-availabilty'
+import SecretaryWeekDoc from "../module/secretary-week-all-one-doc"
+import SecretaryDayDoc from "../module/secretary-day-all-one-doc"
 
 import { SemanticToastContainer} from 'react-semantic-toasts';
 
 /*CSS FILES*/
 import '../secretary_css/secretary-view.css'
+import 'semantic-ui-css/components/reset.min.css';
+import 'semantic-ui-css/components/site.min.css';
+import 'semantic-ui-css/components/container.min.css';
+import 'semantic-ui-css/components/icon.min.css';
+import 'semantic-ui-css/components/message.min.css';
+import 'semantic-ui-css/components/header.min.css';
 
 export default class Secretary extends Component{
 
@@ -38,6 +46,10 @@ export default class Secretary extends Component{
         this.handleWeekAppointmentUpdate = this.handleWeekAppointmentUpdate.bind(this)
         this.handleDayAppointmentUpdate = this.handleDayAppointmentUpdate.bind(this)
         this.handleWeekAvailable = this.handleWeekAvailable.bind(this)
+        this.handleDocWeekAppointmentUpdate = this.handleDocWeekAppointmentUpdate.bind(this)
+        this.handleShowDimmer = this.handleShowDimmer.bind(this)
+        this.handleHideDimmer = this.handleHideDimmer.bind(this)
+        this.handleDayDocAppointmentUpdate = this.handleDayDocAppointmentUpdate.bind(this)
 
         this.state = {
             doctors:[],
@@ -50,17 +62,26 @@ export default class Secretary extends Component{
             endOfWeek: moment(moment().toDate()).endOf('week'),
             days:numdays,
             weekUnparsed:unparsed,
-            weekAvailable:[]
+            weekAvailable:[],
+            activeDimmer: false,
+            weekAppointmentsDoc:[],
+            dayAppointmentsDoc:[]
 
         }
         this.handleDayAppointmentUpdate()
         this.handleWeekAppointmentUpdate()
         this.handleWeekAvailable()
+        this.handleDocWeekAppointmentUpdate()
+        this.handleDayDocAppointmentUpdate()
     }
+
+    handleShowDimmer = () => this.setState({activeDimmer: true});
+    handleHideDimmer = () => this.setState({activeDimmer: false})
 
 
 
     componentDidMount(){
+        this.handleShowDimmer();
         axios.get('http://localhost:3000/secretary/getDoctors')
             .then(response => {
                 if(response.data.length > 0){
@@ -88,12 +109,13 @@ export default class Secretary extends Component{
             .catch((error)=>{
                 console.log(error)
         })
-        
+        this.handleHideDimmer();
            
     }
 
     handleWeekAvailable(){
         console.log("Updating Availability...")
+        this.handleShowDimmer();
         const week = {
             weeks: this.state.weekUnparsed
         }
@@ -105,6 +127,7 @@ export default class Secretary extends Component{
             })
             console.log("WeekAvailable Data: ")
             console.log(res.data.data)
+            this.handleHideDimmer();
         })
         
        
@@ -112,6 +135,7 @@ export default class Secretary extends Component{
 
 
     handleWeekAppointmentUpdate(){
+        this.handleShowDimmer();
         console.log("Updating Week-all...")
         const week = {
             weeks: this.state.weekUnparsed
@@ -123,11 +147,14 @@ export default class Secretary extends Component{
             })
             console.log("Week-all Data: ")
             console.log(res.data.data.data)
+            this.handleHideDimmer()
         })
+        
    }
 
    handleDayAppointmentUpdate(){
        console.log("DayUpdate")
+       this.handleShowDimmer();
         const day = {
             day: this.state.date
         }
@@ -138,12 +165,47 @@ export default class Secretary extends Component{
             })
             console.log("Day-all Data")
             console.log(res.data.data.data)
-            
+            this.handleHideDimmer()
         })
-        
-        
-     
+
      }
+     handleDayDocAppointmentUpdate(){
+        console.log("DayDocUpdate")
+        this.handleShowDimmer();
+         const day = {
+             date: this.state.date,
+             doctor: this.state.filter
+         }
+         axios.post('http://localhost:3000/secretary/day_one', day).then(res =>{
+             
+             this.setState({
+                 dayAppointmentsDoc: res.data.data.data
+             })
+             console.log("Day-all one doc Data")
+             console.log(res.data.data.data)
+             this.handleHideDimmer()
+         })
+ 
+      }
+
+    handleDocWeekAppointmentUpdate(){
+        console.log("Week Doctor Update")
+       this.handleShowDimmer();
+        const data = {
+            weeks: this.state.weekUnparsed,
+            doctor: this.state.filter
+        }
+        axios.post('http://localhost:3000/secretary/week_one', data).then(res =>{
+            
+            this.setState({
+                weekAppointmentsDoc: res.data.data.data
+            })
+            console.log("Week-all-Doc Data: ")
+            console.log(res.data.data.data)
+            this.handleHideDimmer()
+        })
+
+    }
 
 
    
@@ -194,6 +256,7 @@ export default class Secretary extends Component{
         this.setState({
             [name]:value
         })
+        console.log(value)
     }
 
     onChangeView=(e, {name, value})=>{
@@ -237,12 +300,10 @@ export default class Secretary extends Component{
         const filter =[
             {text:"APPOINTMENTS", key:"appointments", value:"appointments"},
             {text:"AVAILABILITY", key:"availability", value:"availability"},
-            <Dropdown selection options={this.state.doctors} onChange={this.onChangeFilter} name='filter'>
-
-            </Dropdown>
-
         ]
-
+        this.state.doctors.map(doc=>{
+            filter.push(doc)
+        })
         const viewer=[
             {text:"DAY", key:"day", value:"day"},
             {text:"WEEK", key:"week", value:"week"}
@@ -255,6 +316,9 @@ export default class Secretary extends Component{
                             week={this.state.weekUnparsed}
                             appointments={this.state.weekAppointments}
                             handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
+                            handleDocWeekAppointmentUpdate={this.handleDocWeekAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                         >
                         </SecretaryTable>
         }
@@ -263,20 +327,61 @@ export default class Secretary extends Component{
                             day={this.state.date}
                             appointments={this.state.dayAppointments}
                             handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                            handleDayDocAppointmentUpdate={this.handleDayDocAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                         > 
                         </DayAll>
         }
         else if(this.state.filter === 'availability'){
             console.log("Changing to availability table...")
+            
             currView = <SecretaryAvailable
                             week={this.state.weekUnparsed}
                             weekAvailable={this.state.weekAvailable}
                             handleWeekAvailable={this.handleWeekAvailable}
+                            handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                            handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
                             
                         />
         }
+        else{
+            console.log("Changing to doctor view...")
+            if(this.state.filter !== 'appointments' && this.state.filter !== 'availability' && this.state.view === 'week'){
+                currView =<SecretaryWeekDoc
+                            week={this.state.weekUnparsed}
+                            appointments={this.state.weekAppointmentsDoc}
+                            handleDocWeekAppointmentUpdate={this.handleDocWeekAppointmentUpdate}
+                            handleWeekAppointmentUpdate={this.handleWeekAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
+                            doc={this.state.filter}
+                        />
+            }
+            else if(this.state.filter !== 'appointments' && this.state.filter !== 'availability' && this.state.view === 'day'){
+                currView =<SecretaryDayDoc
+                            day={this.state.date}
+                            appointments={this.state.dayAppointmentsDoc}
+                            handleDayDocAppointmentUpdate={this.handleDayDocAppointmentUpdate}
+                            handleDayAppointmentUpdate={this.handleDayAppointmentUpdate}
+                            handleShowDimmer={this.handleShowDimmer}
+                            handleHideDimmer={this.handleHideDimmer}
+                            doc={this.state.filter}
+                        />
+            }
+        }
         return(
             <>
+                <Dimmer
+                            active={this.state.activeDimmer}
+                            inverted
+                            id="list-dimmer"
+                            style={{ maxHeight: "100%" }}
+                        >
+                            <div className="ui elastic huge green loader"></div>
+                </Dimmer>
                 <SemanticToastContainer position='top-center'></SemanticToastContainer>
                 <Header id='secretary_header_container' content={
                     <Navbar id='secretary_navbar'

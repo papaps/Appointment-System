@@ -1,9 +1,9 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import {Tab, Table} from 'semantic-ui-react';
-import AppointmentCard from './secretary-edit-appointment-modal-day-all'
+import AppointmentCard from './dentist-appointment-modal-day-all.js'
 import moment from 'moment'
-import '../secretary_css/secretary-view.css'    
+import '../dentist_css/dentist-view.css'    
 
 class day_all extends Component{
 
@@ -18,7 +18,6 @@ class day_all extends Component{
     }
     
     componentDidMount(){
-        this.props.handleDayAppointmentUpdate()
         console.log("Im in secretary-day-all componentDidMount")
         this.setState({
             appointments:this.props.appointments
@@ -58,11 +57,10 @@ class day_all extends Component{
                                         <div id="day-all-div">
                                             {          
                                                 appointments.map((appointment)=>{
-                                                    return ( <AppointmentCard
+                                                   /* return ( <AppointmentCard
                                                         appointment={appointment}
                                                         handleDayAppointmentUpdate={this.props.handleDayAppointmentUpdate}
-                                                        handleDayDocAppointmentUpdate = {this.props.handleDayDocAppointmentUpdate}
-                                                            />)
+                                                            />)*/
                                             })
                                             }
                                         </div>

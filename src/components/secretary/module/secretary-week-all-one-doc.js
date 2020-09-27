@@ -6,7 +6,7 @@ import AppointmentCard from './secretary-edit-appointment-modal'
 /* CSS FILES */
 import '../secretary_css/secretary-view.css'
 
-class week_all extends Component{
+class week_all_doc extends Component{
 
     constructor(props){
         super(props);
@@ -14,38 +14,37 @@ class week_all extends Component{
         this.state={
             appointments:this.props.appointments,
             weeks: this.props.week,
+            doc: this.props.doc
         }
 
     }
     
 
-    // componentDidMount(){
-    //    const week = {
-    //        weeks: this.state.weeks
-    //    }
-    //     Axios.post('http://localhost:3000/secretary/week_all', week).then(res =>{
-    //         return this.setState({
-    //             appointments: res.data.data.data
-    //         })
-            
-    //     })
+    componentDidMount(){
+       this.props.handleDocWeekAppointmentUpdate()
+       
         
-    // }
+    }
 
     componentDidUpdate(){
         if(this.props.week != this.state.weeks){
             console.log("Hello")
-            this.props.handleWeekAppointmentUpdate()
+            this.props.handleDocWeekAppointmentUpdate()
             this.setState({
                 weeks: this.props.week
+            })
+        }
+        else if(this.props.doc !== this.state.doc){
+            this.props.handleDocWeekAppointmentUpdate()
+            this.setState({
+                doc: this.props.doc 
             })
         }
     }
     render(){
         console.log("prop: ")
-        console.log(this.props.week)
-        console.log("state: ")
-        console.log(this.state.weeks)
+        console.log(this.props.appointments)
+
        return(
             <>
                 <Table id="table-header-title" compact>
@@ -89,4 +88,4 @@ class week_all extends Component{
     }
 }
 
-export default week_all
+export default week_all_doc

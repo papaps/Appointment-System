@@ -14,12 +14,12 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
 import "../secretary_css/addProcStep1.scss"
 
-class addProcStep1 extends Component {
+class addAvailProcStep1 extends Component {
     constructor(props){
         super(props)
         this.state = {
-            date: this.props.values.date,
-            time: moment(this.props.values.time, "h:mm aa").toDate()
+            date: moment(this.props.values.date).toDate(),
+            time: moment(this.props.values.time, 'HH:mm').toDate()
         }
 
         this.onchangeDate = this.onchangeDate.bind(this)
@@ -71,13 +71,14 @@ class addProcStep1 extends Component {
                     <Form.Input required
                     label = 'Date'
                     className = "addProcStep1Date"
-                    id = "add-appointment-datepicker"
                     control={DatePicker}
+                    id="secretary-available-datepicker"
                         selected={this.state.date}
-                        onChange={this.onchangeDate}
-                        onSelect={handleDate}
-                        minDate={moment().toDate()}
-                        filterDate={this.disableSunday}
+                        // onChange={this.onchangeDate}
+                        // onSelect={handleDate}
+                        // minDate={moment().toDate()}
+                        // filterDate={this.disableSunday}
+                        disabled
                         
                         >
                     </Form.Input>
@@ -87,8 +88,8 @@ class addProcStep1 extends Component {
                                 error = {this.props.values.error.time}
                                 placeholder = "Time"
                                 className = "addProcStep1Time"
-                                id= "add-appointment-time-picker"
                                 control={DatePicker}
+                                id="secretary-available-timepicker"
                                     showTimeSelect
                                     showTimeSelectOnly
                                     selected={this.state.time}
@@ -98,24 +99,12 @@ class addProcStep1 extends Component {
                                     minTime={moment("8:00 AM", "h:mm aa").toDate()}
                                     maxTime={moment().toDate().setHours(18)}
                                     filterDate={this.disableNonMid}
+                                    disabled
                                 />
 
                         
                         
                     </Form.Field>
-                    {/* <Form.Input required
-                        label = "Time"
-                        className = "addProcStep1Time"
-                        control={DatePicker}
-                            showTimeSelect
-                            showTimeSelectOnly
-                            selected={this.state.time}
-                            timeIntervals={30}
-                            dateFormat="h:mm aa"
-                            onChange={this.onchangeTime}
-                            minTime={moment().toDate().setHours(7)}
-                            maxTime={moment().toDate().setHours(18)}>
-                    </Form.Input> */}
                         
                 </Form>
                 
@@ -124,4 +113,4 @@ class addProcStep1 extends Component {
         )
     }
   }
-export default addProcStep1
+export default addAvailProcStep1

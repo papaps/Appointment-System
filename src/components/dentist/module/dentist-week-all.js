@@ -1,10 +1,10 @@
 import Axios from 'axios';
 import React, {Component} from 'react';
 import {Tab, Table, TableRow} from 'semantic-ui-react';
-import AppointmentCard from './secretary-edit-appointment-modal'
+import AppointmentCard from './dentist-appointment-modal'
 
 /* CSS FILES */
-import '../secretary_css/secretary-view.css'
+import '../dentist_css/dentist-view.css'
 
 class week_all extends Component{
 
@@ -67,11 +67,10 @@ class week_all extends Component{
                                         return( <Table.Cell id={'week-all-table-cell'} name={'week-all-td-'+index}>
                                                         {
                                                            appointments.map((appointment)=>
-                                                                        <AppointmentCard id={"secretary-appointment-card-" + appointment._id}
+                                                                      {/*}  <AppointmentCard id={"secretary-appointment-card-" + appointment._id}
                                                                             appointment={appointment}
                                                                             handleWeekAppointmentUpdate={this.props.handleWeekAppointmentUpdate}
-                                                                            handleDocWeekAppointmentUpdate={this.props.handleDocWeekAppointmentUpdate}
-                                                                        />
+                                                        /> */}
                                                             )
                                                         }
                 

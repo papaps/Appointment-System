@@ -15,13 +15,12 @@
 }
 
 #sec-header-child{
-    border-color: black;
-    width: 5cm;
+    border-color: black
 }
 #sec-header-child:hover{
     border-color: black;
     cursor: pointer;
-    background-color: rgb(140, 51, 51);
+    background-color: red;
 }
 
 #week_all{
@@ -68,7 +67,6 @@
     
     
 }
-
 
 .ui.card > div.header{
     background-color: pink;
@@ -137,19 +135,4 @@ div#day-all-div{
 
 #secretary-available-table-cell{
     border-color: black;
-    height: 100px;
-}
-
-#secretary-available-date-modal-trigger{
-    width: 100%;
-    height: 100%;
-}
-
-.secretary-available-table-cell{
-    background-color: rgb(179, 220, 179);
-}
-.secretary-available-table-cell:hover{
-    cursor: pointer;
-    background-color: rgb(65, 85, 65);
-    
 }

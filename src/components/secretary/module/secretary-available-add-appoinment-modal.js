@@ -10,13 +10,13 @@ import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 
 
-import AddProcMainForm from "./secretary-add-appointment-modal-form"
+import AddProcMainForm from "./secretary-available-add-appointment-modal-form"
 
 
 
 
 
-class AddModal extends Component {
+class AddAvailableModal extends Component {
     constructor(props){
     
       super(props);
@@ -26,12 +26,11 @@ class AddModal extends Component {
         lastname:'',
         patientcontact:'',
         procedures:[],
-        process:'',
         notes:'',
         date: moment().toDate(),
-        time: moment("8:00 AM", "h:mm aa").toDate(),
-        doctor:'',
+        time: moment('8:00 AM', "h:mm aa").toDate(),
         doctors:[],
+        doctor: '',
         open: false,
         step: 1,
         error: {
@@ -192,27 +191,34 @@ class AddModal extends Component {
     handleClose=()=>{
       this.setState({
         open: false,
-        step : 1
       })
-      setTimeout(() => {
-        toast(
-            {
-                description: <p>Appointment Creation cancelled</p>,
-                icon: 'check',
-                animation: 'slide up',
-                time:1000,
-                color: 'red'
+    //   setTimeout(() => {
+    //     toast(
+    //         {
+    //             description: <p>Appointment Creation cancelled</p>,
+    //             icon: 'check',
+    //             animation: 'slide up',
+    //             time:1000,
+    //             color: 'red'
 
-            },
-            () => console.log('toast closed'),
-        );
-    }, 1000)
+    //         },
+    //         () => console.log('toast closed'),
+    //     );
+    // }, 1000)
     }
     setOpen(){
       this.setState({
         open: !this.state.open,
-        step : 1
+        step : 1,
+        date : moment(moment(this.props.date).format("MMM DD YYYY")).toDate(),
+        time : moment(this.props.time, 'h:mm aa').toDate(),
+        doctor: this.props.doctorID
+
       })
+      console.log(moment(this.props.time, 'h:mm aa').toDate())
+
+    
+      // this.props.setClose()
       
     }
 
@@ -236,9 +242,6 @@ class AddModal extends Component {
             time:this.state.time,
             doctors:this.state.doctors,
           }
-          if(Array.isArray(this.state.procedures[0])){
-            appointment.procedures = this.state.procedures[0]
-          }
           if(Array.isArray(this.state.doctors[0])){
             appointment.doctors = this.state.doctors[0]
           }
@@ -257,7 +260,7 @@ class AddModal extends Component {
                     },
                 );
               }, 1000)
-              this.setOpen();
+              this.handleClose();
               this.props.handleWeekAppointmentUpdate()
               this.props.handleDayAppointmentUpdate()
               this.props.handleWeekAvailable()
@@ -320,8 +323,8 @@ class AddModal extends Component {
     }
   
     render(){
-      const {firstname, lastname, patientcontact, process, notes, date, time, doctors, doctor, error} = this.state;
-      const values = {firstname, lastname, patientcontact, process, notes, date, time, doctors, doctor, error}
+      const {firstname, lastname, patientcontact, process, notes, date, time, doctors, doctor,  error} = this.state;
+      const values = {firstname, lastname, patientcontact, process, notes, date, time, doctors, doctor , error}
       let button;
       let button2;
       if(this.state.step === 1){
@@ -333,14 +336,13 @@ class AddModal extends Component {
       return (
         <>
           <Modal
-            onClose={this.setOpen}
+            onClose={this.handleClose}
             onOpen={this.setOpen}
             open={this.state.open}
             as={Form}
-            onSubmit={this.handleSubmit}
             trigger={
-            <div className="circular ui pink icon button with tooltip" data-title="Add (ENTER)" data-content="Adds an appointment" data-variation="basic" data-position="bottom center" id="add-button">
-            <i className="large plus icon"></i>
+            <div>
+              {this.props.available}
             </div>}
           >
           
@@ -372,4 +374,4 @@ class AddModal extends Component {
       )
     }
   }
-export default AddModal
+export default AddAvailableModal
