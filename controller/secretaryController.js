@@ -485,12 +485,20 @@ router.post("/day_all", urlencoder, async function (request, result) {
 });
 // *** to be checked ***
 router.post("/day_one", urlencoder, async function (request, result) {
+
+    console.log
     // Get the date from sent data
     let date = request.body.date;
     let doctorID = request.body.doctor;
 
+    console.log("Checking for doctor: ")
+    console.log(doctorID)
+    console.log("Checking for date: ")
+    console.log(date)
+
+
     // Load up the html template
-    let one_day_doc = fs.readFileSync('./views/module_templates/secretary_day_one_doc.hbs', 'utf-8');
+    // let one_day_doc = fs.readFileSync('./views/module_templates/secretary_day_one_doc.hbs', 'utf-8');
 
     // Array for iterating time slots
     let timeSlotsArray = ["8:00 AM", "8:30 AM",
@@ -506,10 +514,13 @@ router.post("/day_one", urlencoder, async function (request, result) {
         "6:00 PM"];
 
     let dataArray = [];
+
+    let newDate = Date.parse(date);
+    let formattedDate = moment(newDate).format("MMM D YYYY");
     for (var i = 0; i < timeSlotsArray.length; i++) {
         let timeSlot = timeSlotsArray[i];
         // get all appointments in this date and time slot
-        let appointmentlist = await Appointment.getAppByDoctorandDateandTime(doctorID, date, timeSlot);
+        let appointmentlist = await Appointment.getAppByDoctorandDateandTime(doctorID, formattedDate, timeSlot);
         let appointments = [];
         for (var k = 0; k < appointmentlist.length; k++) {
             let appointment = appointmentlist[k];
@@ -526,14 +537,14 @@ router.post("/day_one", urlencoder, async function (request, result) {
         dataArray.push(data);
     }
 
-    let doctorFound = await Doctor.getDoctorByID(doctorID);
+    // let doctorFound = await Doctor.getDoctorByID(doctorID);
     let final = {
-        doctor: doctorFound,
+        // doctor: doctorFound,
         data: dataArray
     }
 
     result.send({
-        htmlData: one_day_doc,
+        // htmlData: one_day_doc,
         data: final
     });
 });

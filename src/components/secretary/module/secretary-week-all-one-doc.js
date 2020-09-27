@@ -37,7 +37,7 @@ class week_all_doc extends Component{
         else if(this.props.doc !== this.state.doc){
             this.props.handleDocWeekAppointmentUpdate()
             this.setState({
-                doc: this.props.doc
+                doc: this.props.doc 
             })
         }
     }
