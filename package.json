@@ -8,10 +8,11 @@
     "test": "jest --color",
     "client-install": "npm install --prefix client",
     "start": "node server.js",
+    "heroku-postbuild": "npm run rea",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "react-scripts build",
+    "rea": "react-scripts start",
     "eject": "react-scripts eject"
   },
   "author": "Stanley Sie",
