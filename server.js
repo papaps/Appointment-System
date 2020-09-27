@@ -45,9 +45,6 @@ app.use('/secretary', secretaryRoute)
 const adminRoute = require("./controller/adminController")
 app.use('/admin', adminRoute)
 
-const dentistRoute = require("./controller/dentistController")
-app.use('/dentist', dentistRoute)
-
 app.use(require("./controller"));
 
  var server = app.listen(process.env.PORT || 8080, function(){
