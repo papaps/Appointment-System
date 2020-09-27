@@ -1,3 +1,4 @@
+import Secretary from '../src/components/secretary/pages/secretary-view'
 import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
@@ -30,6 +31,7 @@ function App() {
      {/*} <LoginComponent></LoginComponent>*/}
     {/*} <DentistPage></DentistPage>*/}
     <Route path ='/' exact component = {LoginComponent} />
+    <Route path ='/secretary' exact component = {Secretary} />
     {/*}  <Route path="/week_all" component={week_all} />
       <Route path="/week_avail" component={week_avail} />
       <Route path="/day_all" component={day_all} />
