@@ -50,13 +50,13 @@ class AdminViewScheduleModal extends React.Component {
 
         let firstname;
         let lastname;
-        let key;
+        let doctorID;
         if (
             this.props.data != null &&
             this.props.data.firstname != null &&
             this.props.data.lastname != null
         ) {
-            key = this.props.data.key;
+            doctorID = this.props.data.key;
             firstname = this.props.data.firstname;
             lastname = this.props.data.lastname;
         }
@@ -86,7 +86,6 @@ class AdminViewScheduleModal extends React.Component {
                 <Button
                     id="add-schedule"
                     color="green"
-                    key={key}
                     onClick={() => {
                         this.props.handleModal("admin-create-schedule");
                     }}
@@ -97,7 +96,7 @@ class AdminViewScheduleModal extends React.Component {
             if (schedule != null) {
                 schedule_table = (
                     <>
-                        {schedule.map(({ key, name, time }) => (
+                        {schedule.map(({ name, time }) => (
                             <Table.Row>
                                 <Table.Cell
                                     style={{
@@ -128,8 +127,7 @@ class AdminViewScheduleModal extends React.Component {
                                         name="edit"
                                         id={name.toString() + "-edit"}
                                         size="large"
-                                        key={key}
-                                        day_name={name}
+                                        onClick={()=>this.props.handleModal("admin-edit-schedule", {firstname, lastname, doctorID, name})}
                                     ></Icon>
                                 </Table.Cell>
                             </Table.Row>
@@ -143,7 +141,6 @@ class AdminViewScheduleModal extends React.Component {
                 <Button
                     id="add-unavailable"
                     color="green"
-                    key={key}
                     onClick={() => {
                         this.props.handleModal("admin-add-unavailable");
                     }}
@@ -164,7 +161,7 @@ class AdminViewScheduleModal extends React.Component {
             if (unavailable != null && unavailable.length >= 1) {
                 schedule_table = (
                     <>
-                        {unavailable.map(({ key, time, index }) => (
+                        {unavailable.map(({ _id, time}, index) => (
                             <Table.Row>
                                 <Table.Cell
                                     style={{
@@ -176,10 +173,9 @@ class AdminViewScheduleModal extends React.Component {
                                 <Table.Cell textAlign="right">
                                     <Icon
                                         name="trash"
-                                        id={"delete-unavailable-button" + index}
+                                        id={"delete-unavailable-button-" + index}
                                         size="large"
-                                        key={key}
-                                        time={time}
+                                        onClick={()=> {this.props.handleModal("admin-delete-unavailable", {doctorID, unavailableDateID: _id, time, firstname, lastname})}}
                                     ></Icon>
                                 </Table.Cell>
                             </Table.Row>
@@ -235,6 +231,7 @@ class AdminViewScheduleModal extends React.Component {
                             <Grid.Row centered={true}>{table_buttons}</Grid.Row>
                             <Table
                                 celled={table_celled}
+                                striped
                                 selectable
                                 id="schedule-table"
                             >
