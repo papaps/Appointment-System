@@ -11,9 +11,6 @@ router.use("/secretary", require("./secretaryController"));
 router.use("/admin", require("./adminController"));
 router.use("/dentist", require("./dentistController"));
 
-// router.use(function(req, res) {
-// 	res.sendFile(path.join(__dirname, '../build/index.html'));
-// });
 
 //gets the first page (Basically for initial setup)
 router.get("/", async (req, res) => {
