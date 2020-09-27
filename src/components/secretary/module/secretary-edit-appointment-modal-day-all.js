@@ -379,6 +379,7 @@ export default class EditModal extends Component {
         axios.post('http://localhost:3000/secretary/edit', appointment).then(res => {
           console.log(res.data)
           this.props.handleDayAppointmentUpdate()
+          this.props.handleDayDocAppointmentUpdate()
         
         });
         setTimeout(() => {
