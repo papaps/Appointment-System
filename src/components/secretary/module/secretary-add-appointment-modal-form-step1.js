@@ -71,7 +71,6 @@ class addProcStep1 extends Component {
                     <Form.Input required
                     label = 'Date'
                     className = "addProcStep1Date"
-                    id = "add-appointment-datepicker"
                     control={DatePicker}
                         selected={this.state.date}
                         onChange={this.onchangeDate}
@@ -87,7 +86,6 @@ class addProcStep1 extends Component {
                                 error = {this.props.values.error.time}
                                 placeholder = "Time"
                                 className = "addProcStep1Time"
-                                id= "add-appointment-time-picker"
                                 control={DatePicker}
                                     showTimeSelect
                                     showTimeSelectOnly

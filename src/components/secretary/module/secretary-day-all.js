@@ -61,7 +61,6 @@ class day_all extends Component{
                                                     return ( <AppointmentCard
                                                         appointment={appointment}
                                                         handleDayAppointmentUpdate={this.props.handleDayAppointmentUpdate}
-                                                        handleDayDocAppointmentUpdate = {this.props.handleDayDocAppointmentUpdate}
                                                             />)
                                             })
                                             }

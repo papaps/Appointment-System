@@ -39,7 +39,6 @@ router.get("/", async (req, res) => {
 
 //VALIDATION
 router.post("/checkCurrentAdminPassword", async (req, res) => {
-
     let admin = await Account.getAccountByUsername("admin");
     var temp = await Account.authenticate(
         admin.username,
@@ -72,7 +71,6 @@ router.post("/checkCurrentSecretaryPassword", async (req, res) => {
 // CHECKS IF THE USERNAME INPUT IS IN THE DATABASE
 router.post("/validateUsername", async (req, res) => {
     let account = await Account.getAccountByUsername(req.body.username);
-    console.log(req.body.username);
     if (account == undefined) {
         res.send({ message: false });
     } else {
@@ -94,7 +92,6 @@ var check_username = async function (username) {
 // ALLOWS CHANGING OF THE CURRENTLY LOGGED USER'S PASSWORD
 router.post("/updateAccountPassword", async (req, res) => {
     res.send({
-        
         message: update_password(req.body.username, req.body.newPassword),
     });
 });
