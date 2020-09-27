@@ -10,8 +10,20 @@ const urlencoder = bodyParser.urlencoded({
 }) 
 
 const path = require("path");
+const port = process.env.PORT || 5000;
 
 var app = new express();
+
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+if(process.env.NODE_ENV === 'production') {  
+    app.use(express.static(path.join(__dirname, 'client/build')));  
+    app.get('*', (req, res) => {    res.sendfile(path.join(__dirname = 'client/build/index.html'));  })
+}
+
+app.get('*', (req, res) => {  
+    res.sendFile(path.join(__dirname+'/client/public/index.html'));
+})
 
 app.use(cors());
 app.use(express.json())
@@ -53,7 +65,7 @@ app.use('/dentist', dentistRoute)
 
 app.use(require("./controller"));
 
- var server = app.listen(process.env.PORT || 8080, function(){
+ var server = app.listen(port, function(){
      console.log("Server is running at port 8080...");
  })
 app.get('/test', async (req, res) => {

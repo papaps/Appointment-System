@@ -6,11 +6,12 @@
   "private": true,
   "scripts": {
     "test": "jest --color",
-    "start": "node server.js",
-    "rea": "react-scripts start",
-    "dev": "concurrently --kill-others \"npm run start\" \"npm run rea\"",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "client-install": "npm install --prefix client",
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Stanley Sie",
   "license": "ISC",
