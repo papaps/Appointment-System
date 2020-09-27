@@ -34,6 +34,18 @@ class EditModal extends Component {
             currentDocs:[],
             procs:this.props.appointment.process,
             docs:this.props.appointment.doctor,
+            error: {
+              firstname: false,
+              lastname: false,
+              username: false,
+              password: false,
+              patientcontact: false,
+              time: false,
+              date:false,
+              doctors: false,
+              procedures: false
+    
+          },
         open: false,
         secondopen:false,
         step: 1,
@@ -107,6 +119,114 @@ class EditModal extends Component {
         docs: this.props.appointment.doctor
       })
     }
+    handleValidation=()=>{
+      const checkfirst = /^[a-z A-Z]+$/;
+      const checklast = /^[a-z A-Z.\-_]+$/;
+      const checkcontact = /^[+-]?\d{7,12}$/;
+
+      let firstname = this.state.firstname.trim();
+      let lastname = this.state.lastname.trim();
+      let patientcontact = this.state.patientcontact.trim();
+      let procedures = this.state.procedures.filter(function(el){return el;});
+      let date = this.state.date;
+      let time = this.state.time;
+      let doctors = this.state.doctors.filter(function(el){return el;});
+
+      let error = this.state.error;
+      let formIsValid = true;
+
+      console.log("Procedures num: "+procedures.toString())
+      console.log("Doctors num: "+doctors.toString())
+
+      if(moment(moment(time, "h:mm A").toDate()).isBefore(moment().toDate()) && moment(date).isSame(moment().toDate(), 'day')){
+          error['time']= true;
+          toast({
+            type: "error",
+            title: "Error",
+            description: <p>Please input valid time</p>,
+            icon: "cancel",
+          });
+          formIsValid = false;
+      }
+      if(firstname === ""|| !firstname.match(checkfirst)){
+        error['firstname']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid firstname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+
+      } else if( firstname.length < 2){
+        error['firstname'] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Firstname is too short</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+      if(lastname ===  ""|| !lastname.match(checklast)){
+        error["lastname"] = true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid lastname</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      } else if(lastname.length < 2){
+        error["lastname"] = true;
+        toast({
+            type: "error",
+            title: "Error",
+            description: <p>Lastname is too short</p>,
+            icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(patientcontact === "" || !patientcontact.match(checkcontact)){
+        error['patientcontact']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Please input a valid contact number</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(procedures.length < 1 || procedures === null){
+        error['procedures']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 procedure</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      if(doctors.length < 1 || doctors === null){
+        error['doctors']= true;
+        toast({
+          type: "error",
+          title: "Error",
+          description: <p>Must have at least 1 doctor</p>,
+          icon: "cancel",
+        });
+        formIsValid = false;
+      }
+
+      
+      
+        return formIsValid
+
+
+    } 
 
     //function for opening and closing the modal
     handleClose=()=>{
@@ -315,8 +435,8 @@ class EditModal extends Component {
 
   
     render(){
-      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors} = this.state;
-      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors}
+      const {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error} = this.state;
+      const values = {firstname, lastname, patientcontact, procedures, notes, date, time, doctors, error}
       let button;
       let button2;
       let button3;

@@ -89,6 +89,7 @@ Exit Schedule Modal
     Click Element   close-schedule-modal
 
 Exit View Schedule Modal
+    Wait Until Page Contains Element    schedule-modal  timeout=10
     Click Element   close-schedule-modal
 
 Click Delete Dentist

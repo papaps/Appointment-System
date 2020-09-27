@@ -43,20 +43,21 @@ router.get('/getDoctors', (req, res)=>{
 
 
 //if there is a session currently active, goes immediately that session's page, if not go to login
-router.get("/", function (req, res) {
-    // if (req.session.username != null) {
-        // let doctor = await Doctor.getAllDoctors();
-        // let process = await Process.getAllProcesses();
-      //  Process.getAllProcesses();
-        //Process.find().then(process => res.json(process)).catch(err => res.status(400).json('Error'+err))
-        Doctor.find().then(doctor => res.json(doctor)).catch(err => res.status(400).json('Error'+err))
-        // res.render('page_templates/secretary_view.hbs', {
-        //     doctor: doctor,
-        //     process: process
-        // });
-    // } else {
-    //     res.redirect("/login");
-    // }
+router.get("/", async function (req, res) {
+    if (req.session.username != null) {
+    //     let doctor = await Doctor.getAllDoctors();
+    //     let process = await Process.getAllProcesses();
+    //    Process.getAllProcesses();
+    //     Process.find().then(process => res.json(process)).catch(err => res.status(400).json('Error'+err))
+    //     Doctor.find().then(doctor => res.json(doctor)).catch(err => res.status(400).json('Error'+err))
+    //     res.render('page_templates/secretary_view.hbs', {
+    //         doctor: doctor,
+    //         process: process
+    //     });
+            res.redirect("/secretary")
+    } else {
+        res.redirect("/login");
+    }
 });
 
 /* Try to get filtered data
@@ -157,7 +158,7 @@ router.post("/week_all", urlencoder, async function (request, response) {
 });
 //returns a table/view of one week including the current date
 router.post("/week_one", urlencoder, async function (request, result) {
-    let weekData = request.body["dates[]"];
+    let weekData = request.body.weeks;
     let doctorID = request.body.doctor;
 
     //Convert data to MMM D YYYY
@@ -484,12 +485,20 @@ router.post("/day_all", urlencoder, async function (request, result) {
 });
 // *** to be checked ***
 router.post("/day_one", urlencoder, async function (request, result) {
+
+    console.log
     // Get the date from sent data
     let date = request.body.date;
     let doctorID = request.body.doctor;
 
+    console.log("Checking for doctor: ")
+    console.log(doctorID)
+    console.log("Checking for date: ")
+    console.log(date)
+
+
     // Load up the html template
-    let one_day_doc = fs.readFileSync('./views/module_templates/secretary_day_one_doc.hbs', 'utf-8');
+    // let one_day_doc = fs.readFileSync('./views/module_templates/secretary_day_one_doc.hbs', 'utf-8');
 
     // Array for iterating time slots
     let timeSlotsArray = ["8:00 AM", "8:30 AM",
@@ -505,10 +514,13 @@ router.post("/day_one", urlencoder, async function (request, result) {
         "6:00 PM"];
 
     let dataArray = [];
+
+    let newDate = Date.parse(date);
+    let formattedDate = moment(newDate).format("MMM D YYYY");
     for (var i = 0; i < timeSlotsArray.length; i++) {
         let timeSlot = timeSlotsArray[i];
         // get all appointments in this date and time slot
-        let appointmentlist = await Appointment.getAppByDoctorandDateandTime(doctorID, date, timeSlot);
+        let appointmentlist = await Appointment.getAppByDoctorandDateandTime(doctorID, formattedDate, timeSlot);
         let appointments = [];
         for (var k = 0; k < appointmentlist.length; k++) {
             let appointment = appointmentlist[k];
@@ -525,14 +537,14 @@ router.post("/day_one", urlencoder, async function (request, result) {
         dataArray.push(data);
     }
 
-    let doctorFound = await Doctor.getDoctorByID(doctorID);
+    // let doctorFound = await Doctor.getDoctorByID(doctorID);
     let final = {
-        doctor: doctorFound,
+        // doctor: doctorFound,
         data: dataArray
     }
 
     result.send({
-        htmlData: one_day_doc,
+        // htmlData: one_day_doc,
         data: final
     });
 });
@@ -1165,7 +1177,7 @@ router.post("/info4", urlencoder, async function (request, result) {
 router.post("/availabilityTime", urlencoder, async (req, res) => {
     let date = req.body.date
     let doctorID = req.body.doctorID
-    let availability_modalhbs = fs.readFileSync('./views/module_templates/secretary_availability_modal.hbs', 'utf-8');
+    
 
     var slots1Military = ["8:00", "8:30",
         "9:00", "9:30",
@@ -1263,7 +1275,6 @@ router.post("/availabilityTime", urlencoder, async (req, res) => {
     
 
     res.send({
-        htmlData: availability_modalhbs,
         data: final
     })
 
