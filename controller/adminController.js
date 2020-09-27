@@ -94,6 +94,7 @@ var check_username = async function (username) {
 // ALLOWS CHANGING OF THE CURRENTLY LOGGED USER'S PASSWORD
 router.post("/updateAccountPassword", async (req, res) => {
     res.send({
+        
         message: update_password(req.body.username, req.body.newPassword),
     });
 });

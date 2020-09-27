@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Modal, Icon, Popup, Button,  Form, Input} from 'semantic-ui-react'
 import axios from 'axios';
+import { SemanticToastContainer, toast } from 'react-semantic-toasts';
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 class LoginClarification extends Component {
 
@@ -9,7 +11,8 @@ class LoginClarification extends Component {
 
         this.onClickConfirmButton = this.onClickConfirmButton.bind(this);
         this.onChangeAdminPassword = this.onChangeAdminPassword.bind(this);
-        this.onAdminValidation = this. onAdminValidation.bind(this);
+        this.onAdminValidation = this.onAdminValidation.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.state={
             open: false,
             username: '',
@@ -19,6 +22,12 @@ class LoginClarification extends Component {
 
         }
 
+    }
+
+    closeModal(){
+        this.setState({
+            open: !this.state.open
+        })
     }
 
     onChangeAdminPassword(e){
@@ -38,11 +47,21 @@ class LoginClarification extends Component {
             username: this.state.username
         }
 
-        axios.post('admin/validateUsername', user).then(res=>{
+        if(this.state.username.length===0||this.state.password.length===0||this.state.confirmPassword===0){
 
-            alert('res: '+ res.data.message);
+            toast({
+                type: "error",
+                title: "Error",
+                description: <p>Please fill up all input fields.</p>,
+                icon: "cancel",
+              });
+        }
+        else
+          
+        axios.post('admin/validateUsername', user).then(res=>{
+           // alert('res: '+ res.data.message);
             if (res.data.message===true){
-                
+
                 if (this.state.password===this.state.confirmPassword){
 
                     if (this.state.password.length>=10&&this.state.password.length<=32){
@@ -51,17 +70,38 @@ class LoginClarification extends Component {
                         })
                     }
                     else{
-                        alert('Password should contain 10 to 32 alphanumeric characters');
+                        toast({
+                            type: "error",
+                            title: "Error",
+                            description: <p>Password should contain 10 to 32 alphanumeric characters</p>,
+                            icon: "cancel",
+                          });
+
+                          console.log(this.props.username +" "+ this.props.password+" "+ this.props.confirmPassword);
+                       // alert('Password should contain 10 to 32 alphanumeric characters');
                     }
                 }
                 else{
-                    alert('Passwords do not match.');
+                    toast({
+                        type: "error",
+                        title: "Error",
+                        description: <p>Passwords do not match.</p>,
+                        icon: "cancel",
+                      });
+                    
                 }
                 
-                alert(this.props.username +" "+ this.props.password+" "+ this.props.confirmPassword);
+               // alert(this.props.username +" "+ this.props.password+" "+ this.props.confirmPassword);
 
             }
             else{
+
+                toast({
+                    type: "error",
+                    title: "Error",
+                    description: <p>Username is not found.</p>,
+                    icon: "cancel",
+                  });
                // alert('Not found');
             }
             
@@ -76,30 +116,41 @@ class LoginClarification extends Component {
 
 
         const creds ={
-            password:this.state.adminPassword
+            newPassword:this.state.adminPassword
         }
         axios.post('admin/checkCurrentAdminPassword', creds).then
         (res=>{
 
-            alert("MSG: "+res.data)
 
             if (res.data ===true){
 
                 const user ={
                     username:this.state.username,
-                    password:this.state.password
+                    newPassword:this.state.password
                 }
                 axios.post('admin/updateAccountPassword', user).then(res=>{
                   //  alert("CHANGED: ", res.message);
+                  console.log(res.data.message);
                   this.setState({
                     open: !this.state.open
                 })
+
+                this.props.open = false;
 
                 }).catch((error)=>{
                         //alert("Error: "+ error);
                         console.log("Error Status:"+error.status);
                         console.log("Error Code: "+error.code);
                  });
+            }
+            else{
+                toast({
+                    type: "error",
+                    title: "Error",
+                    description: <p>Incorrect admin password. Please try again.</p>,
+                    icon: "cancel",
+                  });
+
             }
                
            
@@ -145,12 +196,12 @@ class LoginClarification extends Component {
                         CONFIRM
                         <i className="checkmark icon"></i>
                     </div>
-                    <div className="ui right labeled icon cancel button" onClick = {this.onClickConfirmButton}>
+                    <div className="ui right labeled icon cancel button" onClick = {this.closeModal}>
                         CANCEL
                         <i className="cancel icon"></i>
                     </div>
                 </div>
-
+            
                 </Modal.Content>
                
             </Modal>
