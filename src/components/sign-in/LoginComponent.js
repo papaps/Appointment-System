@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Logo from './logo.png';
-//import loginStyles from './loginCSS.css';
+import loginStyles from './loginCSS.css';
 import axios from 'axios';
 //import Modal from 'react-modal';
 import ResetPasswordModalComponent from './ResetPasswordModalComponent';
@@ -86,7 +86,7 @@ class LoginComponent extends Component {
        redirectToSecretary = () => {
         //alert("Home");
         const { history } = this.props;
-        window.location.href = "/secretary"
+        window.location.href = "/dentist"
        }
 
 
@@ -110,7 +110,7 @@ class LoginComponent extends Component {
 
 
         console.log(user);
-        axios.post('/validateLogin', user).then
+        axios.post('validateLogin', user).then
         (res=>{
 
             if (res.data.message===2){
@@ -148,7 +148,7 @@ class LoginComponent extends Component {
     render(){
         return (
         
-           <div>
+           <div style={loginStyles}>
                <Router>
                     <Route path="/dentist" component={Dentist}/>
                     <Route path = "/secretary" component={Secretary}/>
