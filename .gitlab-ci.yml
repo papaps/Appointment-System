@@ -6,10 +6,10 @@
       - gem install dpl
 
     stages:
-      - builds
-      - test
+      # - builds
+      # - test
       - production
-      - auto-test      
+      # - auto-test      
 
     cache:
       paths:
