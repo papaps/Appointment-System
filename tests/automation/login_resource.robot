@@ -3,9 +3,9 @@ Library  SeleniumLibrary    run_on_failure=NOTHING
 
 *** Variables ***
 #${SERVER}         localhost:3000
-${SERVER}         access-dental.herokuapp.com
+${SERVER}           access-dental.herokuapp.com
 ${BROWSER}        Chrome
-${DELAY}         0.2
+${DELAY}         2
 ${ASAP}          0
 ${VALID ADMIN}     admin
 ${VALID SECRETARY}     secretary
@@ -17,31 +17,47 @@ ${SECRETARY URL}    https://${SERVER}/secretary
 ${DENTIST URL}    https://${SERVER}/dentist
 
 *** Keywords ***
-Open Browser To Login Page Slow
-	${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
+Open Admin Browser
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
     Call Method    ${chrome_options}    add_argument    test-type
     Call Method    ${chrome_options}    add_argument    --disable-extensions
     Call Method    ${chrome_options}    add_argument    --headless
     Call Method    ${chrome_options}    add_argument    --disable-gpu
     Call Method    ${chrome_options}    add_argument    --no-sandbox
     Create Webdriver    Chrome    chrome_options=${chrome_options}
-    #Open Browser    ${LOGIN URL}    ${BROWSER}
-    #Maximize Browser Window
+    Go To   ${ADMIN URL}
+
+Open Browser To Login Page Slow
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
+    Call Method    ${chrome_options}    add_argument    test-type
+    Call Method    ${chrome_options}    add_argument    --disable-extensions
+    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    add_argument    --disable-gpu
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Create Webdriver    Chrome    chrome_options=${chrome_options}
     Set Selenium Speed  ${DELAY}
 	Go To   ${LOGIN URL}
 
 Open Browser To Login Page
-	${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
     Call Method    ${chrome_options}    add_argument    test-type
     Call Method    ${chrome_options}    add_argument    --disable-extensions
     Call Method    ${chrome_options}    add_argument    --headless
     Call Method    ${chrome_options}    add_argument    --disable-gpu
     Call Method    ${chrome_options}    add_argument    --no-sandbox
     Create Webdriver    Chrome    chrome_options=${chrome_options}
-	#Open Browser    ${LOGIN URL}    ${BROWSER}
-    #Maximize Browser Window
     Set Selenium Speed  ${ASAP}
 	Go To   ${LOGIN URL}
+	
+Open Browser To Secretary Page Slow
+    Open Browser    ${SECRETARY URL}    ${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed  ${DELAY}
+	
+Open Browser To Secretary Page
+    Open Browser    ${SECRETARY URL}    ${BROWSER}
+    Maximize Browser Window
+    Set Selenium Speed  ${ASAP}
 
 Go To Login Page
     Go To   ${LOGIN URL}

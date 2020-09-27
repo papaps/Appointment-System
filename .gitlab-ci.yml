@@ -8,9 +8,8 @@
     stages:
       - builds
       - test
-      - auto-test
-      - report
       - production
+      - auto-test      
 
     cache:
       paths:
@@ -27,6 +26,15 @@
     testing_testing:
       stage: test
       script: npm test 
+
+    deploying:
+      type: deploy
+      stage: production
+      image: ruby:latest
+      script:
+        - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+      only:
+        - production     
         
     auto-test:
       image: python:latest
@@ -47,26 +55,5 @@
         - ln -fs /opt/chromedriver/chromedriver /usr/local/bin/chromedriver
         - robot -v BROWSER:HeadlessChrome -v APP_ENV:test -d tests/automation/report tests/automation
       artifacts:
-      #paths:
-      #  - /builds/Secade/Appointment-System/tests/automation/report
       only:
         - production
-        
-    publish-test-report:
-      stage: report
-      script:
-        - mkdir public
-        - mv /builds/Secade/Appointment-System/tests/automation/report/ * public/
-      artifacts:
-      #expire_in: 1 week
-      #paths:
-      #  - public
-      
-    deploying:
-      type: deploy
-      stage: production
-      image: ruby:latest
-      script:
-        - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
-      only:
-        - production     

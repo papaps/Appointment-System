@@ -12,7 +12,7 @@ describe('Adding', ()=>{
     it('1 + 2 equal 3', ()=>{
         let a = 1;
         let b = 2;
-
+        
         let ans = sum(a,b);
 
         expect(ans).toBe(3);
@@ -32,3 +32,4 @@ describe('Adding', ()=>{
 //         const validUser = new UserModel(userData);
 //     });
 // });
+
